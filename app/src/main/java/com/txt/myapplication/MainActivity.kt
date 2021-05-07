@@ -17,8 +17,8 @@ import com.txt.video.TXSdk
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onFriendBtListener
-import com.txt.video.common.utils.ToastUtils
-import com.txt.video.net.utils.TxLogUtils
+//import com.txt.video.common.utils.ToastUtils
+//import com.txt.video.net.utils.TxLogUtils
 //import com.txt.video.widget.dialog.ShareWhiteBroadDialog
 //import com.txt.video.widget.utils.AndroidSystemUtil
 import kotlinx.android.synthetic.main.activity_main.*
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
         TXSdk.getInstance().addOnFriendBtListener(object :onFriendBtListener{
             override fun onSuccess(roomId: String, serviceId: String, inviteAccount: String) {
-                ToastUtils.showShort("$roomId\n${serviceId}\n${inviteAccount}")
+//                ToastUtils.showShort("$roomId\n${serviceId}\n${inviteAccount}")
                 tx_roomid.text ="$roomId"
 //                startActivity(Intent(this@MainActivity,DemoActivity::class.java))
             }

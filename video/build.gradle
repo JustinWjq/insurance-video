@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.kezong.fat-aar'
-apply plugin: 'com.novoda.bintray-release'
 
 
 static def releaseTime() {
@@ -104,35 +102,48 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    api 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    api 'com.android.support:appcompat-v7:28.0.0'
-    api 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 
     //TRTC SDK
-    api 'com.tencent.teduboard:TEduBoardSdk:2.5.2.48'
-    api 'com.tencent.liteav:LiteAVSDK_TRTC:8.3.9882'
+    implementation 'com.tencent.teduboard:TEduBoardSdk:2.5.2.48'
+    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:8.3.9882'
     //IMSDK
-    api 'com.tencent.imsdk:imsdk:4.6.56'
+    implementation 'com.tencent.imsdk:imsdk:4.6.56'
     //wechat share
-    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
 
 
-    api 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
-    api "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
 }
 
-repositories {
-    mavenCentral()
-}
+//tasks.withType(Javadoc) {
+//    options.addStringOption('Xdoclint:none', '-quiet')
+//    options.addStringOption('encoding', 'UTF-8')
+//    options.addStringOption('charSet', 'UTF-8')
+//}
+//
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
 
-publish {
-    repoName = 'videosdk'
-    userOrg = 'pivos'
-    groupId = 'com.tencent.cloud'
-    artifactId = 'insurance-video'
-    publishVersion = '1.2.0.5'
-    desc = 'tx-insurance-video'
-    website = ''
-}
