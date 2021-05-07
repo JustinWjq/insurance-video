@@ -1,0 +1,91 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="tx_AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/tx_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/tx_colorPrimaryDark</item>
+        <item name="colorAccent">@color/tx_colorAccent</item>
+    </style>
+
+    <style name="tx_progressBarHorizontal_indeter" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:minHeight">3dp</item>
+        <item name="android:maxHeight">3dp</item>
+    </style>
+
+    <!--/rtmp room-->
+    <style name="tx_NewActivityTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="tx_NewActivityTheme1" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="tx_MyDialog" parent="android:style/Theme.Dialog">
+        <!--背景颜色及和透明程度-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--是否去除标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否去除边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="tx_activityTranslucent">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="tx_style_click">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_no_corner</item>
+    </style>
+
+    <style name="tx_style_click_bottom">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_bottom_corner</item>
+    </style>
+
+    <style name="tx_style_click_2">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_bottomleft_corner</item>
+    </style>
+
+    <style name="tx_style_click_3">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_bottomright_corner</item>
+    </style>
+
+    <style name="tx_style_click_all">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_all_corner</item>
+    </style>
+
+    <style name="tx_style_click_top">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_top_corner</item>
+    </style>
+
+    <style name="tx_style_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+
+</resources>

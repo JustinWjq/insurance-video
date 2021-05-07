@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tx_white"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.boardpage.BoardViewActivity">
+
+    <FrameLayout
+        android:id="@+id/board_view_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_board_business"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/tx_dp_20"
+        android:layout_marginBottom="@dimen/tx_dp_20"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
+        app:layout_constraintLeft_toLeftOf="parent"
+       >
+
+        <LinearLayout
+            android:id="@+id/tx_board_view_business"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/tx_dp_16"
+            android:background="@drawable/tx_shape_round_3e3e3e"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/tx_pen"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_pen_status_selector" />
+
+
+            <ImageButton
+                android:id="@+id/tx_eraser"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_eraser_status_selector" />
+
+
+            <ImageButton
+                android:id="@+id/tx_textstyle"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_textsize_status_selector" />
+
+
+            <ImageButton
+                android:id="@+id/tx_zoom"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="30dp"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_zoom_status_selector" />
+
+            <ImageButton
+                android:id="@+id/tx_laststep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="30dp"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_laststep_status_selector"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/tx_boardtools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:onClick="onTxClick"
+            android:src="@drawable/tx_paint_default"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_borads"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/tx_dp_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/tx_rlshow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onTxClick"
+            android:paddingStart="@dimen/tx_dp_10"
+            android:paddingTop="@dimen/tx_dp_10"
+            android:paddingEnd="@dimen/tx_dp_10"
+            android:src="@drawable/tx_push_status_selector"
+            android:visibility="visible"
+            style="@style/tx_style_button"
+           />
+
+        <RelativeLayout
+            android:id="@+id/rl_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/tx_black_80"
+            android:paddingTop="@dimen/tx_dp_10"
+            android:paddingBottom="@dimen/tx_dp_10"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tx_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                tools:visibility="visible" />
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
+
+    <ImageButton
+        android:id="@+id/tx_ib_checkscreen1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onTxClick"
+        android:src="@drawable/tx_icon_landscape"
+        android:layout_marginBottom="@dimen/tx_dp_20"
+        android:layout_marginEnd="@dimen/tx_dp_20"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
+        app:layout_constraintRight_toRightOf="parent"
+         />
+
+
+    <ImageButton
+        android:id="@+id/tx_ib_audiomute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onTxClick"
+        android:layout_marginEnd="@dimen/tx_dp_20"
+        android:src="@drawable/tx_audio_notext_status_selector"
+        style="@style/tx_style_button"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tx_ib_checkscreen1"
+         />
+
+
+</android.support.constraint.ConstraintLayout>

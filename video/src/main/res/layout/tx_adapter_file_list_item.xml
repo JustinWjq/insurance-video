@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/tx_iv_file_pic"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/tx_ll_iv_file_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tx_bg_uploding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/tx_iv_file_pic"
+        app:layout_constraintRight_toRightOf="@+id/tx_iv_file_pic"
+        app:layout_constraintTop_toTopOf="parent" >
+        <ImageView
+            android:id="@+id/tx_ll_iv_uploading"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/tx_icon_uploding"
+          />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tx_tv_file_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/tx_black"
+        app:layout_constraintLeft_toRightOf="@+id/tx_iv_file_pic"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tx_iv_file_pic"
+        tools:text="12313123131231312313123131231312313123131231312313123131231312313123131231312313" />
+
+    <TextView
+        android:id="@+id/tx_tv_file_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_iv_file_pic"
+        app:layout_constraintLeft_toLeftOf="@+id/tx_tv_file_name"
+        tools:text="12313" />
+
+</android.support.constraint.ConstraintLayout>
+

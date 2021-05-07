@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+
+    <FrameLayout
+        android:id="@+id/view_merge_bigscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tx_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/tx_merge_bgview"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/tx_bg_gray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tx_merge_business_video"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/tx_merge_business_video"
+        style="@style/tx_style_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/tx_business_video_screen_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tx_merge_business_audio"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/tx_merge_business_audio"
+        style="@style/tx_style_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_business_audio_screen_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_merge_business_video"
+        app:layout_constraintEnd_toStartOf="@+id/tx_merge_business_switch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_merge_business_video" />
+
+
+    <ImageButton
+        android:id="@+id/tx_merge_business_switch"
+        style="@style/tx_style_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_icon_checkvideo"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_merge_business_video"
+        app:layout_constraintEnd_toStartOf="@+id/tx_merge_business_hangup"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_merge_business_audio" />
+
+    <ImageButton
+        android:id="@+id/tx_merge_business_hangup"
+        style="@style/tx_style_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_icon_hangup"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_merge_business_video"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_merge_business_switch" />
+
+    <android.support.constraint.Group
+        android:id="@+id/tx_merge_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tx_merge_business_video,tx_merge_business_audio,tx_merge_business_switch,tx_merge_business_hangup,tx_merge_bgview"
+        />
+
+</merge>

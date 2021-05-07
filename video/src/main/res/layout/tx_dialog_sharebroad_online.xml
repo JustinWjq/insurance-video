@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="30dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_exit"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/atv_gotofile"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="共享文件"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@color/tx_08101d"
+            style="@style/tx_style_click_top"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E5E5" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/atv_gotobroad"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="仅共享白板"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@color/tx_08101d"
+            style="@style/tx_style_click_bottom"
+            />
+        <View
+            android:id="@+id/tx_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E5E5E5" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/atv_endshare"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="结束共享"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@color/tx_08101d"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/atv_exit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="取消"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/tx_08101d"
+        style="@style/tx_style_click_all"
+        />
+
+</android.support.v7.widget.LinearLayoutCompat>

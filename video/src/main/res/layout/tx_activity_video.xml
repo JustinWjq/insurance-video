@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tx_video_bg"
+   >
+
+<!--    <android.support.constraint.Group-->
+<!--        android:id="@+id/group_bigscreen"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:constraint_referenced_ids="bigscreen,rl_bigscreen"-->
+<!--        />-->
+
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tx_white"
+        android:orientation="horizontal"
+        android:paddingTop="25dp"
+        android:paddingBottom="5dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/trtc_ib_back"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/tx_dp_40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="结束会议"
+            android:textColor="@color/tx_color_ce1b2b"
+            android:textSize="16sp"
+            android:onClick="onTxClick"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/tx_style_click"
+            />
+
+        <TextView
+            android:id="@+id/tx_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/tx_black"
+            android:textSize="18sp"
+            tools:text="会议房间"
+            />
+
+        <TextView
+            android:id="@+id/tv_invite"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:textColor="@color/tx_color_006DFF"
+            android:textSize="16sp"
+            android:visibility="visible"
+            android:onClick="onTxClick"
+            style="@style/tx_style_click"
+            tools:text="@string/tx_str_invite"
+            />
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/bigscreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/tx_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+
+    <FrameLayout
+        android:id="@+id/trtc_fl_no_video"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/tx_black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title">
+
+
+        <ImageView
+            android:id="@+id/iv_video_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/tx_icon_bigscreen_close" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_bigscreen_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/tx_shape_round_08101d"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tx_business_video"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <ImageView
+            android:id="@+id/trtc_icon_host"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tx_icon_host"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/bigscreen_trtc_pb_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/tx_icon_volume_0" />
+
+        <TextView
+            android:id="@+id/bigscreen_trtc_tv_content"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/bigscreen_trtc_pb_audio"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp"
+            tools:text="XXXX" />
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trtc_video_view_layout"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+
+    <ImageView
+        android:id="@+id/tx_icon_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/tx_icon_invite"
+        android:visibility="gone"
+        android:onClick="onTxClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/board_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/tx_white"
+        android:visibility="gone"
+        app:layout_constraintDimensionRatio="h,16:9"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trtc_video_view_layout"
+        app:layout_constraintBottom_toTopOf="@+id/ll_board_business"
+        />
+
+
+    <!-- Board -->
+    <LinearLayout
+        android:id="@+id/ll_board_business"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_view_container"
+        app:layout_constraintBottom_toTopOf="@+id/tx_business_video"
+        tools:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/tx_rl"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:paddingStart="20dp">
+
+            <LinearLayout
+                android:id="@+id/tx_board_view_business"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/tx_shape_round_3e3e3e"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/tx_pen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:padding="@dimen/tx_dp_5"
+                    android:src="@drawable/tx_pen_status_selector"
+                    android:onClick="onTxClick"
+                    style="@style/tx_style_button"
+                   />
+
+
+                <ImageButton
+                    android:id="@+id/tx_eraser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:padding="@dimen/tx_dp_5"
+                    android:src="@drawable/tx_eraser_status_selector"
+                    android:onClick="onTxClick"
+                    style="@style/tx_style_button"
+                    />
+
+
+                <ImageButton
+                    android:id="@+id/tx_textstyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:padding="@dimen/tx_dp_5"
+                    android:src="@drawable/tx_textsize_status_selector"
+                    android:onClick="onTxClick"
+                    style="@style/tx_style_button"
+                    />
+
+
+                <ImageButton
+                    android:id="@+id/tx_zoom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/tx_dp_5"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/tx_zoom_status_selector"
+                    android:onClick="onTxClick"
+                    style="@style/tx_style_button"
+                    />
+
+                <ImageButton
+                    android:id="@+id/tx_laststep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/tx_dp_5"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/tx_laststep_status_selector"
+                    android:onClick="onTxClick"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/tx_boardtools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/tx_boardtools_status_selector"
+                android:visibility="gone"
+                android:onClick="onTxClick"
+                />
+
+            <ImageButton
+                android:id="@+id/tx_ib_checkscreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tx_icon_portrait"
+                android:onClick="onTxClick"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/tx_dp_10"
+                style="@style/tx_style_button"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/tx_black_80"
+            android:paddingTop="@dimen/tx_dp_5"
+            android:paddingBottom="@dimen/tx_dp_5"
+            android:visibility="gone"
+            >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tx_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/tx_business_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/tx_video_status_selector"
+        android:onClick="onTxClick"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tx_business_audio"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/tx_business_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_audio_status_selector"
+        android:onClick="onTxClick"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_business_video"
+        app:layout_constraintEnd_toStartOf="@+id/tx_business_switch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_business_video" />
+
+
+    <ImageButton
+        android:id="@+id/tx_business_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_switch_status_selector"
+        android:onClick="onTxClick"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_business_video"
+        app:layout_constraintEnd_toStartOf="@+id/tx_business_share"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_business_audio" />
+
+    <ImageButton
+        android:id="@+id/tx_business_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_share_status_selector"
+        android:onClick="onTxClick"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_business_video"
+        app:layout_constraintEnd_toStartOf="@+id/tx_business_screen"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_business_switch" />
+
+
+    <ImageButton
+        android:id="@+id/tx_business_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_screen_status_selector"
+        android:onClick="onTxClick"
+        style="@style/tx_style_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tx_business_video"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tx_business_share" />
+
+
+
+    <ViewStub
+        android:id="@+id/view_stub_remote_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/tx_viewstub_remote_user_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+    <ViewStub
+        android:id="@+id/bigsharescreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tx_black"
+        android:layout="@layout/tx_viewstub_screenview"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_title"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

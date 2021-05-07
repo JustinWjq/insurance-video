@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tx_shape_round_5"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/main_title"
+        android:layout_width="wrap_content"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="管理成员"
+        android:textColor="@color/tx_black"
+        android:textSize="18sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:drawableEnd="@drawable/tx_icon_close"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tx_divider"
+        />
+
+
+    <View
+        android:id="@+id/tx_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/tx_divider"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_title"
+        app:layout_constraintBottom_toTopOf="@+id/rv_user_list"
+        />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mute_audio_all"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_title" />
+
+    <ImageView
+        android:id="@+id/iv_noremoteuser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_icon_noremoteuser"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mute_audio_all"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_title"
+        />
+
+    <View
+        android:id="@+id/tx_divider1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/tx_divider"
+        android:layout_marginBottom="@dimen/tx_dp_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_user_list"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mute_audio_all"
+        />
+
+
+    <TextView
+        android:id="@+id/btn_mute_audio_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/tx_meeting_button_border_selector"
+        android:padding="10dp"
+        android:text="全体静音"
+        android:textColor="@color/tx_color_006DFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_mute_audio_all_off"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_mute_audio_all_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/tx_button_border"
+        android:padding="10dp"
+        android:text="解除全体静音"
+        android:textColor="@color/tx_color_006DFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="@+id/btn_mute_audio_all"
+        app:layout_constraintEnd_toStartOf="@+id/btn_mute_audio_all"
+        app:layout_constraintStart_toEndOf="@+id/btn_mute_video_all" />
+
+    <TextView
+        android:id="@+id/btn_mute_video_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tx_button_border"
+        android:padding="10dp"
+        android:text="邀请成员"
+        android:textColor="@color/tx_color_006DFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_mute_audio_all_off"
+        app:layout_constraintTop_toTopOf="@+id/btn_mute_audio_all_off" />
+</merge>

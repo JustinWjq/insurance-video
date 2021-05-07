@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_view"
+    android:layout_width="100dp"
+    android:layout_height="130dp"
+    android:layout_marginStart="@dimen/tx_dp_10"
+    android:layout_marginTop="@dimen/tx_dp_10"
+   >
+
+
+
+    <FrameLayout
+        android:id="@+id/trtc_tc_cloud_view"
+        android:layout_width="match_parent"
+        android:background="@color/tx_black"
+        android:layout_height="match_parent" />
+
+<!--    <com.tencent.rtmp.ui.TXCloudVideoView-->
+<!--        android:id="@+id/trtc_tc_cloud_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+    <FrameLayout
+        android:id="@+id/trtc_fl_no_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#464950"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_video_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/tx_icon_close_video" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text="视频已关闭"
+                android:textSize="16dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/tx_shape_08101d"
+        >
+        <ImageView
+            android:id="@+id/trtc_icon_host"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tx_icon_host"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/trtc_pb_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/tx_icon_volume_0"
+            />
+        <TextView
+            android:id="@+id/trtc_tv_content"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/trtc_pb_audio"
+            android:ellipsize="end"
+            android:singleLine="true"
+            tools:text="XXXX"
+            android:textColor="#FFFFFFFF"
+            android:textSize="14sp"
+            android:gravity="center"
+            />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/trtc_ll_controller"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/trtc_btn_mute_video"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_width"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/tx_remote_video_enable" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/trtc_btn_mute_audio"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_width"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/tx_remote_audio_enable" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/trtc_btn_fill"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_width"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/tx_fill_scale" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ToggleButton
+                    android:id="@+id/mute_in_speaker"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_width"
+                    android:layout_gravity="center_horizontal"
+                    android:textOff="播声音"
+                    android:textOn="静音"
+                    android:textSize="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/trtc_iv_nos"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/tx_signal6"
+        android:visibility="gone" />
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+

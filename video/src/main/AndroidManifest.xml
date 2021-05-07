@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.txt.video">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <application>
+
+        <activity
+            android:name=".ui.boardpage.BoardViewActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/tx_NewActivityTheme1" />
+        <activity
+            android:name=".ui.video.VideoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity="net.sourceforge.simcpuxdemo"
+            android:theme="@style/tx_NewActivityTheme"
+            android:windowSoftInputMode="adjustPan" /> <!-- 适配华为（huawei）刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+        <activity
+            android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:taskAffinity="net.sourceforge.simcpuxdemo"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".common.utils.TxPermissionUtils$TransActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
+            android:theme="@style/tx_activityTranslucent"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+    </application>
+
+</manifest>

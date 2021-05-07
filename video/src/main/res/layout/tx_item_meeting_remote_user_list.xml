@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="25dp"
+        android:textColor="@color/tx_black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="张思思"
+        />
+    <TextView
+        android:id="@+id/tv_user_remarks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="(用户，参会人)"
+        android:textColor="@color/tx_color_999999"
+        android:layout_marginTop="@dimen/tx_dp_10"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+        />
+
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/img_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_audio_nobg_status_selector"
+        android:padding="@dimen/tx_dp_5"
+        android:layout_marginRight="30dp"
+        app:layout_constraintRight_toLeftOf="@+id/img_video"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/tx_style_button"
+        />
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/img_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_video_notext_status_selector"
+        android:padding="@dimen/tx_dp_5"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/tx_style_button"
+        />
+</android.support.constraint.ConstraintLayout>

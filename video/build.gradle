@@ -1,0 +1,138 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'com.kezong.fat-aar'
+apply plugin: 'com.novoda.bintray-release'
+
+
+static def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('debug.keystore')
+            storePassword 'android'
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        consumerProguardFiles 'proguard-rules.pro'
+        defaultConfig {
+            ndk {
+                abiFilters "armeabi-v7a"//, "arm64-v8a"
+            }
+        }
+    }
+
+    //统一资源前缀，规范资源引用
+    resourcePrefix "tx_"
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+
+
+        lintOptions {
+            abortOnError false
+        }
+
+
+
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        doNotStrip "*/armeabi/libYTCommon.so"
+        doNotStrip "*/armeabi-v7a/libYTCommon.so"
+        doNotStrip "*/x86/libYTCommon.so"
+        doNotStrip "*/arm64-v8a/libYTCommon.so"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    //自动提取编译生成的aar文件，重命名，最后自动复制到appmodule下的libs目录，方便调试验证。
+    libraryVariants.all { variant ->
+//        if (variant.buildType.name == 'release') {
+//            variant.assembleProvider.get().doLast {
+//                variant.outputs.each { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('release.aar')) {
+//                        def fileName = "tx${project.name}-release-${android.defaultConfig.versionName}-${releaseTime()}"
+//                        def libPath = "../app/libs"
+//
+//                        //直接复制到App的libs目录下，方便调试
+//
+//                        copy {
+//                            from outputFile
+//                            into libPath
+//                            rename { fileName + ".aar" }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+    }
+
+
+
+}
+
+dependencies {
+//    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
+    testImplementation 'junit:junit:4.12'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    api 'com.android.support:appcompat-v7:28.0.0'
+    api 'com.android.support:recyclerview-v7:28.0.0'
+
+    //TRTC SDK
+    api 'com.tencent.teduboard:TEduBoardSdk:2.5.2.48'
+    api 'com.tencent.liteav:LiteAVSDK_TRTC:8.3.9882'
+    //IMSDK
+    api 'com.tencent.imsdk:imsdk:4.6.56'
+    //wechat share
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
+
+
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    api "com.squareup.retrofit2:converter-gson:2.4.0"
+}
+
+repositories {
+    mavenCentral()
+}
+
+publish {
+    repoName = 'videosdk'
+    userOrg = 'pivos'
+    groupId = 'com.tencent.cloud'
+    artifactId = 'insurance-video'
+    publishVersion = '1.2.0.5'
+    desc = 'tx-insurance-video'
+    website = ''
+}
