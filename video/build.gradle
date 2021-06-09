@@ -108,7 +108,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
     //TRTC SDK
-    api 'com.tencent.teduboard:TEduBoardSdk:2.5.2.48'
+    api ('com.tencent.teduboard:TEduBoardSdk:2.5.2.48'){
+        exclude group: 'com.tencent.tbs.tbssdk', module: 'sdk'
+    }
     api 'com.tencent.liteav:LiteAVSDK_TRTC:8.3.9882'
     //IMSDK
     api 'com.tencent.imsdk:imsdk:4.6.56'
