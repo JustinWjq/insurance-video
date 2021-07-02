@@ -49,13 +49,13 @@
                     android:scheme="txt" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.txt.trtc.wxapi.WXEntryActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:taskAffinity="net.sourceforge.simcpux"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+<!--        <activity-->
+<!--            android:name="com.txt.trtc.wxapi.WXEntryActivity"-->
+<!--            android:exported="true"-->
+<!--            android:label="@string/app_name"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:taskAffinity="net.sourceforge.simcpux"-->
+<!--            android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
     </application>
 
 </manifest>

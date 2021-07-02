@@ -119,8 +119,8 @@
 
                 <Button
                     android:id="@+id/trtc_btn_mute_video"
-                    android:layout_width="@dimen/icon_width"
-                    android:layout_height="@dimen/icon_width"
+                    android:layout_width="@dimen/tx_icon_width"
+                    android:layout_height="@dimen/tx_icon_width"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/tx_remote_video_enable" />
             </LinearLayout>
@@ -133,8 +133,8 @@
 
                 <Button
                     android:id="@+id/trtc_btn_mute_audio"
-                    android:layout_width="@dimen/icon_width"
-                    android:layout_height="@dimen/icon_width"
+                    android:layout_width="@dimen/tx_icon_width"
+                    android:layout_height="@dimen/tx_icon_width"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/tx_remote_audio_enable" />
             </LinearLayout>
@@ -147,8 +147,8 @@
 
                 <Button
                     android:id="@+id/trtc_btn_fill"
-                    android:layout_width="@dimen/icon_width"
-                    android:layout_height="@dimen/icon_width"
+                    android:layout_width="@dimen/tx_icon_width"
+                    android:layout_height="@dimen/tx_icon_width"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/tx_fill_scale" />
             </LinearLayout>
@@ -161,8 +161,8 @@
 
                 <ToggleButton
                     android:id="@+id/mute_in_speaker"
-                    android:layout_width="@dimen/icon_width"
-                    android:layout_height="@dimen/icon_width"
+                    android:layout_width="@dimen/tx_icon_width"
+                    android:layout_height="@dimen/tx_icon_width"
                     android:layout_gravity="center_horizontal"
                     android:textOff="播声音"
                     android:textOn="静音"

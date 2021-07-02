@@ -64,23 +64,32 @@ public class ExpandableItemAdapter(var data: ArrayList<MultiItemEntity>) :
                 helper.setText(R.id.tx_tv_file_name, name)
                 try {
                     val split = name.split("\\.".toRegex()).toTypedArray()
-                    val suffix = split[1]
-                    TxLogUtils.i("suffix--$suffix")
-                    if (suffix == "ppt" || suffix == "pptx") {
-                        helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_ppt)
-                    } else if (suffix == "pdf") {
-                        helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_pdf)
-                    } else if (suffix == "word" || suffix == "docx") {
-                        helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_word)
-                    } else {
-                        val view = helper.getView<ImageView>(R.id.tx_iv_file_pic)
+                    if (split.isNotEmpty()){
+                        val suffix = split[1]
+                        TxLogUtils.i("suffix--$suffix")
+                        if (suffix == "ppt" || suffix == "pptx") {
+                            helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_ppt)
+                        } else if (suffix == "pdf") {
+                            helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_pdf)
+                        } else if (suffix == "word" || suffix == "docx") {
+                            helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_word)
+                        }else if (suffix == "html" ) {
+                            helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_h5)
+                        } else {
+                            val view = helper.getView<ImageView>(R.id.tx_iv_file_pic)
 
-                        TxGlide.with(view.context).load(listBean.url)
-                            .placeholder(R.drawable.tx_pic_default)
-                            .into(view)
+                            TxGlide.with(view.context).load(listBean.url)
+                                .placeholder(R.drawable.tx_pic_default)
+                                .into(view)
 
+                        }
+                    }else{
+                        TxLogUtils.i("suffix--")
+                        helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_h5)
                     }
+
                 } catch (e: Exception) {
+                    helper.setImageResource(R.id.tx_iv_file_pic, R.drawable.tx_icon_h5)
                 }
 
                 if (null != listBean.isUploading) {

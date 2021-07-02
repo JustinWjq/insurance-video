@@ -163,6 +163,75 @@ public class SystemHttpRequest {
         HttpRequestClient.getIntance().post(IP + "/api/serviceRoom/startAgent", jsonObject.toString(), "", callback);
     }
 
+
+    public void startshareWeb(String webId,String serviceId,String fromUserId,String toUserId, HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("webId", webId);
+            jsonObject.put("serviceId", serviceId);
+            jsonObject.put("fromUserId", fromUserId);
+            jsonObject.put("toUserId", toUserId);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().post(IP + "/api/shareWeb/start", jsonObject.toString(), "", callback);
+
+    }
+
+
+    public void stopshareWeb(String userId,String webId,String serviceId,HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("userId", userId);
+            jsonObject.put("webId", webId);
+            jsonObject.put("serviceId", serviceId);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().post(IP + "/api/shareWeb/stop", jsonObject.toString(), "", callback);
+
+    }
+
+    public void addShareWebUrl(String agent,String name,String url,HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("agent", agent);
+            jsonObject.put("name", name);
+            jsonObject.put("url", url);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().post(IP + "/api/shareWeb", jsonObject.toString(), "", callback);
+
+    }
+
+
+    public void deleteShareWebUrl(String webId,String agentId,HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("webId", webId);
+            jsonObject.put("agentId", agentId);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().delete(IP + "/api/shareWeb", jsonObject.toString(), "", callback);
+
+    }
+
+
+    //同屏逻辑
+    public void getSameScreenWebUrl(String agent, HttpRequestClient.RequestHttpCallBack callback) {
+        StringBuffer stringBuffer = new StringBuffer(IP+ "/api/shareWebs/list?");
+        stringBuffer.append("agent=").append(agent);
+        stringBuffer.append("&pageSize=100");
+        HttpRequestClient.getIntance().get(stringBuffer.toString(), callback);
+    }
+
+
     public void createRoom(String loginName, String orgAccount, String sign, HttpRequestClient.RequestHttpCallBack callback) {
         createRoom(loginName, orgAccount, sign, null, null, callback);
     }

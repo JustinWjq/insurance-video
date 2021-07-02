@@ -138,6 +138,41 @@ public class VideoContract {
         fun setScreenStatusFail(screenStatus: Boolean)
 
         fun onPermissionDenied()
+
+        fun showPersonDialog(
+            webId: String?,
+            url: String,
+            name: String,
+            isSameScreen: Boolean,
+            list: JSONArray,
+            fileName: String
+        )
+
+        fun showSelectChannelDialog(
+            list: JSONArray,
+            webId: String,
+            url: String,
+            name: String,
+            fileName:String
+        )
+
+        fun showWebDialog(
+            url: String,
+            userId: String,
+            webId: String,
+            fromAgent: Boolean = true,
+            fileName: String,
+            toUserId: String,
+            fromUserId: String
+        )
+
+        fun updateWebUrlAdapter(json :String)
+
+        fun uploadWebUrlSuccess()
+
+        fun uploadWebUrlFail(msg : String)
+
+        fun hideWebDialog()
     }
 
 
@@ -292,5 +327,24 @@ public class VideoContract {
 
         fun getShareUserId():String
 
+        fun startShareWeb(
+            webId: String,
+            serviceId: String,
+            fromUserId: String,
+            toUserId: String,
+            fileName: String
+        )
+
+        fun stopShareWeb(userId:String,webId:String,serviceId:String,isSelf:Boolean=true)
+
+        fun getRoomInfo(id: String?, url: String, name: String,fileName:String)
+
+        fun addShareUrl(id: String?, name: String, url: String)
+
+        fun deleteScreenFile(webId: String?)
+
+        fun setShareWebId(webId: String?)
+
+        fun getShareWebId() :String
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/tx_shape_round_15">
+    <TextView
+        android:id="@+id/tv_pushshare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/tx_black"
+        android:gravity="center"
+        android:padding="@dimen/tx_dp_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_endshare"
+        tools:text="推送(产品名称)"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_endshare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/tx_black"
+        android:gravity="center"
+        android:padding="@dimen/tx_dp_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pushshare"
+        app:layout_constraintBottom_toTopOf="@+id/atv_exit"
+        tools:text="推送(产品名称)"
+        />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/atv_exit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="取消"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/tx_08101d"
+        android:background="@drawable/tx_shape_round_5"
+        app:layout_constraintTop_toBottomOf="@+id/tv_endshare"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>

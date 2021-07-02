@@ -8,5 +8,6 @@ package com.txt.video.common.callback
 open interface onShareWhiteBroadDialogListener {
     fun onCheckFileWhiteBroad()
     fun onCheckBroad()
-    fun onEnd()
+    fun onEnd(){}
+    fun onShareWhiteBroadEnd(){}
 }

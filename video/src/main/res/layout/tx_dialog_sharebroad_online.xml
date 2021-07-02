@@ -38,7 +38,7 @@
             android:gravity="center"
             android:textSize="20dp"
             android:textColor="@color/tx_08101d"
-            style="@style/tx_style_click_bottom"
+            style="@style/tx_style_click"
             />
         <View
             android:id="@+id/tx_divider"
@@ -50,12 +50,11 @@
             android:id="@+id/atv_endshare"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="结束共享"
+            android:text="共享产品链接"
             android:gravity="center"
             android:textSize="20dp"
             android:textColor="@color/tx_08101d"
-            android:visibility="gone"
-            tools:visibility="visible"
+            style="@style/tx_style_click_bottom"
             />
 
 

@@ -77,19 +77,6 @@ public class ShareWhiteBroadDialog extends Dialog implements View.OnClickListene
 
     }
 
-    public void showExitBroad(boolean isShare){
-        if (isShare) {
-            txDivider.setVisibility(View.VISIBLE);
-            endshare.setVisibility(View.VISIBLE);
-        }else{
-            txDivider.setVisibility(View.GONE);
-            endshare.setVisibility(View.GONE);
-        }
-
-
-    }
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -101,9 +88,10 @@ public class ShareWhiteBroadDialog extends Dialog implements View.OnClickListene
                 mListener.onCheckBroad();
                 dismiss();
             } else if (id == R.id.atv_endshare) {
-                mListener.onEnd();
+                mListener.onShareWhiteBroadEnd();
                 dismiss();
             }else if (id == R.id.atv_exit) {
+                mListener.onEnd();
                 dismiss();
             }
         }

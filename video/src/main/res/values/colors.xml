@@ -5,6 +5,7 @@
     <color name="tx_colorAccent">#03DAC5</color>
 
     <color name="tx_white">#ffffff</color>
+    <color name="tx_transparent">#00000000</color>
     <color name="tx_black_80">#80000000</color>
     <color name="tx_black">#000000</color>
     <color name="tx_color_80_black">#80000000</color>

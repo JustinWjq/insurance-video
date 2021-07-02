@@ -36,6 +36,40 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="tx_BaseDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert"><!-- @android:style/Theme.Dialog -->
+        <!-- 无边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 浮在 Activity 之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@color/tx_transparent</item>
+        <!-- 遮盖层 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 动画效果 -->
+        <item name="android:windowEnterAnimation">@anim/tx_scale_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_scale_out_window</item>
+        <!-- Base.Theme.AppCompat.Light.Dialog.Alert 特有的属性，用于指定默认宽度，这里需要禁用 -->
+        <item name="android:windowMinWidthMajor">0dp</item>
+        <item name="android:windowMinWidthMinor">0dp</item>
+        <!-- 解决 ActionBar 占位导致 Dialog 无法全屏显示的问题 -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- ActionMode 覆盖 Actionbar，不顶下来 -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 不感知敏感的切换 -->
+        <!--<item name="android:configChanges">orientation|screenSize|keyboardHidden</item>-->
+        <!-- 默认隐藏输入法 -->
+        <!--<item name="android:windowSoftInputMode">stateHidden</item>-->
+        <!-- Dialog 全屏显示 -->
+        <!--<item name="android:windowFullscreen">true</item>-->
+    </style>
+
+
     <style name="tx_activityTranslucent">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -86,6 +120,40 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <!-- 缩放动画 -->
+    <style name="tx_ScaleAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_scale_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_scale_out_window</item>
+    </style>
 
+    <!-- ios 动画 -->
+    <style name="tx_IOSAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_ios_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_ios_out_window</item>
+    </style>
+
+    <!-- 顶部弹出动画 -->
+    <style name="tx_TopAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_top_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_top_out_window</item>
+    </style>
+
+    <!-- 底部弹出动画 -->
+    <style name="tx_BottomAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_bottom_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_bottom_out_window</item>
+    </style>
+
+    <!-- 左边弹出动画 -->
+    <style name="tx_LeftAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_left_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_left_out_window</item>
+    </style>
+
+    <!-- 右边弹出动画 -->
+    <style name="tx_RightAnimStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/tx_right_in_window</item>
+        <item name="android:windowExitAnimation">@anim/tx_right_out_window</item>
+    </style>
 
 </resources>
