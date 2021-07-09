@@ -199,18 +199,13 @@ public class TxBaseDialog extends Dialog implements
     @Override
     public void dismiss() {
         removeCallbacks();
-        View focusView = getCurrentFocus();
-        if (focusView != null) {
-            getSystemService(InputMethodManager.class).hideSoftInputFromWindow(focusView.getWindowToken(), 0);
-        }
+//        View focusView = getCurrentFocus();
+//        if (focusView != null) {
+//            getSystemService(InputMethodManager.class).hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+//        }
         super.dismiss();
     }
 
-//    @NonNull
-//    @Override
-//    public Lifecycle getLifecycle() {
-//        return mLifecycle;
-//    }
 
     /**
      * 设置一个显示监听器
