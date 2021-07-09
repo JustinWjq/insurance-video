@@ -3,6 +3,7 @@ package com.txt.video.common.dialog.common;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -49,7 +50,7 @@ import java.util.List;
 /**
  *    desc   : Dialog 基类
  */
-public class TxBaseDialog extends AppCompatDialog implements
+public class TxBaseDialog extends Dialog implements
         ActivityAction, ResourcesAction, HandlerAction, ClickAction, AnimAction, KeyboardAction,
         DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
