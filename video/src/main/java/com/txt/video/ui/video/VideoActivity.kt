@@ -2315,7 +2315,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             mPresenter!!.startShareWeb(
                                 webId!!,
                                 mPresenter!!.getServiceId(),
-                                TXSdk.getInstance().agent,
+                                mPresenter!!.getSelfUserId(),
                                 userId!!,
                                 name
                             )

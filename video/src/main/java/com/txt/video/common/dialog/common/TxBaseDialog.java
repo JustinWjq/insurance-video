@@ -3,9 +3,6 @@ package com.txt.video.common.dialog.common;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -52,12 +49,12 @@ import java.util.List;
 /**
  *    desc   : Dialog 基类
  */
-public class TxBaseDialog extends AppCompatDialog implements LifecycleOwner,
+public class TxBaseDialog extends AppCompatDialog implements
         ActivityAction, ResourcesAction, HandlerAction, ClickAction, AnimAction, KeyboardAction,
         DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
     private final ListenersWrapper<TxBaseDialog> mListeners = new ListenersWrapper<>(this);
-    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
+//    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
 
     private List<OnShowListener> mShowListeners;
     private List<OnCancelListener> mCancelListeners;
@@ -208,11 +205,11 @@ public class TxBaseDialog extends AppCompatDialog implements LifecycleOwner,
         super.dismiss();
     }
 
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return mLifecycle;
-    }
+//    @NonNull
+//    @Override
+//    public Lifecycle getLifecycle() {
+//        return mLifecycle;
+//    }
 
     /**
      * 设置一个显示监听器
@@ -376,7 +373,7 @@ public class TxBaseDialog extends AppCompatDialog implements LifecycleOwner,
      */
     @Override
     public void onShow(DialogInterface dialog) {
-        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
 
         if (mShowListeners == null) {
             return;
@@ -406,7 +403,7 @@ public class TxBaseDialog extends AppCompatDialog implements LifecycleOwner,
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
 
         if (mDismissListeners == null) {
             return;
@@ -420,19 +417,19 @@ public class TxBaseDialog extends AppCompatDialog implements LifecycleOwner,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
+//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
+//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
     }
 
     @SuppressWarnings("unchecked")

@@ -107,20 +107,20 @@ public class SelectWebUrlDialog extends Dialog {
         }
 
         if (null == isNoPublicItem.getSubItems() || isNoPublicItem.getSubItems().size() == 0) {
-            isNoPublicItem.setTitle("个人素材库 (0)");
+            isNoPublicItem.setTitle("个人产品库 (0)");
         } else {
-            isNoPublicItem.setTitle("个人素材库 (" + isNoPublicItem.getSubItems().size() + ")");
+            isNoPublicItem.setTitle("个人产品库 (" + isNoPublicItem.getSubItems().size() + ")");
         }
 
         if (null == isPublicItem.getSubItems() || isPublicItem.getSubItems().size() == 0) {
-            isPublicItem.setTitle("公共素材库 (0)");
+            isPublicItem.setTitle("公共产品库 (0)");
         } else {
-            isPublicItem.setTitle("公共素材库 (" + isPublicItem.getSubItems().size() + ")");
+            isPublicItem.setTitle("公共产品库 (" + isPublicItem.getSubItems().size() + ")");
         }
         if (null == isIdpathItem.getSubItems() || isIdpathItem.getSubItems().size() == 0) {
-            isIdpathItem.setTitle("职场素材库 (0)");
+            isIdpathItem.setTitle("职场产品库 (0)");
         } else {
-            isIdpathItem.setTitle("职场素材库 (" + isIdpathItem.getSubItems().size() + ")");
+            isIdpathItem.setTitle("职场产品库 (" + isIdpathItem.getSubItems().size() + ")");
         }
 
         list.add(isNoPublicItem);
