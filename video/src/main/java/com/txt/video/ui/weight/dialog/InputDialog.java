@@ -26,11 +26,9 @@ public final class InputDialog {
 
         private OnListener mListener;
         private final EditText mInputView,mInputView1;
-
         public Builder(Context context) {
             super(context);
             setCustomView(R.layout.tx_dialog_input);
-
             mInputView = findViewById(R.id.tv_input_message);
             mInputView1 = findViewById(R.id.tv_input_message1);
             mInputView.setOnEditorActionListener(this);
@@ -70,7 +68,7 @@ public final class InputDialog {
          */
         @Override
         public void onShow(TxBaseDialog dialog) {
-            postDelayed(() -> showKeyboard(mInputView), 500);
+          //  postDelayed(() -> showKeyboard(mContext), 500);
         }
 
         @Override
