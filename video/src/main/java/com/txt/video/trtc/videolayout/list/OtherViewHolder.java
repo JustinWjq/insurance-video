@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 
 import com.txt.video.R;
+import com.txt.video.TXSdk;
+import com.txt.video.common.glide.TxGlide;
 import com.txt.video.net.utils.TxLogUtils;
 
 /**
@@ -129,6 +131,16 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         }
 
     }
+    public void showHost(boolean isShow,String iconPath){
+
+        if (isShow) {
+            mIvIconHost.setVisibility(View.VISIBLE);
+            TxGlide.with(TXSdk.getInstance().application).load(iconPath).into(mIvIconHost);
+        }else{
+            mIvIconHost.setVisibility(View.GONE);
+        }
+
+    }
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
         if (isShow) {
@@ -146,6 +158,11 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
 
     public void changeUserName(MemberEntity model){
         mUserNameTv.setText(model.getUserName());
+        if (!model.getUserRoleIconPath().isEmpty()) {
+            showHost(true,model.getUserRoleIconPath());
+        }else{
+            showHost(false,model.getUserRoleIconPath());
+        }
     }
 
     public void bind(final MemberEntity model){
@@ -165,7 +182,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         }
         showVolume(model.isShowAudioEvaluation());
         showNoVideo(!model.isVideoAvailable(), true);
-        showHost(model.isHost());
+//        showHost(model.isHost());
     }
     private MemberListAdapter.ListCallback mListCallback;
 
@@ -224,7 +241,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
-        showHost(model.isHost());
+//        showHost(model.isHost());
     }
 
     private void initView(final View itemView) {

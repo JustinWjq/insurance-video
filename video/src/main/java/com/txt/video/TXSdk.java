@@ -65,6 +65,7 @@ public class TXSdk extends TXSDKApi {
         return agent;
     }
 
+    //后台处理过的username
     @Override
     public void setAgent(String agent) {
         this.agent = agent;

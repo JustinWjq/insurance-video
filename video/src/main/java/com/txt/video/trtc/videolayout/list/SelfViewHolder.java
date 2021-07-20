@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 
 import com.txt.video.R;
+import com.txt.video.TXSdk;
+import com.txt.video.common.glide.TxGlide;
 
 /**
  * Created by JustinWjq
@@ -114,6 +116,17 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    public void showHost(boolean isShow,String iconPath){
+
+        if (isShow) {
+            mIvIconHost.setVisibility(View.VISIBLE);
+            TxGlide.with(TXSdk.getInstance().application).load(iconPath).into(mIvIconHost);
+        }else{
+            mIvIconHost.setVisibility(View.GONE);
+        }
+
+    }
+
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
 
@@ -144,6 +157,12 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
     public void changeUserName(MemberEntity model){
         mUserNameTv.setText(model.getUserName());
+        if (!model.getUserRoleIconPath().isEmpty()) {
+            showHost(true,model.getUserRoleIconPath());
+        }else{
+            showHost(false,model.getUserRoleIconPath());
+        }
+
     }
 
     public void bind(final MemberEntity model,
@@ -183,7 +202,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                 listener.onItemClick(getLayoutPosition());
             }
         });
-        showHost(model.isHost());
+//        showHost(model.isHost());
     }
 
     private void initView(final View itemView) {

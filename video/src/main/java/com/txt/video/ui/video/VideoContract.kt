@@ -72,7 +72,7 @@ public class VideoContract {
 
         fun showBroadFileRv(isShow:Boolean)
 
-        fun changeBigScreenViewName(text: String, isOwer: Boolean)
+        fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String)
 
         fun changeBigScreenViewVoice(volume :Int)
 

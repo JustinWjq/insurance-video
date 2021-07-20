@@ -10,6 +10,24 @@ public class MemberEntity {
     private String userId;
     private String userName;
     private String userAvatar;
+    private String userRole = "";
+    private String userRoleIconPath = "";
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getUserRoleIconPath() {
+        return userRoleIconPath;
+    }
+
+    public void setUserRoleIconPath(String userRoleIconPath) {
+        this.userRoleIconPath = userRoleIconPath;
+    }
 
     public boolean isHost() {
         return isHost;

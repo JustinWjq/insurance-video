@@ -2,6 +2,7 @@ package com.txt.video.ui.weight.dialog;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -25,7 +26,8 @@ public final class InputDialog {
             TextView.OnEditorActionListener {
 
         private OnListener mListener;
-        private final EditText mInputView,mInputView1;
+        private final EditText mInputView, mInputView1;
+
         public Builder(Context context) {
             super(context);
             setCustomView(R.layout.tx_dialog_input);
@@ -40,6 +42,7 @@ public final class InputDialog {
         public Builder setHint(@StringRes int id) {
             return setHint(getString(id));
         }
+
         public Builder setHint(CharSequence text) {
             mInputView.setHint(text);
             return this;
@@ -48,6 +51,7 @@ public final class InputDialog {
         public Builder setContent(@StringRes int id) {
             return setContent(getString(id));
         }
+
         public Builder setContent(CharSequence text) {
             mInputView.setText(text);
             int index = mInputView.getText().toString().length();
@@ -68,16 +72,23 @@ public final class InputDialog {
          */
         @Override
         public void onShow(TxBaseDialog dialog) {
-          //  postDelayed(() -> showKeyboard(mContext), 500);
+            //  postDelayed(() -> showKeyboard(mContext), 500);
         }
 
         @Override
         public void onClick(View view) {
             int viewId = view.getId();
             if (viewId == R.id.tv_ui_confirm) {
-                autoDismiss();
+
                 if (mListener != null) {
-                    mListener.onConfirm(getDialog(), mInputView.getText().toString(),mInputView1.getText().toString());
+                    String mInputViewStr = mInputView.getText().toString();
+                    String mInputView1Str = mInputView1.getText().toString();
+                    if (TextUtils.isEmpty(mInputViewStr) || TextUtils.isEmpty(mInputView1Str)) {
+                    } else {
+                        autoDismiss();
+                    }
+                    mListener.onConfirm(getDialog(), mInputView.getText().toString(), mInputView1.getText().toString());
+
                 }
             } else if (viewId == R.id.tv_ui_cancel) {
                 autoDismiss();
@@ -106,11 +117,12 @@ public final class InputDialog {
         /**
          * 点击确定时回调
          */
-        void onConfirm(TxBaseDialog dialog, String name,String url);
+        void onConfirm(TxBaseDialog dialog, String name, String url);
 
         /**
          * 点击取消时回调
          */
-        default void onCancel(TxBaseDialog dialog) {}
+        default void onCancel(TxBaseDialog dialog) {
+        }
     }
 }

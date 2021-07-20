@@ -67,7 +67,6 @@
             android:layout_width="15dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/tx_icon_host"
             android:visibility="gone"
             />
 

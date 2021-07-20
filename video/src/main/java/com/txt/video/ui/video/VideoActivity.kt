@@ -36,6 +36,7 @@ import com.txt.video.base.constants.VideoCode
 import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
 import com.txt.video.common.floatview.FloatingView
+import com.txt.video.common.glide.TxGlide
 import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
@@ -507,7 +508,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             meetingVideoView?.playVideoView,
                             false
                         )
-                    changeBigScreenViewName(bigMeetingEntity?.userName!!, bigMeetingEntity!!.isHost)
+                    changeBigScreenViewName(
+                        bigMeetingEntity?.userName!!,
+                        bigMeetingEntity!!.userRole,
+                        bigMeetingEntity!!.userRoleIconPath
+                    )
                 }
             }
 
@@ -1071,7 +1076,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         runOnUiThread {
             mRemoteUserListView?.notifyDataSetChanged()
             if (bigScreen) {
-                changeBigScreenViewName(entity!!.userName, entity.isHost)
+                changeBigScreenViewName(
+                    entity!!.userName,
+                    entity.userRole,
+                    entity.userRoleIconPath
+                )
             } else {
                 mMemberListAdapter!!.notifyItemChanged(
                     mPresenter?.getMemberEntityList()!!.indexOf(
@@ -1941,6 +1950,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         val mCuccentmemberIsVideoAvailable = mCuccentmemberEntity?.isVideoAvailable
         val mCuccentmemberIsShowAudioEvaluation = mCuccentmemberEntity?.isShowAudioEvaluation
         val mCuccentmemberIsHost = mCuccentmemberEntity?.isHost
+        val mCuccentmemberUserRole = mCuccentmemberEntity?.userRole
+        val mCuccentmemberUserRoleIconPath = mCuccentmemberEntity?.userRoleIconPath
 
         //大屏幕把当前的video分开
         if (bigMeetingEntity == null) {
@@ -1955,6 +1966,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             val mBigMeetingIsVideoAvailable = bigMeetingEntity?.isVideoAvailable
             val mBigMeetingIsShowAudioEvaluation = bigMeetingEntity?.isShowAudioEvaluation
             val mBigMeetingisHost = bigMeetingEntity?.isHost
+            val mBigMeetingUserRole = bigMeetingEntity?.userRole
+            val mBigMeetingUserRoleIconPath = bigMeetingEntity?.userRoleIconPath
 
             bigscreen?.removeView(bigmeetingVideoView)
 
@@ -1977,6 +1990,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 isAudioAvailable = mCuccentmemberIsAudioAvailable!!
                 isShowAudioEvaluation = mCuccentmemberIsShowAudioEvaluation!!
                 isHost = mCuccentmemberIsHost!!
+                userRole = mCuccentmemberUserRole!!
+                userRoleIconPath = mCuccentmemberUserRoleIconPath!!
             }
             mCuccentmemberEntity?.apply {
                 userId = mBigMeetingUserId
@@ -1990,6 +2005,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 isAudioAvailable = mBigMeetingIsAudioAvailable!!
                 isShowAudioEvaluation = mBigMeetingIsShowAudioEvaluation!!
                 isHost = mBigMeetingisHost!!
+                userRole = mBigMeetingUserRole!!
+                userRoleIconPath = mBigMeetingUserRoleIconPath!!
             }
             mCuccentmemberEntity?.meetingVideoView?.refreshParent()
             TxLogUtils.i(
@@ -2037,6 +2054,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             val isShowAudioEvaluation = memberEntity.isShowAudioEvaluation
             val memberIsHost = memberEntity.isHost
+            val mUserRole = memberEntity.userRole
+            val mUserRoleIconPath = memberEntity.userRoleIconPath
             if (bigMeetingEntity == null) {
                 bigMeetingEntity = MemberEntity()
             }
@@ -2046,6 +2065,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             bigMeetingEntity?.isVideoAvailable = isVideoAvailable
             bigMeetingEntity?.isShowAudioEvaluation = isShowAudioEvaluation
             bigMeetingEntity?.isHost = memberIsHost
+            bigMeetingEntity?.userRole = mUserRole
+            bigMeetingEntity?.userRoleIconPath = mUserRoleIconPath
             changeBigVideo(bigMeetingEntity!!)
             meetingVideoView.detach()
             meetingVideoView.addViewToViewGroup(bigscreen)
@@ -2072,7 +2093,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             trtc_fl_no_video.visibility = View.VISIBLE
             bigscreen?.visibility = View.GONE
         }
-        changeBigScreenViewName(bigMeetingEntity.userName, bigMeetingEntity.isHost)
+        changeBigScreenViewName(bigMeetingEntity.userName, bigMeetingEntity.userRole,bigMeetingEntity.userRoleIconPath)
         changeBigScreenViewVoice(50)
     }
 
@@ -2112,14 +2133,16 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
     }
 
-    override fun changeBigScreenViewName(text: String, isOwer: Boolean) {
+    override fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String) {
         rl_bigscreen_name.visibility = View.VISIBLE
         bigscreen_trtc_tv_content.text = text
-        trtc_icon_host.visibility = if (isOwer) {
+        trtc_icon_host.visibility = if (userRole=="owner" || userRole=="assistant") {
+            TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath).into(trtc_icon_host)
             View.VISIBLE
-        } else {
+        }else{
             View.GONE
         }
+
         changeBigScreenViewVoice(10)
     }
 
@@ -2307,7 +2330,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     val memberEntity = memberEntityList.get(i)
                     val userId = memberEntity.userId
                     TxLogUtils.i("memberEntityList" + userId)
-                    if (userId == TXSdk.getInstance().agent) {
+                    if (userId ==  mPresenter!!.getSelfUserId()) {
                         //本人不添加
                     } else {
                         if (isSameScreen) {
@@ -2524,7 +2547,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                                 put("toUserId", toUserId)
                             }.toString(), "3")
                             mPresenter?.stopShareWeb(
-                                TXSdk.getInstance().agent,
+                                mPresenter!!.getSelfUserId(),
                                 webId,
                                 mPresenter!!.getServiceId()
                             )
