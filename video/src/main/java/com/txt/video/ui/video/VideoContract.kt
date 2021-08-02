@@ -173,6 +173,8 @@ public class VideoContract {
         fun uploadWebUrlFail(msg : String)
 
         fun hideWebDialog()
+
+        fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String)
     }
 
 
@@ -346,5 +348,13 @@ public class VideoContract {
         fun setShareWebId(webId: String?)
 
         fun getShareWebId() :String
+
+        fun getPushWebUrl(
+            userId: String,
+            webId: String,
+            serviceId: String,
+            url: String,
+            name: String
+        )
     }
 }

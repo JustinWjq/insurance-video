@@ -2452,6 +2452,15 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         personDialog?.setText(name)
     }
 
+    override fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String) {
+        if (!clientUrl.isEmpty()) {
+            mPresenter!!.getRoomInfo(webId, clientUrl, name, name)
+        }else{
+            ToastUtils.showShort("返回的clientUrl为空")
+        }
+
+    }
+
     var selectWebUrlDialog: SelectWebUrlDialog? = null
     fun showSelectWebUrlDialog() {
 
@@ -2477,7 +2486,15 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             override fun onItemClick(webId: String?, url: String, name: String) {
                 //判断房间的人数
                 mPresenter!!.setShareWebId(webId)
-                mPresenter!!.getRoomInfo(webId, url, name, name)
+                //需要从后台拿到分享url
+                mPresenter!!.getPushWebUrl(
+                    mPresenter!!.getSelfUserId(),
+                    webId!!,
+                    mPresenter!!.getServiceId(),
+                    url,
+                    name
+                   )
+
             }
 
             override fun onConfirm() {

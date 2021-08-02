@@ -5,14 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tx_video_bg"
+    android:keepScreenOn="true"
    >
 
-<!--    <android.support.constraint.Group-->
-<!--        android:id="@+id/group_bigscreen"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:constraint_referenced_ids="bigscreen,rl_bigscreen"-->
-<!--        />-->
 
     <LinearLayout
         android:id="@+id/ll_title"

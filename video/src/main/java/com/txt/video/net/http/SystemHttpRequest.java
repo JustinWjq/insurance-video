@@ -180,6 +180,20 @@ public class SystemHttpRequest {
     }
 
 
+    public void pushshareWeb(String webId,String serviceId,String fromUserId,HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("webId", webId);
+            jsonObject.put("serviceId", serviceId);
+            jsonObject.put("userId", fromUserId);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().post(IP + "/api/shareWeb/push", jsonObject.toString(), "", callback);
+
+    }
+
     public void stopshareWeb(String userId,String webId,String serviceId,HttpRequestClient.RequestHttpCallBack callback) {
 
         JSONObject jsonObject = new JSONObject();
