@@ -11,13 +11,13 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.view.ViewStub
-import android.view.WindowManager
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.TextView
 import com.google.gson.Gson
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
@@ -37,6 +37,7 @@ import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
 import com.txt.video.common.floatview.FloatingView
 import com.txt.video.common.glide.TxGlide
+import com.txt.video.common.utils.CheckDoubleClickListener
 import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
@@ -53,6 +54,8 @@ import com.txt.video.ui.boardpage.BoardViewActivity
 import com.txt.video.ui.video.remote.RemoteUserListView
 import com.txt.video.ui.weight.PicQuickAdapter
 import com.txt.video.ui.weight.dialog.*
+import com.txt.video.ui.weight.easyfloat.EasyFloat
+import com.txt.video.ui.weight.easyfloat.interfaces.OnInvokeView
 import com.txt.video.ui.weight.view.ScreenView
 import kotlinx.android.synthetic.main.tx_activity_video.*
 import org.json.JSONArray
@@ -433,6 +436,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mPresenter?.startRecord()
             // 发起云端混流
             mPresenter?.getTRTCRemoteUserManager()!!.updateCloudMixtureParams()
+            showActivityFloat()
         } else {
             TxLogUtils.i("txsdk---onEnterRoom-----耗时$elapsed 毫秒")
             ToastUtils.showShort(R.string.tx_joinroom_error)
@@ -1297,6 +1301,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun onDestroy() {
+        EasyFloat.hide(this)
         paintColorPostion = 0
         paintSizeIntPostion = 1
         textColorIntPostion = 0
@@ -2675,4 +2680,37 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         selectWebUrlDialog?.request()
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun showActivityFloat() {
+        Handler().postDelayed({
+            EasyFloat.with(this)
+                .setGravity(Gravity.BOTTOM or Gravity.RIGHT, -30, -300)
+                .setLayout(R.layout.tx_float_custom, OnInvokeView {
+                    it.findViewById<TextView>(R.id.tx_float).setOnClickListener(CheckDoubleClickListener(){
+                        showSmartDialog()
+                    })
+
+                })
+                .registerCallback {
+
+                }
+                .show()
+        },200)
+
+    }
+
+    var mSmartWebDialog: SmartWebDialog? = null
+    private fun showSmartDialog(){
+        if (mSmartWebDialog == null) {
+            mSmartWebDialog =
+                SmartWebDialog(this)
+        }
+        mSmartWebDialog?.show()
+        mSmartWebDialog?.request("https://ics.webank.com/s/serviceHall/?app_id=W4054396&user_id=12345675&nonce=5wpnjcQ5UUedWDacb1aKcBhQIl9jFsd4&sign=93fb1153abafba8f847259b92211eb09fdb23e93&version=1.0.0#/index",
+            "智慧锦囊")
+    }
+
+    private fun hideSmartWebDialog(){
+        mSmartWebDialog?.dismiss()
+    }
 }

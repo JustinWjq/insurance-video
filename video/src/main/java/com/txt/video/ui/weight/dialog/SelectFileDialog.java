@@ -109,6 +109,10 @@ public class SelectFileDialog extends Dialog {
 
         }
 
+        if (noNeedStartTimerCount ==mDatas.size()){
+            isNeedStartTimer = false;
+        }
+
         if (null == isNoPublicItem.getSubItems() || isNoPublicItem.getSubItems().size() == 0) {
             isNoPublicItem.setTitle("个人素材库 (0)");
         } else {
@@ -132,7 +136,12 @@ public class SelectFileDialog extends Dialog {
 
         baseQuickAdapter.setNewData(list);
         baseQuickAdapter.expand(0);
-        startTimer();
+        if (!isNeedStartTimer) {
+            stopTimer();
+        }else{
+            startTimer();
+        }
+
     }
 
     private String id;
@@ -220,7 +229,7 @@ public class SelectFileDialog extends Dialog {
 
                 if (timer == null) {
                     TxLogUtils.i("isNeedStartTimer", "timer.start()");
-                    timer = new CountDownTimer(60000, 5000) {
+                    timer = new CountDownTimer(60000, 2000) {
 
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -279,6 +288,7 @@ public class SelectFileDialog extends Dialog {
                             mContext.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+
                                     Gson gson = new Gson();
                                     FileBean fileBean = gson.fromJson(json, FileBean.class);
 
