@@ -2,13 +2,12 @@ package com.txt.video.ui.weight.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Service;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Looper;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -22,14 +21,11 @@ import com.txt.video.common.callback.onDialogListenerCallBack;
 import com.txt.video.common.utils.ToastUtils;
 import com.txt.video.net.bean.FileBean;
 import com.txt.video.net.bean.LevelItem1;
-import com.txt.video.net.bean.WebUrlBean;
-import com.txt.video.net.constant.Constant;
 import com.txt.video.net.http.HttpRequestClient;
 import com.txt.video.net.http.SystemHttpRequest;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.videolayout.Utils;
 import com.txt.video.ui.weight.adapter.ExpandableItemAdapter;
-import com.txt.video.ui.weight.adapter.WebUrlListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

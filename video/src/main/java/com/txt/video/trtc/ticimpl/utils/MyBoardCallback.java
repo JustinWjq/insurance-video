@@ -89,6 +89,11 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
         TxLogUtils.i(TAG, "onTEBRefresh:");
     }
 
+//    @Override
+//    public void onTEBOfflineWarning(int count) {
+//
+//    }
+
     @Override
     public void onTEBDeleteFile(String fileId) {
     }
@@ -150,6 +155,11 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
         TxLogUtils.i(TAG, "onTEBVideoStatusChanged:" + fileId + " | " + status + "|" + progress);
     }
 
+//    @Override
+//    public void onTEBAudioStatusChanged(String elementId, int status, float progress, float duration) {
+//
+//    }
+
     @Override
     public void onTEBSnapshot(String path, int code, String msg) {
         TxLogUtils.i(TAG, "onTEBSnapshot:" + path + " | " + code + "|" + msg);
@@ -160,6 +170,16 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
     public void onTEBH5PPTStatusChanged(int statusCode, String fid, String describeMsg) {
 
     }
+
+//    @Override
+//    public void onTEBTextElementStatusChange(String status, String id, String value, int left, int top) {
+//
+//    }
+//
+//    @Override
+//    public void onTEBClassGroupStatusChanged(boolean enable, String classGroupId, int operationType, String message) {
+//
+//    }
 
     @Override
     public void onTEBImageStatusChanged(String boardId, String url, int status) {
@@ -175,11 +195,46 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
     public void onTEBAddImageElement(final String url) {
         TxLogUtils.i(TAG, "onTEBAddImageElement:" + url);
     }
+//
+//    @Override
+//    public void onTEBAddElement(String id, int type, String url) {
+//
+//    }
+
+//    @Override
+//    public void onTEBDeleteElement(List<String> id) {
+//
+//    }
+//
+//    @Override
+//    public void onTEBSelectElement(List<TEduBoardController.ElementItem> elementItemList) {
+//
+//    }
+//
+//    @Override
+//    public void onTEBMathGraphEvent(int code, String boardId, String graphId, String message) {
+//
+//    }
+//
+//    @Override
+//    public void onTEBZoomDragStatus(String fid, int scale, int xOffset, int yOffset) {
+//
+//    }
 
     @Override
     public void onTEBBackgroundH5StatusChanged(String boardId, String url, int status) {
         TxLogUtils.i(TAG, "onTEBBackgroundH5StatusChanged:" + boardId + " url:" + boardId + " status:" + status);
     }
+
+//    @Override
+//    public void onTEBTextElementWarning(String code, String message) {
+//
+//    }
+//
+//    @Override
+//    public void onTEBImageElementStatusChanged(int status, String currentBoardId, String imgUrl, String currentImgUrl) {
+//
+//    }
 
 
 }

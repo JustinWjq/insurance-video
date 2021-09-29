@@ -5,7 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -17,6 +17,7 @@ import com.txt.video.TXSdk
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onFriendBtListener
+import com.txt.video.net.utils.TxLogUtils
 //import com.txt.video.common.utils.ToastUtils
 //import com.txt.video.net.utils.TxLogUtils
 //import com.txt.video.widget.dialog.ShareWhiteBroadDialog
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
     }
 
@@ -97,6 +98,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         check_bt.setOnClickListener(this)
 
         changeUI()
+        tv_gototxmeet.setOnClickListener {
+            WemeetSdkUtil.intoHome(this,object : WemeetSdkUtil.instance.OnInitCallBackListener{
+                override fun initResult(boolean: Boolean, string: String) {
+                    TxLogUtils.i("initResult ----$boolean ---- $string")
+                }
+
+            })
+        }
     }
 
 

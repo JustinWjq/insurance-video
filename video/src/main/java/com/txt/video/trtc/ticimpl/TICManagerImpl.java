@@ -32,6 +32,7 @@ import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
 import com.tencent.trtc.TRTCStatistics;
+import com.txt.video.TXSdk;
 import com.txt.video.trtc.TICClassroomOption;
 import com.txt.video.trtc.TICManager;
 import com.txt.video.trtc.ticimpl.observer.TICEventObservable;
@@ -159,7 +160,7 @@ public class TICManagerImpl  extends TICManager {
 
         //3. TEdu Board
         if (mBoard == null) {
-            mBoard = new TEduBoardController(mAppContext);
+            mBoard = new TEduBoardController(TXSdk.getInstance().application);
             mBoard.setDataSyncEnable(true);
             mBoardCallback = new BoardCallback();
             mBoard.addCallback(mBoardCallback);
@@ -1156,6 +1157,16 @@ public class TICManagerImpl  extends TICManager {
 
         }
 
+//        @Override
+//        public void onTEBTextElementWarning(String code, String message) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBImageElementStatusChanged(int status, String currentBoardId, String imgUrl, String currentImgUrl) {
+//
+//        }
+
         @Override
         public void onTEBAddBoard(List<String> list, String s) {
 
@@ -1186,6 +1197,11 @@ public class TICManagerImpl  extends TICManager {
 
         }
 
+//        @Override
+//        public void onTEBOfflineWarning(int count) {
+//
+//        }
+
         @Override
         public void onTEBSnapshot(String path, int code, String msg) {
 
@@ -1194,6 +1210,16 @@ public class TICManagerImpl  extends TICManager {
         public void onTEBH5PPTStatusChanged(int statusCode, String fid, String describeMsg) {
             
         }
+
+//        @Override
+//        public void onTEBTextElementStatusChange(String status, String id, String value, int left, int top) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBClassGroupStatusChanged(boolean enable, String classGroupId, int operationType, String message) {
+//
+//        }
 
 
         @Override
@@ -1240,9 +1266,39 @@ public class TICManagerImpl  extends TICManager {
 
         }
 
+//        @Override
+//        public void onTEBAudioStatusChanged(String elementId, int status, float progress, float duration) {
+//
+//        }
+
         @Override
         public void onTEBAddImageElement(String url) {
 
         }
+
+//        @Override
+//        public void onTEBAddElement(String id, int type, String url) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBDeleteElement(List<String> id) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBSelectElement(List<TEduBoardController.ElementItem> elementItemList) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBMathGraphEvent(int code, String boardId, String graphId, String message) {
+//
+//        }
+//
+//        @Override
+//        public void onTEBZoomDragStatus(String fid, int scale, int xOffset, int yOffset) {
+//
+//        }
     }
 }

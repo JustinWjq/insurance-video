@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.txt.video.common.glide.load.Key;
 import com.txt.video.common.glide.load.engine.DiskCacheStrategy;
 import com.txt.video.common.glide.load.model.ModelLoader;
@@ -35,9 +38,9 @@ import java.util.UUID;
  * built in Activity and Fragment lifecycle handling, use the static Glide.load methods with your Fragment or Activity.
  *
  * @see TxGlide#with(android.app.Activity)
- * @see TxGlide#with(android.support.v4.app.FragmentActivity)
+ * @see TxGlide#with(FragmentActivity)
  * @see TxGlide#with(android.app.Fragment)
- * @see TxGlide#with(android.support.v4.app.Fragment)
+ * @see TxGlide#with(Fragment)
  * @see TxGlide#with(Context)
  */
 public class RequestManager implements LifecycleListener {

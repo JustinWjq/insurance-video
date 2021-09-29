@@ -1,8 +1,8 @@
 package com.txt.video.ui.weight.dialog
 
 import android.graphics.Color
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.txt.video.R
 import com.txt.video.net.bean.ThickType
@@ -141,22 +141,26 @@ open class PaintThickPopup : TransformersTip {
         mPaintColorAdapter = PaintColorAdapter()
         mPaintThickAdapter = PaintThickAdapter()
 
-        val recyclerview = contentView.findViewById<RecyclerView>(R.id.rl_thick)
-        recyclerview.layoutManager = LinearLayoutManager(
-            contentView.context,
-            LinearLayoutManager.HORIZONTAL, false
-        )
+        val recyclerview = contentView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rl_thick)
+        recyclerview.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(
+                contentView.context,
+                androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+                false
+            )
         recyclerview.adapter = mPaintThickAdapter
         mPaintThickAdapter?.bindToRecyclerView(recyclerview)
 
 
 
 
-        val recyclerview1 = contentView.findViewById<RecyclerView>(R.id.rl_paintcolors)
-        recyclerview1.layoutManager = LinearLayoutManager(
-            contentView.context,
-            LinearLayoutManager.HORIZONTAL, false
-        )
+        val recyclerview1 = contentView.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rl_paintcolors)
+        recyclerview1.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(
+                contentView.context,
+                androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+                false
+            )
         recyclerview1.adapter =mPaintColorAdapter
         mPaintColorAdapter?.bindToRecyclerView(recyclerview1)
 

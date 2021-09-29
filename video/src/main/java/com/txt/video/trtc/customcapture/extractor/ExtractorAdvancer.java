@@ -2,8 +2,8 @@ package com.txt.video.trtc.customcapture.extractor;
 
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 
 import java.nio.ByteBuffer;

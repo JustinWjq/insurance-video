@@ -1,6 +1,6 @@
 package com.txt.video.net.bean;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 /**
  * Created by JustinWjq

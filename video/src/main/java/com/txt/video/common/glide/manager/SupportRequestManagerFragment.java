@@ -2,7 +2,7 @@ package com.txt.video.common.glide.manager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 
 import com.txt.video.common.glide.RequestManager;

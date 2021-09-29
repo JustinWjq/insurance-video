@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:parentTag="android.support.constraint.ConstraintLayout">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
 
     <FrameLayout
@@ -75,7 +75,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tx_merge_business_switch" />
 
-    <android.support.constraint.Group
+    <androidx.constraintlayout.widget.Group
         android:id="@+id/tx_merge_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

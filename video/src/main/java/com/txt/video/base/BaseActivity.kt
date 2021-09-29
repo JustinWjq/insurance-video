@@ -1,7 +1,7 @@
 package com.txt.video.base
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.txt.video.R
 import com.txt.video.common.bar.TxBarHide
 import com.txt.video.common.bar.TximmersionBar

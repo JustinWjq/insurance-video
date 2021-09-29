@@ -2,10 +2,10 @@ package com.txt.video.trtc.videolayout.list;
 
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.videolayout.list.page.PagerGridSmoothScroller;
 
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.view.View.MeasureSpec.EXACTLY;
 
 public class MeetingPageLayoutManager extends RecyclerView.LayoutManager implements RecyclerView.SmoothScroller.ScrollVectorProvider {

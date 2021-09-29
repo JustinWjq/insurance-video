@@ -6,7 +6,7 @@
     android:orientation="vertical"
    >
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rl_thick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -19,7 +19,7 @@
         android:layout_marginRight="@dimen/tx_dp_10"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rl_paintcolors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

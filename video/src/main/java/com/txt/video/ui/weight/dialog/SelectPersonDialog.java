@@ -1,19 +1,16 @@
 package com.txt.video.ui.weight.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.txt.video.R;
 import com.txt.video.common.adapter.base.TxBaseQuickAdapter;
 import com.txt.video.common.callback.onDialogListenerCallBack;
@@ -22,10 +19,6 @@ import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.videolayout.Utils;
 import com.txt.video.trtc.videolayout.list.MemberEntity;
 import com.txt.video.ui.weight.adapter.PersonNameAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

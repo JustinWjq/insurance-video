@@ -1,7 +1,7 @@
 package com.txt.video.ui.weight.dialog;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;

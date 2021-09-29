@@ -3,7 +3,7 @@ package com.txt.video.ui.weight.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;

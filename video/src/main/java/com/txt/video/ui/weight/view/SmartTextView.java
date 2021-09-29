@@ -1,7 +1,7 @@
 package com.txt.video.ui.weight.view;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;

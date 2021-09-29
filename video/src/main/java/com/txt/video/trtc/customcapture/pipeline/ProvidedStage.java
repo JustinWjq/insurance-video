@@ -3,7 +3,7 @@ package com.txt.video.trtc.customcapture.pipeline;
 
 
 
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 import com.txt.video.trtc.customcapture.exceptions.ProcessException;
 

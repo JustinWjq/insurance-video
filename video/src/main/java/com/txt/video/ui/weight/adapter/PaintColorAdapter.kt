@@ -1,7 +1,7 @@
 package com.txt.video.ui.weight.adapter
 
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.RelativeLayout
 import com.txt.video.R
 import com.txt.video.net.bean.ToolType

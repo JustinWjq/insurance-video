@@ -12,8 +12,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -83,7 +83,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     private var screenMeetingEntity: MemberEntity? = null
     private var mStubRemoteUserView: ViewStub? = null
 
-    private var mListRv: RecyclerView? = null
+    private var mListRv: androidx.recyclerview.widget.RecyclerView? = null
     var mViewVideo: MeetingVideoView? = null
 
     var videoBoradBusiness: ArrayList<ImageButton>? = null
@@ -117,7 +117,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         showInviteBt(isShow = true, noRemoterUser = true)
         mViewVideo = mPresenter!!.getMemberEntityList()[0].meetingVideoView
         val pageLayoutManager = MeetingPageLM(this)
-        pageLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        pageLayoutManager.orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
         pageLayoutManager.setPageListener(object : MeetingPageLayoutManager.PageListener {
             override fun onItemVisible(fromItem: Int, toItem: Int) {
                 if (fromItem == 0) {
@@ -1635,8 +1635,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     //初始化缩略图list
     private fun initPicAdapter() {
 
-        val mLllayoutManager = LinearLayoutManager(this).apply {
-            orientation = LinearLayoutManager.HORIZONTAL
+        val mLllayoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+            this
+        ).apply {
+            orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
         }
 
         picQuickAdapter =

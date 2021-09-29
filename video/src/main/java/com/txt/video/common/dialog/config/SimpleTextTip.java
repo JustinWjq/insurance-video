@@ -1,10 +1,10 @@
 package com.txt.video.common.dialog.config;
 
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.StringRes;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;

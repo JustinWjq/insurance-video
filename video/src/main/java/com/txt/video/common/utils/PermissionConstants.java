@@ -2,7 +2,7 @@ package com.txt.video.common.utils;
 
 import android.Manifest;
 import android.os.Build;
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 
 
 import java.lang.annotation.Retention;

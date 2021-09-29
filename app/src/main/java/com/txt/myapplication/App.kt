@@ -2,7 +2,7 @@ package com.txt.myapplication
 
 import android.app.Application
 import android.content.Context
-import android.support.multidex.MultiDex
+//import androidx.multidex.MultiDex
 import com.tencent.bugly.crashreport.CrashReport
 import com.txt.video.TXSdk
 import com.txt.video.net.bean.TxConfig
@@ -15,6 +15,7 @@ import com.txt.video.net.bean.TxConfig
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        WemeetSdkUtil.attachBaseContext(this)
         val txConfig = TxConfig()
         txConfig.wxKey = "wx8e6096173bff1149"
         //dev 小程序开发版本  TEST 体验版本 RELEASE 正式颁布
@@ -29,11 +30,12 @@ class App : Application() {
         //设置演示demo 为true 为了一个手机装两个app，一个是客户的，一个是演示的app，区分隐式跳转
         TXSdk.getInstance().isDemo = true
         CrashReport.initCrashReport(this, "8351c98a70", true)
+
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
-        MultiDex.install(base)
+//        MultiDex.install(base)
     }
 
     override fun onTerminate() {

@@ -1,7 +1,7 @@
 package com.txt.video.ui.boardpage
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -121,8 +121,10 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
             picQuickAdapter =
                 PicQuickAdapter()
-            tx_rv.layoutManager = LinearLayoutManager(this).apply {
-                orientation = LinearLayoutManager.HORIZONTAL
+            tx_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                this
+            ).apply {
+                orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
             }
             tx_rv.adapter = picQuickAdapter
             picQuickAdapter?.setOnItemClickListener { adapter, view, position ->
