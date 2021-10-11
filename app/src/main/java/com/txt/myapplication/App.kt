@@ -15,7 +15,7 @@ import com.txt.video.net.bean.TxConfig
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        WemeetSdkUtil.attachBaseContext(this)
+//        WemeetSdkUtil.attachBaseContext(this)
         val txConfig = TxConfig()
         txConfig.wxKey = "wx8e6096173bff1149"
         //dev 小程序开发版本  TEST 体验版本 RELEASE 正式颁布

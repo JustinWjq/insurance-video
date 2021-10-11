@@ -58,8 +58,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         val extras = intent.extras
         val position = extras?.getInt(IntentKey.CHECKTOOLSPOSTIONS, -1)
         if (-1 != position) {
-            val isShowPop = extras.getBoolean(IntentKey.ISSHOWPOP)
-            restoreBoardTool(position!!, isShowPop)
+            val isShowPop = extras?.getBoolean(IntentKey.ISSHOWPOP)
+            restoreBoardTool(position!!, isShowPop!!)
         }
 
     }

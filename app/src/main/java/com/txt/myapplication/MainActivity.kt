@@ -99,12 +99,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
         changeUI()
         tv_gototxmeet.setOnClickListener {
-            WemeetSdkUtil.intoHome(this,object : WemeetSdkUtil.instance.OnInitCallBackListener{
-                override fun initResult(boolean: Boolean, string: String) {
-                    TxLogUtils.i("initResult ----$boolean ---- $string")
-                }
-
-            })
+//            WemeetSdkUtil.intoHome(this,object : WemeetSdkUtil.instance.OnInitCallBackListener{
+//                override fun initResult(boolean: Boolean, string: String) {
+//                    TxLogUtils.i("initResult ----$boolean ---- $string")
+//                }
+//
+//            })
         }
     }
 
