@@ -83,6 +83,21 @@ public class SystemHttpRequest {
         HttpRequestClient.getIntance().postFile(builder.toString(), stringStringMap, file, callback, back);
     }
 
+    public void uploadFile1(File file, String serviceId,
+                           HttpRequestClient.RequestHttpCallBack callback, HttpRequestClient.UploadProgressListener back) {
+        StringBuilder builder = new StringBuilder(IP + "/api/file");
+
+        TxLogUtils.i("serviceId" + serviceId);
+
+        if (!file.exists()) {
+            callback.onFail("upload file is null", -2);
+            return;
+        }
+        Map<String, String> stringStringMap = new HashMap<>();
+        stringStringMap.put("agent", serviceId);
+        HttpRequestClient.getIntance().postFile(builder.toString(), stringStringMap, file, callback, back);
+    }
+
     public void cancleClient() {
         HttpRequestClient.getIntance().cancleClient();
     }
@@ -108,7 +123,7 @@ public class SystemHttpRequest {
                 return;
             }
             TxLogUtils.i("uploadLogFile: " + file.getAbsolutePath());
-            uploadFile(file.getAbsolutePath(), serviceId, new HttpRequestClient.RequestHttpCallBack() {
+            uploadFile1(file, serviceId, new HttpRequestClient.RequestHttpCallBack() {
                 @Override
                 public void onSuccess(String json) {
                     TxLogUtils.i("onSuccess: : onSuccess" + json);
@@ -128,6 +143,7 @@ public class SystemHttpRequest {
             }, back);
         }catch (Exception e){
             if (callBack != null) {
+                TxLogUtils.i("onFail:  " + e.getMessage());
                 callBack.onFail("获取不到文件权限！");
             }
         }
