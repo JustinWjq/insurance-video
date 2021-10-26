@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -123,7 +125,13 @@ public class HttpRequestClient {
             // MediaType.parse() 里面是上传的文件类型。
             RequestBody body = RequestBody.create(MediaType.parse("file/*"), file);
             // 参数分别为， 请求key ，文件名称 ， RequestBody
-            requestBody.addFormDataPart("file", file.getName(), body);
+            try {
+                String encode = URLEncoder.encode(file.getName(), "UTF-8");
+                requestBody.addFormDataPart("file", encode, body);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
         }
         if (map != null) {
             for (Map.Entry entry : map.entrySet()) {

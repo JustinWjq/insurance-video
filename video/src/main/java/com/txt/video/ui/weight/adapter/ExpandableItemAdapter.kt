@@ -15,6 +15,7 @@ import com.txt.video.common.adapter.base.BaseMultiItemQuickAdapter
 import com.txt.video.common.adapter.base.TxBaseViewHolder
 import com.txt.video.common.adapter.base.entity.MultiItemEntity
 import com.txt.video.common.glide.TxGlide
+import java.net.URLDecoder
 import java.text.ParseException
 
 /**
@@ -61,7 +62,7 @@ public class ExpandableItemAdapter(var data: ArrayList<MultiItemEntity>) :
                 val listBean = item as FileBean.ListBean
                 val name: String = listBean.name
 
-                helper.setText(R.id.tx_tv_file_name, name)
+                helper.setText(R.id.tx_tv_file_name, URLDecoder.decode(name,"UTF-8"))
                 try {
                     val split = name.split("\\.".toRegex()).toTypedArray()
                     if (split.isNotEmpty()){
