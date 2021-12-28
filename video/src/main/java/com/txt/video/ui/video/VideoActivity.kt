@@ -356,6 +356,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity,
                         true
                     )
+                    trtc_fl_no_video.visibility  = View.VISIBLE
                 } else {
                     mPresenter?.addMemberEntity(entity)
                     mMemberListAdapter!!.notifyItemInserted(insertIndex)
@@ -2120,7 +2121,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
             val bigmeetingVideoView = bigMeetingEntity?.meetingVideoView
             bigscreen?.removeView(bigmeetingVideoView)
-
             mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
                 bigMeetingEntity?.userId,
                 TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
@@ -2136,6 +2136,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun hideBigNoVideo(isHiden: Boolean) {
         rl_bigscreen_name.visibility = View.GONE
         trtc_fl_no_video.visibility = View.GONE
+        bigscreen.visibility = View.GONE
     }
 
     override fun showBroadFileRv(isShow: Boolean) {

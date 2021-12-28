@@ -190,6 +190,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
                      final MemberListAdapter.ListCallback listener) {
         mListCallback = listener;
         mMemberEntity = model;
+        changeUserName(model);
         TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + mVideoContainer);
         MeetingVideoView videoView = mMemberEntity.getMeetingVideoView();
         if (videoView != null) {
