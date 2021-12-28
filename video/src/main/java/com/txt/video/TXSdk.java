@@ -15,6 +15,7 @@ import com.txt.video.common.callback.onFriendBtListener;
 import com.txt.video.common.utils.AppUtils;
 import com.txt.video.ui.TXManagerImpl;
 import com.txt.video.ui.video.FriendBtObservable;
+import com.txt.video.ui.video.RoomControlConfig;
 
 import org.json.JSONObject;
 
@@ -38,7 +39,7 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isDemo = false;
 
-    private String SDKVersion = "v1.2.5.1";
+    private String SDKVersion = "v1.2.6";
 
     private String terminal = "android";
 
@@ -154,7 +155,7 @@ public class TXSdk extends TXSDKApi {
     }
 
     public void init(Application application, Environment en, boolean isDebug) {
-        TxLogUtils.i("SDKVersion:"+getSDKVersion());
+        TxLogUtils.i("SDKVersion:" + getSDKVersion());
         this.application = application;
         this.isDebug = isDebug;
         if (txConfig == null) {
@@ -182,6 +183,12 @@ public class TXSdk extends TXSDKApi {
         TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, businessData, listener, true);
     }
 
+    @Override
+    public void startTXVideo(Activity context, String agent, String orgAccount, String sign, JSONObject businessData, RoomControlConfig roomControlConfig, StartVideoResultOnListener listener) {
+        this.mRoomControlConfig = roomControlConfig;
+        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, businessData, listener, true);
+    }
+
     public void startTXVideo(final Activity context, final String agent, String orgAccount, String sign, final StartVideoResultOnListener listener) {
         TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, null, listener, true);
     }
@@ -206,6 +213,14 @@ public class TXSdk extends TXSDKApi {
         TXManagerImpl.getInstance().checkPermission(context, roomId, account, userName, orgAccount, sign, businessData, listener, false);
     }
 
+    RoomControlConfig mRoomControlConfig;
+
+    @Override
+    public void joinRoom(Activity context, String roomId, String account, String userName, String orgAccount, String sign, JSONObject businessData, RoomControlConfig roomControlConfig, StartVideoResultOnListener listener) {
+        this.mRoomControlConfig = roomControlConfig;
+        TXManagerImpl.getInstance().checkPermission(context, roomId, account, userName, orgAccount, sign, businessData, listener, false);
+    }
+
     @Override
     public void getAgentAndRoomStatus(String agentId, String serviceId, String orgAccount, String sign, onSDKListener onSDKListener) {
         TXManagerImpl.getInstance().getAgentAndRoomStatus(
@@ -220,6 +235,17 @@ public class TXSdk extends TXSDKApi {
         );
     }
 
+    public RoomControlConfig getRoomControlConfig() {
+        if (null != mRoomControlConfig) {
+            return mRoomControlConfig;
+        } else {
+            RoomControlConfig builder = new RoomControlConfig.Builder().enableVideo(true).build();
+            return builder;
+        }
+
+
+    }
+
     private onFriendBtListener onFriendBtListener;
 
     @Override
@@ -230,7 +256,7 @@ public class TXSdk extends TXSDKApi {
 
     @Override
     public void removeOnFriendBtListener(onFriendBtListener onFriendBtListener) {
-        this.onFriendBtListener =null;
+        this.onFriendBtListener = null;
     }
 
     public onFriendBtListener getOnFriendBtListener() {

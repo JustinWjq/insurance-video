@@ -18,6 +18,7 @@ import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onFriendBtListener
 import com.txt.video.net.utils.TxLogUtils
+import com.txt.video.ui.video.RoomControlConfig
 //import com.txt.video.common.utils.ToastUtils
 //import com.txt.video.net.utils.TxLogUtils
 //import com.txt.video.widget.dialog.ShareWhiteBroadDialog
@@ -186,6 +187,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                     orgAccount,
                     encrypt,
                     businessData,
+                    RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
                     object : StartVideoResultOnListener {
                         override fun onResultSuccess() {
 
@@ -224,6 +226,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                 orgAccount,
                 encrypt,
                 businessData,
+                RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
                 object :
                     StartVideoResultOnListener {
                     override fun onResultSuccess() {

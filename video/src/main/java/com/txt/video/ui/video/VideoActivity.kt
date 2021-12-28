@@ -50,6 +50,7 @@ import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.trtc.videolayout.list.*
 import com.txt.video.trtc.videolayout.list.MemberListAdapter.*
+import com.txt.video.ui.TXManagerImpl
 import com.txt.video.ui.boardpage.BoardViewActivity
 import com.txt.video.ui.video.remote.RemoteUserListView
 import com.txt.video.ui.weight.PicQuickAdapter
@@ -175,6 +176,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         modifyExitBt()
         mPresenter?.muteLocalAudio(!mPresenter!!.getRoomSoundStatus())
+//        tx_business_video.isSelected = !TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
+        val isEnableVideo = TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
+        TxLogUtils.i("isEnableVideo---$isEnableVideo")
+        mPresenter?.muteLocalVideo(!isEnableVideo)
+        mPresenter?.isCloseVideo = !isEnableVideo
     }
 
     fun selectIb(imageButton: ImageButton) {
@@ -1443,7 +1449,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
             val videoConfig = ConfigHelper.getInstance().videoConfig
             mPresenter?.muteLocalVideo(videoConfig.isEnableVideo)
-            mPresenter?.isCloseVideo = !ConfigHelper.getInstance().videoConfig.isEnableVideo
+            mPresenter?.isCloseVideo = !videoConfig.isEnableVideo
         } else if (id == R.id.tx_business_audio) {
             //开启静音
             val audioConfig = ConfigHelper.getInstance().audioConfig

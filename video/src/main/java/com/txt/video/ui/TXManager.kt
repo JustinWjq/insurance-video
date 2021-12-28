@@ -4,6 +4,7 @@ import android.app.Activity
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onSDKListener
+import com.txt.video.ui.video.RoomControlConfig
 import org.json.JSONObject
 
 /**
@@ -36,7 +37,7 @@ interface TXManager {
     )
 
 
-        //直接进入会议模式
+    //直接进入会议模式
     fun enterRoom(
         context: Activity?,
         agent: String?,
@@ -66,8 +67,26 @@ interface TXManager {
         listener: onCreateRoomListener
     )
 
-    fun setAgentInRoomStatus( account:String,userName:String, serviceId:String,inviteAccount:String, action:String,  orgAccount:String,  sign:String, onSDKListener:onSDKListener)
+    fun setAgentInRoomStatus(
+        account: String,
+        userName: String,
+        serviceId: String,
+        inviteAccount: String,
+        action: String,
+        orgAccount: String,
+        sign: String,
+        onSDKListener: onSDKListener
+    )
 
-    fun  getAgentAndRoomStatus( account:String,  serviceId:String,  orgAccount:String,  sign:String,  onSDKListener: onSDKListener)
+    fun getAgentAndRoomStatus(
+        account: String,
+        serviceId: String,
+        orgAccount: String,
+        sign: String,
+        onSDKListener: onSDKListener
+    )
+
+
+    fun getRoomControlConfig(): RoomControlConfig
 
 }

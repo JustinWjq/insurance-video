@@ -2,6 +2,7 @@ package com.txt.video.trtc.videolayout.list;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,22 +107,22 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void showHost(boolean isShow){
+    public void showHost(boolean isShow) {
 
         if (isShow) {
             mIvIconHost.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mIvIconHost.setVisibility(View.GONE);
         }
 
     }
 
-    public void showHost(boolean isShow,String iconPath){
+    public void showHost(boolean isShow, String iconPath) {
 
         if (isShow) {
             mIvIconHost.setVisibility(View.VISIBLE);
             TxGlide.with(TXSdk.getInstance().application).load(iconPath).into(mIvIconHost);
-        }else{
+        } else {
             mIvIconHost.setVisibility(View.GONE);
         }
 
@@ -155,12 +156,12 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void changeUserName(MemberEntity model){
+    public void changeUserName(MemberEntity model) {
         mUserNameTv.setText(model.getUserName());
         if (!model.getUserRoleIconPath().isEmpty()) {
-            showHost(true,model.getUserRoleIconPath());
-        }else{
-            showHost(false,model.getUserRoleIconPath());
+            showHost(true, model.getUserRoleIconPath());
+        } else {
+            showHost(false, model.getUserRoleIconPath());
         }
 
     }
@@ -175,12 +176,17 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         //            addVideoView();
         mMemberEntity.getMeetingVideoView().setWaitBindGroup(mVideoContainer);
         mVideoContainer.removeAllViews();
-        if (model.isVideoAvailable() && !model.isMuteVideo()) {
+        if (model.isVideoAvailable()) {
             mVideoContainer.setVisibility(View.VISIBLE);
 //                mUserHeadImg.setVisibility(View.GONE);
         } else {
             mVideoContainer.setVisibility(View.GONE);
 //                mUserHeadImg.setVisibility(View.VISIBLE);
+        }
+        if (model.isMuteVideo()) {
+            showNoVideo(true, true);
+        } else {
+            showNoVideo(false, true);
         }
         if (model.getQuality() == MemberEntity.QUALITY_GOOD) {
             mUserSignal.setVisibility(View.VISIBLE);

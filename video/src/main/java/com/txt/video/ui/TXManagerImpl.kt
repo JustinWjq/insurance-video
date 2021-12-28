@@ -16,6 +16,7 @@ import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onSDKListener
 import com.txt.video.common.utils.PermissionConstants
 import com.txt.video.common.utils.TxPermissionUtils
+import com.txt.video.ui.video.RoomControlConfig
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -365,6 +366,10 @@ class TXManagerImpl : TXManager {
                 }
 
             })
+    }
+
+    override fun getRoomControlConfig(): RoomControlConfig {
+        return TXSdk.getInstance().roomControlConfig
     }
 
     companion object {

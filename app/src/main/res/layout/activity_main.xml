@@ -207,6 +207,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="腾讯会议"
+        android:visibility="gone"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="@+id/name"
         app:layout_constraintRight_toRightOf="@+id/et"
