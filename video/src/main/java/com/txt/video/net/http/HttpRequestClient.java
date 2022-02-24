@@ -48,9 +48,10 @@ public class HttpRequestClient {
 
     public HttpRequestClient() {
         SSLContext sslContext = null;
+
         try {
             sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{xtm}, new SecureRandom());
+            sslContext.init(null,new TrustManager[]{xtm} , new SecureRandom());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (KeyManagementException e) {
@@ -63,7 +64,7 @@ public class HttpRequestClient {
             }
         };
         mOkhttpClient = new OkHttpClient().newBuilder()
-                .sslSocketFactory(sslContext.getSocketFactory())
+                .sslSocketFactory(sslContext.getSocketFactory(),xtm)
                 .hostnameVerifier(DO_NOT_VERIFY)
                 .connectTimeout(10, TimeUnit.MINUTES)
                 .readTimeout(10, TimeUnit.MINUTES)
