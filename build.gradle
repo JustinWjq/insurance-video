@@ -3,17 +3,14 @@
 buildscript {
     ext.kotlin_version = "1.3.61"
     repositories {
-        maven {
-            url "file://${new File(project.rootProject.rootDir, '../Demo/SDK/repo').getAbsolutePath()}"
-            println("local repo: $url")
-        }
+
         google()
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://jitpack.io" }
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.2'
+        classpath 'com.android.tools.build:gradle:4.1.3'
 //        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
@@ -26,10 +23,7 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url "file://${new File(project.rootProject.rootDir, '../gsandroid/SDK/repo').getAbsolutePath()}"
-            println("local repo: $url")
-        }
+
         flatDir{
             dirs 'libs'
 
