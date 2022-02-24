@@ -21,5 +21,8 @@ interface IBaseView {
      */
     fun onLoadSuccess(){}
 
+    /**
+     * 显示Toast
+     */
     fun showMessage(message:String){}
 }

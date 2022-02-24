@@ -205,6 +205,26 @@ public class TRTCCloudManager {
         mTRTCCloud.enterRoom(mTRTCParams, mAppScene);
     }
 
+    public void playBGM(){
+        mTRTCCloud.playBGM("https://sdk-liteav-1252463788.cos.ap-hongkong.myqcloud.com/app/res/bgm/trtc/WonderWorld.mp3"
+                , new TRTCCloud.BGMNotify() {
+                    @Override
+                    public void onBGMStart(int i) {
+
+                    }
+
+                    @Override
+                    public void onBGMProgress(long l, long l1) {
+
+                    }
+
+                    @Override
+                    public void onBGMComplete(int i) {
+
+                    }
+                });
+    }
+
     /**
      * 设置 TRTC 推流参数
      */

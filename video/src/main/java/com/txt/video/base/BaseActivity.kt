@@ -5,13 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.txt.video.R
 import com.txt.video.common.bar.TxBarHide
 import com.txt.video.common.bar.TximmersionBar
+import com.txt.video.common.toast.ToastUtils
+import com.txt.video.common.utils.MainThreadUtil
 
 /**
  * Created by JustinWjq
  * @date 2019-12-23.
  * description：
  */
-abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity() {
+abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity(),IBaseView {
     public var mPresenter: P? = null
 
     /**
@@ -76,6 +78,25 @@ abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity() {
         }
 
     }
+
+    override fun onLoading() {
+
+    }
+    override fun onLoadSuccess() {
+
+    }
+
+    override fun onLoadFailed() {
+
+    }
+
+    override fun showMessage(message: String) {
+        MainThreadUtil.run {
+            ToastUtils.show(message)
+        }
+
+    }
+
 
 
 }

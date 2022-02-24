@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.RadioGroup
 import com.lxj.xpopup.impl.FullScreenPopupView
 import com.txt.video.TXSdk
+import com.txt.video.ui.video.VideoMode
 import kotlinx.android.synthetic.main.layout_customfullscreen.view.*
 
 /**
@@ -23,6 +24,7 @@ public class CustomFullScreenPopup constructor(context: Context) : FullScreenPop
         val rgMimpro = findViewById<RadioGroup>(R.id.rg_mimpro)
         val rg_tx_app = findViewById<RadioGroup>(R.id.rg_tx_app)
         val rg_tx_video = findViewById<RadioGroup>(R.id.rg_tx_video)
+        val rg_tx_videomode = findViewById<RadioGroup>(R.id.rg_tx_videomode)
         val btConfirm = findViewById<Button>(R.id.bt_confirm)
         btConfirm.setOnClickListener {
             TXSdk.getInstance().txConfig.miniprogramType = when (rgMimpro.checkedRadioButtonId) {
@@ -65,7 +67,19 @@ public class CustomFullScreenPopup constructor(context: Context) : FullScreenPop
                 else -> true
 
             }
+
+            var videoMode = when (rg_tx_videomode.checkedRadioButtonId) {
+                R.id.videomode_show -> {
+                    VideoMode.VIDEOMODE_HORIZONTAL
+                }
+                R.id.videomode_hide -> {
+                    VideoMode.VIDEOMODE_VERTICAL
+                }
+                else ->  VideoMode.VIDEOMODE_HORIZONTAL
+
+            }
             RoomConfig.showVideo = showVideo
+            RoomConfig.videoMode = videoMode
 
             TXSdk.getInstance().txConfig.miniProgramPath = et_tx_path.text.toString()
             TXSdk.getInstance().txConfig.userName = et_tx_username.text.toString()
@@ -104,6 +118,15 @@ public class CustomFullScreenPopup constructor(context: Context) : FullScreenPop
             }
             false -> {
                 rg_tx_video.check(R.id.video_hide)
+            }
+
+        }
+        when (RoomConfig.videoMode) {
+            VideoMode.VIDEOMODE_HORIZONTAL  -> {
+                rg_tx_videomode.check(R.id.videomode_show)
+            }
+            VideoMode.VIDEOMODE_VERTICAL-> {
+                rg_tx_videomode.check(R.id.videomode_hide)
             }
 
         }

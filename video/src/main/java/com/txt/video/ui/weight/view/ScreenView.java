@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.txt.video.R;
-import com.txt.video.common.utils.ToastUtils;
+import com.txt.video.common.toast.ToastUtils;
 
 /**
  * @author ：Justin
@@ -69,7 +69,7 @@ public class ScreenView extends ConstraintLayout implements View.OnClickListener
     public void initGroup(){
         if (mGroup!=null){
             mGroup.setVisibility(GONE);
-            ToastUtils.showLong("单击屏幕后,按钮显示！");
+            ToastUtils.show("单击屏幕后,按钮显示！");
         }
     }
 
@@ -97,10 +97,10 @@ public class ScreenView extends ConstraintLayout implements View.OnClickListener
             } else if (id == R.id.view_merge_bigscreen) {
                 if (mGroup.getVisibility() == View.VISIBLE) {
                     mGroup.setVisibility(View.GONE);
-                    ToastUtils.showLong("单击屏幕后,按钮显示！");
+                    ToastUtils.show("单击屏幕后,按钮显示！");
                 } else {
                     mGroup.setVisibility(View.VISIBLE);
-                    ToastUtils.showLong("单击屏幕后,按钮隐藏！");
+                    ToastUtils.show("单击屏幕后,按钮隐藏！");
                 }
             }
         }

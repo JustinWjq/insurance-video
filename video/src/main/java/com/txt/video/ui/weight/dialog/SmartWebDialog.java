@@ -12,13 +12,10 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.txt.video.R;
 import com.txt.video.common.callback.onShareWhiteBroadDialogListener;
-import com.txt.video.trtc.ConfigHelper;
-import com.txt.video.trtc.feature.AudioConfig;
 import com.txt.video.trtc.videolayout.Utils;
 
 
@@ -121,7 +118,7 @@ public class SmartWebDialog extends Dialog implements View.OnClickListener {
 
         if (id == R.id.iv_close) {
             if (null != mListener) {
-                mListener.onShareWhiteBroadEnd();
+                mListener.onShareScreenUrl();
             }
             if (webView.canGoBack()) {
                 webView.goBack();

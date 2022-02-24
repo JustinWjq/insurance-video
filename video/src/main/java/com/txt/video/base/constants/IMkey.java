@@ -27,6 +27,8 @@ public class IMkey {
 
     public static String SHAREUSERID = "shareUserId";
 
+    public static String SHAREUSERNAME = "shareUserName";
+
     public static String NOTIFYEXTEND = "notifyExtend";
 
     public static String NOTIFYEND = "notifyEnd";

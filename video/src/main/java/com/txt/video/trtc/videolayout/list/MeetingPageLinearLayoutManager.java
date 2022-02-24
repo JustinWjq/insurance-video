@@ -4,7 +4,10 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
+
+import com.txt.video.common.callback.PageListener;
 
 
 /**
@@ -13,16 +16,16 @@ import android.view.ViewGroup;
  * @date 2020/9/11.
  * description：
  */
-public class MeetingPageLM extends LinearLayoutManager {
-    public MeetingPageLM(Context context) {
+public class MeetingPageLinearLayoutManager extends LinearLayoutManager {
+    public MeetingPageLinearLayoutManager(Context context) {
         super(context);
     }
 
-    public MeetingPageLM(Context context, int orientation, boolean reverseLayout) {
+    public MeetingPageLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
-    public MeetingPageLM(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MeetingPageLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -36,6 +39,7 @@ public class MeetingPageLM extends LinearLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler,state);
+            Log.d("onLayoutChildren", "childCount "+getChildCount()+"--" + "="+recycler.getScrapList().size());
             // 如果是 preLayout 则不重新布局
             if (state.isPreLayout() || getUsableWidth() == 0) {
                 return;
@@ -80,28 +84,12 @@ public class MeetingPageLM extends LinearLayoutManager {
 
     //--- 对外接口 ----------------------------------------------------------------------------------
 
-    private MeetingPageLayoutManager.PageListener mPageListener = null;
+    private PageListener mPageListener = null;
 
-    public void setPageListener(MeetingPageLayoutManager.PageListener pageListener) {
+    public void setPageListener(PageListener pageListener) {
         mPageListener = pageListener;
     }
 
-    public interface PageListener {
-        /**
-         * 页面总数量变化
-         *
-         * @param pageSize 页面总数
-         */
-        void onPageSizeChanged(int pageSize);
 
-        /**
-         * 页面被选中
-         *
-         * @param pageIndex 选中的页面
-         */
-        void onPageSelect(int pageIndex);
-
-        void onItemVisible(int fromItem, int toItem);
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.txt.video.ui.boardpage
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageButton
 import com.tencent.imsdk.TIMMessage
 import com.tencent.teduboard.TEduBoardController
 import com.txt.video.R
+import com.txt.video.TXSdk
 import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
@@ -26,9 +28,14 @@ import com.txt.video.ui.weight.PicQuickAdapter
 import com.txt.video.common.callback.onCheckDialogListenerCallBack
 import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.CommonDialog
+import com.txt.video.common.toast.ToastUtils
 import com.txt.video.ui.weight.dialog.PaintThickPopup
 import com.txt.video.common.utils.AppUtils
-import com.txt.video.common.utils.ToastUtils
+import com.txt.video.trtc.TRTCCloudIView
+import com.txt.video.ui.video.VideoMode
+import com.txt.video.ui.video.VideoPresenter
+import com.txt.video.ui.video.VideoTransitData
+import com.txt.video.ui.weight.dialog.ExitDialog
 import kotlinx.android.synthetic.main.tx_activity_board_view.*
 import kotlinx.android.synthetic.main.tx_activity_board_view.board_view_container
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_board_view_business
@@ -40,6 +47,10 @@ import kotlinx.android.synthetic.main.tx_activity_board_view.tx_textstyle
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_zoom
 import org.json.JSONObject
 
+/**
+ * 九宫格模式，暂时先不需要横竖切换
+ *
+ * */
 class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardViewPresenter>(),
     BoardViewContract.ICollectView, onCheckDialogListenerCallBack, TICMessageListener {
 
@@ -49,14 +60,17 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     override fun init(savedInstanceState: Bundle?) {
         openImmersionBar()
-        hideStatusBar()
         initView()
 
     }
 
+    var isSharePerson = false
+    var mVideoPresenter: VideoPresenter? = null
     private fun initBoardTools() {
+
         val extras = intent.extras
         val position = extras?.getInt(IntentKey.CHECKTOOLSPOSTIONS, -1)
+        isSharePerson = extras!!.getBoolean(IntentKey.ISSHAREPERSON, true)
         if (-1 != position) {
             val isShowPop = extras?.getBoolean(IntentKey.ISSHOWPOP)
             restoreBoardTool(position!!, isShowPop!!)
@@ -80,7 +94,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 windowWidth,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-
+        layoutParams.topMargin = 30
         board_view_container.addView(boardController?.boardRenderView, layoutParams)
         instance.addIMMessageListener(this)
         showAudioStatus()
@@ -94,6 +108,24 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
         initBoardTools()
         initPicAdapter()
+        //九宫格，暂时不展示旋转按钮
+        tx_ib_checkscreen1.visibility =
+            if (VideoMode.VIDEOMODE_HORIZONTAL == TXSdk.getInstance().roomControlConfig.videoMode) {
+                View.VISIBLE
+            } else {
+                mVideoPresenter = VideoTransitData.instance!!.getPresenter()
+                //九宫格模式
+                //发起人显示结束按钮
+                if (isSharePerson) {
+                    tv_endshare.visibility = View.VISIBLE
+                    tv_back.visibility = View.GONE
+                } else {
+                    tv_endshare.visibility = View.GONE
+                    tv_back.visibility = View.VISIBLE
+                }
+                View.INVISIBLE
+            }
+//        TRTCCloudManager.sharedInstance().setViewListener(this)
     }
 
     fun showAudioStatus() {
@@ -101,11 +133,6 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
     }
 
-    override fun showMessage(message: String) {
-        runOnUiThread {
-            ToastUtils.showShort(message)
-        }
-    }
 
     var picQuickAdapter: PicQuickAdapter? = null
 
@@ -197,10 +224,13 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             //画笔
             val color = PaintThickPopup.mColorMap[VideoActivity.paintColorPostion].color
             val size = PaintThickPopup.mColorMap1[VideoActivity.paintSizeIntPostion].size
-            boardController!!.brushColor = TEduBoardController.TEduBoardColor(color!!)
-            boardController!!.brushThin = size
-            boardController!!.toolType =
-                TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_PEN
+            boardController!!.apply {
+                brushColor = TEduBoardController.TEduBoardColor(color!!)
+                brushThin = size
+                toolType =
+                    TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_PEN
+
+            }
 
             if (tx_pen.isSelected) {
                 showPopupWindow(
@@ -260,7 +290,65 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             audioConfig.isEnableAudio = !audioConfig.isEnableAudio
             TRTCCloudManager.sharedInstance().muteLocalAudio(!audioConfig.isEnableAudio)
             tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
+        } else if (id == R.id.tv_endshare) { //发起者才能结束同屏分享
+            //结束共享
+            var dialog1 = ExitDialog(
+                this,
+                "取消",
+                "",
+                "确认",
+                "请问是否结束共享"
+            )
+            dialog1?.setOnConfirmlickListener(object :
+                onExitDialogListener {
+                override fun onConfirm() {
+                    //结束共享状态
+                    mVideoPresenter?.sendGroupMessage(
+                        mVideoPresenter?.setIMTextData(IMkey.ENDWHITEBOARD)
+                            ?.put(IMkey.SHAREUSERID, mVideoPresenter?.getSelfUserId()).toString(),
+                        "1"
+                    )
+                    mVideoPresenter?.setShareStatus(false, "", null)
+                    mVideoPresenter?.setRoomShareStatus(false)
+                    //结束共享状态
+                    finishPage()
+                }
+
+                override fun onTemporarilyLeave() {
+
+
+                }
+
+            })
+
+            dialog1?.show()
+
+        } else if (id == R.id.tv_back) {
+            //确实返回
+            var dialog1 = ExitDialog(
+                this,
+                "取消",
+                "退出？",
+                "确认",
+                ""
+            )
+            dialog1?.setOnConfirmlickListener(object :
+                onExitDialogListener {
+                override fun onConfirm() {
+                    //结束共享状态
+                    finishPage()
+                }
+
+                override fun onTemporarilyLeave() {
+
+
+                }
+
+            })
+
+            dialog1?.show()
         }
+
     }
 
 
@@ -322,27 +410,48 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             val hasData = jsonObject.has("data")
 
             when (type) {
-                "notifyExtend" -> {
-                    if (hasData) {
+                IMkey.NOTIFYEXTEND -> {
+                    if (hasData && VideoTransitData.instance?.getPresenter()?.isOwner()!!) {
+
                         val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
+                        val extendRoomTime = dataJO.optInt("extendRoomTime", 0)
                         val notifyExtendTime = dataJO.getInt("notifyExtendTime")
-                        showTimerDialog("2", 0, extendRoomTime, notifyExtendTime, 0)
+                        if (0 != extendRoomTime) {
+                            showTimerDialog("2", 0, extendRoomTime, notifyExtendTime, 0)
+                        }
+
                     }
 
                 }
-                "notifyEnd" -> {
-                    if (hasData) {
+                IMkey.NOTIFYEND -> {
+                    if (hasData && VideoTransitData.instance?.getPresenter()?.isOwner()!!) {
                         val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
+                        val extendRoomTime = dataJO.optInt("extendRoomTime", 0)
                         val notifyEndTime = dataJO.getInt("notifyEndTime")
-                        showTimerDialog("3", 0, extendRoomTime, 0, notifyEndTime)
+                        if (0 != extendRoomTime) {
+                            showTimerDialog("3", 0, extendRoomTime, 0, notifyEndTime)
+                        }
                     }
                 }
                 //去除白板
                 IMkey.ENDWHITEBOARD -> {
+                    mVideoPresenter?.setRoomShareStatus(false)
                     intent.putExtra(IntentKey.ENDWHITEBROAD, true)
                     finishPage()
+                }
+                IMkey.MUTEAUDIO -> {
+                    //非业务员，需要处理
+                    VideoTransitData.instance?.getPresenter()
+                        ?.judgeMuteVideoOrAudioForSomeone(false, jsonObject)
+
+                }
+                IMkey.MUTEVIDEO -> {
+                    VideoTransitData.instance?.getPresenter()
+                        ?.judgeMuteVideoOrAudioForSomeone(true, jsonObject)
+                }
+                IMkey.END->{
+                    finish()
+                    VideoTransitData.instance?.getPresenter()?.destroyRoom()
                 }
                 else -> {
                 }

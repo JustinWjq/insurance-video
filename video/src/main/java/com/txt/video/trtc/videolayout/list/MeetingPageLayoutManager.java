@@ -11,6 +11,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.txt.video.common.callback.PageListener;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.videolayout.list.page.PagerGridSmoothScroller;
 
@@ -904,21 +905,4 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         mPageListener = pageListener;
     }
 
-    public interface PageListener {
-        /**
-         * 页面总数量变化
-         *
-         * @param pageSize 页面总数
-         */
-        void onPageSizeChanged(int pageSize);
-
-        /**
-         * 页面被选中
-         *
-         * @param pageIndex 选中的页面
-         */
-        void onPageSelect(int pageIndex);
-
-        void onItemVisible(int fromItem, int toItem);
-    }
 }

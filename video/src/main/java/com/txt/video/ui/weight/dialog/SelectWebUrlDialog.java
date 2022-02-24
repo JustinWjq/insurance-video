@@ -18,7 +18,7 @@ import com.txt.video.R;
 import com.txt.video.common.adapter.base.TxBaseQuickAdapter;
 import com.txt.video.common.adapter.base.entity.MultiItemEntity;
 import com.txt.video.common.callback.onDialogListenerCallBack;
-import com.txt.video.common.utils.ToastUtils;
+import com.txt.video.common.toast.ToastUtils;
 import com.txt.video.net.bean.FileBean;
 import com.txt.video.net.bean.LevelItem1;
 import com.txt.video.net.http.HttpRequestClient;
@@ -231,7 +231,7 @@ public class SelectWebUrlDialog extends Dialog {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtils.showShort(err);
+                                ToastUtils.show(err);
                             }
                         });
                     }

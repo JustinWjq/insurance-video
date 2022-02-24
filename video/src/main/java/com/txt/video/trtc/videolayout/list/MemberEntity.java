@@ -2,6 +2,8 @@ package com.txt.video.trtc.videolayout.list;
 
 import android.text.TextUtils;
 
+import com.txt.video.TXSdk;
+
 public class MemberEntity {
     public static final int QUALITY_GOOD   = 3;
     public static final int QUALITY_NORMAL = 2;
@@ -12,6 +14,16 @@ public class MemberEntity {
     private String userAvatar;
     private String userRole = "";
     private String userRoleIconPath = "";
+
+    private int videoMode = TXSdk.getInstance().getRoomControlConfig().getVideoMode();
+
+    public int getVideoMode() {
+        return videoMode;
+    }
+
+    public void setVideoMode(int videoMode) {
+        this.videoMode = videoMode;
+    }
 
     public String getUserRole() {
         return userRole;

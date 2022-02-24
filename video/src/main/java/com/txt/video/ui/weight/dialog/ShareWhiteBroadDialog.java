@@ -82,13 +82,13 @@ public class ShareWhiteBroadDialog extends Dialog implements View.OnClickListene
         int id = v.getId();
         if (mListener != null) {
             if (id == R.id.atv_gotofile) {
-                mListener.onCheckFileWhiteBroad();
+                mListener.onCheckFileOnWhiteBroad();
                 dismiss();
             } else if (id == R.id.atv_gotobroad) {
-                mListener.onCheckBroad();
+                mListener.onCheckWhiteBroad();
                 dismiss();
             } else if (id == R.id.atv_endshare) {
-                mListener.onShareWhiteBroadEnd();
+                mListener.onShareScreenUrl();
                 dismiss();
             }else if (id == R.id.atv_exit) {
                 mListener.onEnd();

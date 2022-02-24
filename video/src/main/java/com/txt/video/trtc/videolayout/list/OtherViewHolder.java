@@ -3,10 +3,13 @@ package com.txt.video.trtc.videolayout.list;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -254,5 +257,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
+//        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
     }
 }
