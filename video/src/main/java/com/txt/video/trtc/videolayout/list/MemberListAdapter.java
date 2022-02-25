@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.net.utils.TxLogUtils;
+import com.txt.video.ui.video.VideoMode;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == TYPE_SELF) {
             View view = inflater.inflate(R.layout.tx_layout_trtc_func, parent, false);
-            if (1 == TXSdk.getInstance().getRoomControlConfig().getVideoMode()){
+            if (VideoMode.getVIDEOMODE_HORIZONTAL() == TXSdk.getInstance().getRoomControlConfig().getVideoMode()){
                 int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
                 view.setLayoutParams(new ViewGroup.LayoutParams(widthPixels/4, widthPixels/3));
             }
@@ -70,7 +71,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return new SelfViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.tx_layout_trtc_func, parent, false);
-            if (1 == TXSdk.getInstance().getRoomControlConfig().getVideoMode()){
+            if (VideoMode.getVIDEOMODE_HORIZONTAL() == TXSdk.getInstance().getRoomControlConfig().getVideoMode()){
                 int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
                 view.setLayoutParams(new ViewGroup.LayoutParams(widthPixels/4, widthPixels/3));
             }
@@ -149,8 +150,8 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     MemberEntity item = list.get(position);
                     ((OtherViewHolder) holder).bind(item);
                 } else if (holder instanceof SelfViewHolder) {
-//                    MemberEntity item = list.get(position);
-//                    ((SelfViewHolder) holder).showNoVideo(item.isScreen(),false);
+                    MemberEntity item = list.get(position);
+                    ((SelfViewHolder) holder).bind(item);
                 }
             }else if (NAME_CHANGE.equals(payloads.get(0))) {
                 if (holder instanceof OtherViewHolder) {

@@ -184,10 +184,16 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             mUserSignal.setVisibility(View.GONE);
         }
         showVolume(model.isShowAudioEvaluation());
-        showNoVideo(!model.isVideoAvailable(), true);
-//        showHost(model.isHost());
+        if (model.isMuteVideo()) {
+            showNoVideo(true, true);
+        } else {
+            showNoVideo(false, true);
+        }
+        showHost(model.isHost());
     }
     private MemberListAdapter.ListCallback mListCallback;
+
+
 
     public void bind(final MemberEntity model,
                      final MemberListAdapter.ListCallback listener) {
@@ -198,8 +204,8 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         MeetingVideoView videoView = mMemberEntity.getMeetingVideoView();
         if (videoView != null) {
         }
-        videoView.setWaitBindGroup(mVideoContainer);
         mVideoContainer.removeAllViews();
+        videoView.setWaitBindGroup(mVideoContainer);
         //展示其他数据
         if (!TextUtils.isEmpty(model.getUserAvatar())) {
 //                Picasso.get().load(model.getUserAvatar()).placeholder(R.drawable.meeting_head).into(mUserHeadImg);

@@ -2368,14 +2368,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 isShowOutSide = false
             }
             val bigmeetingVideoView = bigMeetingEntity?.meetingVideoView
-            bigscreen.bigScreenView?.removeView(bigmeetingVideoView)
-//            mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
-//                bigMeetingEntity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                true
-//            )
+            bigmeetingVideoView?.detach()
 
+            bigscreen.bigScreenView?.removeView(bigmeetingVideoView)
             mPresenter?.addMemberEntity(1, bigMeetingEntity!!)
+//            bigMeetingEntity?.meetingVideoView?.refreshParent()
             mMemberListAdapter!!.notifyItemInserted(1)
 
         }
@@ -2552,30 +2549,34 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             var entity = mPresenter!!.getStringMemberEntityMap()[screenUserId]
 
             val mMeetingVideoView = bigMeetingEntity?.meetingVideoView
+            mMeetingVideoView?.detach()
             entity?.apply {
                 meetingVideoView = mMeetingVideoView
                 isShowOutSide = false
-                isNeedFresh = false
+                isNeedFresh = true
+                userId = bigMeetingEntity?.userId
+                userName = bigMeetingEntity?.userName
+                userRoleIconPath = bigMeetingEntity?.userRoleIconPath
+                isAudioAvailable = bigMeetingEntity?.isAudioAvailable!!
+                isVideoAvailable = bigMeetingEntity?.isVideoAvailable!!
+                isShowAudioEvaluation = bigMeetingEntity?.isShowAudioEvaluation!!
+                userRole = bigMeetingEntity?.userRole!!
             }
 
             bigscreenview?.visibility = View.GONE
-//            mPresenter!!.getTRTCRemoteUserManager().setRemoteFillMode(
-//                entity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                true
-//            )
-
+            entity?.meetingVideoView?.refreshParent()
             val indexOf = mPresenter!!.getMemberEntityList().indexOf(
                 entity
             )
             if (indexOf < 0) {
 
             } else {
-                mMemberListAdapter?.notifyItemChanged(
-                    mPresenter!!.getMemberEntityList().indexOf(
-                        entity
-                    )
-                )
+                //todo 这里不能刷新
+//                mMemberListAdapter?.notifyItemChanged(
+//                    mPresenter!!.getMemberEntityList().indexOf(
+//                        entity
+//                    )
+//                )
             }
 
 
@@ -2604,12 +2605,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
             mScreenView?.visibility = View.GONE
-            mPresenter!!.getTRTCRemoteUserManager().setRemoteFillMode(
-                entity?.userId,
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                true
-            )
 
+            entity?.meetingVideoView?.refreshParent()
             val indexOf = mPresenter!!.getMemberEntityList().indexOf(
                 entity
             )
