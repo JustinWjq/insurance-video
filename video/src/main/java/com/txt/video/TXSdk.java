@@ -5,6 +5,7 @@ import android.app.Application;
 
 
 import com.txt.video.common.callback.onSDKListener;
+import com.txt.video.common.toast.ToastUtils;
 import com.txt.video.net.bean.TxConfig;
 import com.txt.video.net.http.SystemHttpRequest;
 import com.txt.video.net.utils.TxLogUtils;
@@ -39,7 +40,9 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isDemo = false;
 
-    private String SDKVersion = "v1.2.6.1";
+
+    private String SDKVersion = "v1.3.0";
+
 
     private String terminal = "android";
 
@@ -163,6 +166,7 @@ public class TXSdk extends TXSDKApi {
         }
         checkoutNetEnv(en);
         AppUtils.init(application);
+        ToastUtils.init(application);
         mFriendBtObservable = new FriendBtObservable();
     }
 

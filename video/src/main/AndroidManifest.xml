@@ -16,7 +16,7 @@
             android:name=".ui.boardpage.BoardViewActivity"
             android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/tx_NewActivityTheme1" />
+            android:theme="@style/tx_NewActivityTheme" />
         <activity
             android:name=".ui.video.VideoActivity"
             android:launchMode="singleTask"

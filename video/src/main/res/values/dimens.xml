@@ -17,6 +17,8 @@
     <dimen name="tx_dp_20">20dp</dimen>
     <dimen name="tx_dp_38">38dp</dimen>
     <dimen name="tx_dp_40">40dp</dimen>
+    <dimen name="tx_dp_60">60dp</dimen>
+    <dimen name="tx_dp_100">100dp</dimen>
 
     <dimen name="tx_sp_14">14sp</dimen>
     <dimen name="tx_sp_16">16sp</dimen>

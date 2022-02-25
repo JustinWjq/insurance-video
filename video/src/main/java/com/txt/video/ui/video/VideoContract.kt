@@ -33,25 +33,25 @@ public class VideoContract {
 
         fun initBoard()
 
-        fun updateAdapter(json :String)
+        fun updateAdapter(json: String)
 
         fun uploadFileSuccess()
 
-        fun uploadFileFail(msg : String)
+        fun uploadFileFail(msg: String)
 
-        fun sendReq(req : BaseReq)
+        fun sendReq(req: BaseReq)
 
-        fun  startSoundSuccess()
+        fun startSoundSuccess()
 
-        fun  startShareSuccess(
+        fun startShareSuccess(
             shareStatus: Boolean,
             url: String?,
             images: MutableList<String>?
         )
 
-        fun  startShareFail(shareStatus: Boolean)
+        fun startShareFail(shareStatus: Boolean)
 
-        fun  startSoundFail()
+        fun startSoundFail()
 
         fun getRoomInfoSuccess(
             json: String?,
@@ -66,15 +66,15 @@ public class VideoContract {
 
         fun showFail()
 
-        fun showWhiteBroad(isShow:Boolean)
+        fun showWhiteBroad(isShow: Boolean)
 
-        fun showPersonWhiteBroad(isShow:Boolean)
+        fun showPersonWhiteBroad(isShow: Boolean)
 
-        fun showBroadFileRv(isShow:Boolean)
+        fun showBroadFileRv(isShow: Boolean)
 
         fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String)
 
-        fun changeBigScreenViewVoice(volume :Int)
+        fun changeBigScreenViewVoice(volume: Int)
 
         fun checkBigVideoToFirstSmallVideo(isShowToSmall: Boolean)
 
@@ -92,7 +92,7 @@ public class VideoContract {
 
         fun sendSystemMSG()
 
-        fun showInviteBt(isShow: Boolean,noRemoterUser:Boolean)
+        fun showInviteBt(isShow: Boolean, noRemoterUser: Boolean)
 
         fun hideRemoteUserListView(isHiden: Boolean)
 
@@ -127,7 +127,7 @@ public class VideoContract {
 
         fun modifyExitBt()
 
-        fun checkOwenrToBigShareScreen(screenUserId:String)
+        fun checkOwenrToBigShareScreen(screenUserId: String)
 
         fun detachBigShareScreen(screenUserId: String)
 
@@ -153,7 +153,7 @@ public class VideoContract {
             webId: String,
             url: String,
             name: String,
-            fileName:String
+            fileName: String
         )
 
         fun showWebDialog(
@@ -166,11 +166,11 @@ public class VideoContract {
             fromUserId: String
         )
 
-        fun updateWebUrlAdapter(json :String)
+        fun updateWebUrlAdapter(json: String)
 
         fun uploadWebUrlSuccess()
 
-        fun uploadWebUrlFail(msg : String)
+        fun uploadWebUrlFail(msg: String)
 
         fun hideWebDialog()
 
@@ -185,7 +185,7 @@ public class VideoContract {
 
         fun addToAllMemberEntity(entity: MemberEntity)
 
-        fun addMemberEntity(positon:Int,entity: MemberEntity)
+        fun addMemberEntity(positon: Int, entity: MemberEntity)
 
         fun removeMemberEntity(userId: String): Int
 
@@ -229,7 +229,7 @@ public class VideoContract {
 
         fun logoutClassRoom()
 
-        fun startLocalPreview(viewVideo : MeetingVideoView)
+        fun startLocalPreview(viewVideo: MeetingVideoView)
 
         fun stopLocalPreview()
 
@@ -249,17 +249,17 @@ public class VideoContract {
 
         fun joinClassroom(mBoardCallback: MyBoardCallback)
 
-        fun sendGroupMessage(msg: String,type: String="")
+        fun sendGroupMessage(msg: String, type: String = "")
 
         fun update()
 
-        fun  uploadFile(data1: Uri?)
+        fun uploadFile(data1: Uri?)
 
-        fun  requestWX()
+        fun requestWX()
 
         fun startShare()
 
-        fun setScreenStatus(screenStatus : Boolean)
+        fun setScreenStatus(screenStatus: Boolean)
 
         fun setShareStatus(
             screenStatus: Boolean,
@@ -267,7 +267,7 @@ public class VideoContract {
             images: MutableList<String>?
         )
 
-        fun  deleteFile(id: String?)
+        fun deleteFile(id: String?)
 
         fun getRoomInfo(
             userId: String,
@@ -279,7 +279,7 @@ public class VideoContract {
 
         fun processVideoPlay(fromItem: Int, toItem: Int)
 
-        fun setIMTextData(type :String) :JSONObject
+        fun setIMTextData(type: String): JSONObject
 
         fun extendTime()
 
@@ -295,11 +295,11 @@ public class VideoContract {
 
         fun muteLocalAudio(enableAudio: Boolean)
 
-        fun chooseFile(isChooseFile:Boolean)
+        fun chooseFile(isChooseFile: Boolean)
 
-        fun setMuteVideoMemberToJSON(isVideoType:Boolean,usedId:String) : JSONArray
+        fun setMuteVideoMemberToJSON(isVideoType: Boolean, usedId: String): JSONArray
 
-        fun setAllVideoStatusMemberToJSON(isVideoType:Boolean, isMute:Boolean) : JSONArray
+        fun setAllVideoStatusMemberToJSON(isVideoType: Boolean, isMute: Boolean): JSONArray
 
         fun unitConfig()
 
@@ -311,23 +311,23 @@ public class VideoContract {
 
         fun getRoomScreenStatus(): Boolean
 
-        fun setRoomScreenStatus(isScreenStatus :Boolean)
+        fun setRoomScreenStatus(isScreenStatus: Boolean)
 
         fun getRoomSoundStatus(): Boolean
 
-        fun setRoomSoundStatus(isSoundStatus :Boolean)
+        fun setRoomSoundStatus(isSoundStatus: Boolean)
 
         fun getRoomShareStatus(): Boolean
 
-        fun setRoomShareStatus(isShareStatus :Boolean)
+        fun setRoomShareStatus(isShareStatus: Boolean)
 
         fun endUser()
 
-        fun getOwnerUserId():String
+        fun getOwnerUserId(): String
 
-        fun getScreenUserId():String
+        fun getScreenUserId(): String
 
-        fun getShareUserId():String
+        fun getShareUserId(): String
 
         fun startShareWeb(
             webId: String,
@@ -337,9 +337,9 @@ public class VideoContract {
             fileName: String
         )
 
-        fun stopShareWeb(userId:String,webId:String,serviceId:String,isSelf:Boolean=true)
+        fun stopShareWeb(userId: String, webId: String, serviceId: String, isSelf: Boolean = true)
 
-        fun getRoomInfo(id: String?, url: String, name: String,fileName:String)
+        fun getRoomInfo(id: String?, url: String, name: String, fileName: String)
 
         fun addShareUrl(id: String?, name: String, url: String)
 
@@ -347,7 +347,7 @@ public class VideoContract {
 
         fun setShareWebId(webId: String?)
 
-        fun getShareWebId() :String
+        fun getShareWebId(): String
 
         fun getPushWebUrl(
             userId: String,
@@ -356,5 +356,11 @@ public class VideoContract {
             url: String,
             name: String
         )
+
+        fun getSelfName(): String
+
+        fun getShareUserName(): String
+
+        fun setShareUserId(shareUserId:String)
     }
 }

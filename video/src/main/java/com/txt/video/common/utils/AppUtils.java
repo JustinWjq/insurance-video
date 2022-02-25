@@ -102,10 +102,6 @@ public final class AppUtils {
             }
         }
 
-        ToastUtils.setBgResource(R.drawable.tx_shape_round);
-        ToastUtils.setMsgColor(0xFFFFFFFF);
-        ToastUtils.setGravity(Gravity.CENTER,0,0);
-        ToastUtils.setMsgTextSize(18);
     }
 
     /**
@@ -120,7 +116,7 @@ public final class AppUtils {
         return app;
     }
 
-    static ActivityLifecycleImpl getActivityLifecycle() {
+    public static ActivityLifecycleImpl getActivityLifecycle() {
         return ACTIVITY_LIFECYCLE;
     }
 
@@ -128,13 +124,17 @@ public final class AppUtils {
         return ACTIVITY_LIFECYCLE.mActivityList;
     }
 
-    static Context getTopActivityOrApp() {
+    public static Context getTopActivityOrApp() {
         if (isAppForeground()) {
             Activity topActivity = ACTIVITY_LIFECYCLE.getTopActivity();
             return topActivity == null ? AppUtils.getApp() : topActivity;
         } else {
             return AppUtils.getApp();
         }
+    }
+
+    public static Activity getTopActivity() {
+        return ACTIVITY_LIFECYCLE.getTopActivity();
     }
 
     static boolean isAppForeground() {
@@ -340,7 +340,7 @@ public final class AppUtils {
             fixSoftInputLeaks(activity);
         }
 
-        Activity getTopActivity() {
+        public  Activity getTopActivity() {
             if (!mActivityList.isEmpty()) {
                 for (int i = mActivityList.size() - 1; i >= 0; i--) {
                     Activity activity = mActivityList.get(i);

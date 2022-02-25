@@ -75,13 +75,13 @@ public class SelectChannelDialog extends Dialog implements View.OnClickListener 
         int id = v.getId();
         if (mListener != null) {
             if (id == R.id.tv_endshare) {
-                mListener.onCheckFileWhiteBroad();
+                mListener.onCheckFileOnWhiteBroad();
                 dismiss();
             } else if (id == R.id.tv_pushshare) {
-                mListener.onCheckBroad();
+                mListener.onCheckWhiteBroad();
                 dismiss();
             } else if (id == R.id.atv_endshare) {
-                mListener.onShareWhiteBroadEnd();
+                mListener.onShareScreenUrl();
                 dismiss();
             }else if (id == R.id.atv_exit) {
                 dismiss();

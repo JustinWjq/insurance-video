@@ -3,6 +3,7 @@ package com.txt.video.trtc.videolayout.list;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -210,7 +211,29 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         });
 //        showHost(model.isHost());
     }
-
+    public void bind(final MemberEntity model){
+        mMemberEntity = model;
+        changeUserName(model);
+        if (model.getQuality() == MemberEntity.QUALITY_GOOD) {
+            mUserSignal.setVisibility(View.VISIBLE);
+            mUserSignal.setImageResource(R.drawable.tx_signal6);
+        } else if (model.getQuality() == MemberEntity.QUALITY_NORMAL) {
+            mUserSignal.setVisibility(View.VISIBLE);
+            mUserSignal.setImageResource(R.drawable.tx_signal3);
+        } else if (model.getQuality() == MemberEntity.QUALITY_BAD) {
+            mUserSignal.setVisibility(View.VISIBLE);
+            mUserSignal.setImageResource(R.drawable.tx_signal1);
+        } else {
+            mUserSignal.setVisibility(View.GONE);
+        }
+        showVolume(model.isShowAudioEvaluation());
+        if (model.isMuteVideo()) {
+            showNoVideo(true, true);
+        } else {
+            showNoVideo(false, true);
+        }
+        showHost(model.isHost());
+    }
     private void initView(final View itemView) {
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
@@ -220,5 +243,8 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
+//        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
+
     }
 }

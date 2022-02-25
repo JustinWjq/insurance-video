@@ -9,11 +9,14 @@
     android:keepScreenOn="true"
     tools:context=".ui.boardpage.BoardViewActivity">
 
+
+
     <FrameLayout
         android:id="@+id/board_view_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -162,6 +165,43 @@
     </LinearLayout>
 
 
+    <TextView
+        android:id="@+id/tv_endshare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="结束共享"
+        android:textSize="16sp"
+        android:padding="@dimen/tx_dp_8"
+        android:textColor="@color/tx_white"
+        android:background="@drawable/tx_shape_round_red_5"
+        android:layout_marginTop="@dimen/tx_dp_5"
+        android:layout_marginEnd="@dimen/tx_dp_5"
+        android:onClick="onTxClick"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/tv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="返回"
+        android:textSize="16sp"
+        android:padding="@dimen/tx_dp_8"
+        android:textColor="@color/tx_black"
+        android:background="@drawable/tx_shape_round_5"
+        android:layout_marginTop="@dimen/tx_dp_5"
+        android:layout_marginStart="@dimen/tx_dp_5"
+        android:drawableLeft="@drawable/tx_icon_left"
+        android:drawablePadding="@dimen/tx_dp_5"
+        android:onClick="onTxClick"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:visibility="visible"
+        />
 
     <ImageButton
         android:id="@+id/tx_ib_checkscreen1"
@@ -169,11 +209,13 @@
         android:layout_height="wrap_content"
         android:onClick="onTxClick"
         android:src="@drawable/tx_icon_landscape"
+        android:visibility="invisible"
         android:layout_marginBottom="@dimen/tx_dp_20"
         android:layout_marginEnd="@dimen/tx_dp_20"
         style="@style/tx_style_button"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         app:layout_constraintRight_toRightOf="parent"
+        tools:visibility="visible"
          />
 
 

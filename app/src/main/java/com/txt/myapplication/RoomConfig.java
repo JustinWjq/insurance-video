@@ -7,4 +7,5 @@ package com.txt.myapplication;
  */
 public class RoomConfig {
     static boolean showVideo = true;
+    static int videoMode = 1;
 }

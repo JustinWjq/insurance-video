@@ -38,4 +38,8 @@ public  class IntentKey {
 
     public static String ENDWHITEBROAD = "endWhiteBroad";
 
+    public static String ISSHAREPERSON = "isSharePerson";
+
+    public static String PRESENTER = "presenter";
+
 }

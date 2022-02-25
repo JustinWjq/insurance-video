@@ -49,7 +49,7 @@ public class MeetingVideoView extends TXCloudVideoView {
     }
 
     public void setPlaying(boolean playing) {
-        Log.d(TAG, "setPlaying: " + getMeetingUserId() + " " + playing);
+        TxLogUtils.i(TAG, "setPlaying: " + getMeetingUserId() + " " + playing);
         isPlaying = playing;
         if (!isPlaying) {
             setVisibility(GONE);
@@ -86,14 +86,14 @@ public class MeetingVideoView extends TXCloudVideoView {
     public void detach() {
         if (!isSelfView) {
             ViewGroup viewGroup = (ViewGroup) getParent();
-            TxLogUtils.d(TAG, "detach: " + getMeetingUserId() + " " + viewGroup);
+            TxLogUtils.i(TAG, "detach: " + getMeetingUserId() + " " + viewGroup);
             if (viewGroup != null) {
                 preViewGroup = new WeakReference<>(viewGroup);
                 viewGroup.removeView(this);
             }
         } else {
             ViewGroup viewGroup = (ViewGroup) mSurfaceView.getParent();
-            TxLogUtils.d(TAG, "detach: " + getMeetingUserId() + " " + viewGroup);
+            TxLogUtils.i(TAG, "detach: " + getMeetingUserId() + " " + viewGroup);
             if (viewGroup != null) {
                 preViewGroup = new WeakReference<>(viewGroup);
                 viewGroup.removeView(mSurfaceView);
@@ -171,22 +171,22 @@ public class MeetingVideoView extends TXCloudVideoView {
             ViewGroup viewGroup = (ViewGroup) getParent();
             if (!mNeedAttach) {
                 if (viewGroup != null) {
-                    Log.d(TAG, getMeetingUserId() + "detach :" + viewGroup);
+                    TxLogUtils.i(TAG, getMeetingUserId() + "detach :" + viewGroup);
                     viewGroup.removeView(this);
                 }
                 return;
             }
-            Log.d(TAG, getMeetingUserId() + "start attach old:" + viewGroup);
+            TxLogUtils.i(TAG, getMeetingUserId() + "start attach old:" + viewGroup);
             if (viewGroup == null) {
                 if (waitBindGroup != null) {
-                    Log.d(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
+                    TxLogUtils.i(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
                     curViewGroup = waitBindGroup;
                     waitBindGroup.addView(this);
                 }
                 return;
             }
             if (viewGroup != waitBindGroup) {
-                Log.d(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
+                TxLogUtils.i(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
                 viewGroup.removeView(this);
                 preViewGroup = new WeakReference<>(viewGroup);
                 curViewGroup = waitBindGroup;
@@ -196,22 +196,22 @@ public class MeetingVideoView extends TXCloudVideoView {
             ViewGroup viewGroup = (ViewGroup) mSurfaceView.getParent();
             if (!mNeedAttach) {
                 if (viewGroup != null) {
-                    Log.d(TAG, getMeetingUserId() + "detach :" + viewGroup);
+                    TxLogUtils.i(TAG, getMeetingUserId() + "detach :" + viewGroup);
                     viewGroup.removeView(mSurfaceView);
                 }
                 return;
             }
-            Log.d(TAG, getMeetingUserId() + "start attach old:" + viewGroup);
+            TxLogUtils.i(TAG, getMeetingUserId() + "start attach old:" + viewGroup);
             if (viewGroup == null) {
                 if (waitBindGroup != null) {
-                    Log.d(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
+                    TxLogUtils.i(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
                     curViewGroup = waitBindGroup;
                     waitBindGroup.addView(mSurfaceView);
                 }
                 return;
             }
             if (viewGroup != waitBindGroup) {
-                Log.d(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
+                TxLogUtils.i(TAG, "refreshParent " + getMeetingUserId() + " to: " + waitBindGroup);
                 viewGroup.removeView(mSurfaceView);
                 preViewGroup = new WeakReference<>(viewGroup);
                 curViewGroup = waitBindGroup;

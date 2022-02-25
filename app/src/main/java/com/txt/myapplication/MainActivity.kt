@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                     orgAccount,
                     encrypt,
                     businessData,
-                    RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
+                    RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).setVideoMode(RoomConfig.videoMode).build(),
                     object : StartVideoResultOnListener {
                         override fun onResultSuccess() {
 
@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                 orgAccount,
                 encrypt,
                 businessData,
-                RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
+                RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).setVideoMode(RoomConfig.videoMode).build(),
                 object :
                     StartVideoResultOnListener {
                     override fun onResultSuccess() {

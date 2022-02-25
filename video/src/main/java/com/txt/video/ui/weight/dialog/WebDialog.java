@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -134,11 +133,11 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         int id = v.getId();
         if (mListener != null) {
             if (id == R.id.tv_endshare) {
-                mListener.onCheckFileWhiteBroad();
+                mListener.onCheckFileOnWhiteBroad();
             } else if (id == R.id.tx_audio) {
-                mListener.onCheckBroad();
+                mListener.onCheckWhiteBroad();
             } else if (id == R.id.iv_close) {
-                mListener.onShareWhiteBroadEnd();
+                mListener.onShareScreenUrl();
             }else if (id == R.id.atv_exit) {
                 dismiss();
             }

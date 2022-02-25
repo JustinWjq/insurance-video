@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import com.google.gson.Gson;
 import com.txt.video.R;
+import com.txt.video.common.toast.ToastUtils;
 import com.txt.video.net.bean.FileBean;
 import com.txt.video.net.bean.LevelItem1;
 import com.txt.video.net.http.HttpRequestClient;
@@ -25,7 +26,6 @@ import com.txt.video.ui.weight.adapter.ExpandableItemAdapter;
 import com.txt.video.common.adapter.base.TxBaseQuickAdapter;
 import com.txt.video.common.adapter.base.entity.MultiItemEntity;
 import com.txt.video.common.callback.onDialogListenerCallBack;
-import com.txt.video.common.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -305,7 +305,7 @@ public class SelectFileDialog extends Dialog {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ToastUtils.showShort(err);
+                                ToastUtils.show(err);
                             }
                         });
                     }

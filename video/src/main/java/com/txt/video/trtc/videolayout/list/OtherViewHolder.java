@@ -3,10 +3,13 @@ package com.txt.video.trtc.videolayout.list;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -181,10 +184,16 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             mUserSignal.setVisibility(View.GONE);
         }
         showVolume(model.isShowAudioEvaluation());
-        showNoVideo(!model.isVideoAvailable(), true);
-//        showHost(model.isHost());
+        if (model.isMuteVideo()) {
+            showNoVideo(true, true);
+        } else {
+            showNoVideo(false, true);
+        }
+        showHost(model.isHost());
     }
     private MemberListAdapter.ListCallback mListCallback;
+
+
 
     public void bind(final MemberEntity model,
                      final MemberListAdapter.ListCallback listener) {
@@ -195,8 +204,8 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         MeetingVideoView videoView = mMemberEntity.getMeetingVideoView();
         if (videoView != null) {
         }
-        videoView.setWaitBindGroup(mVideoContainer);
         mVideoContainer.removeAllViews();
+        videoView.setWaitBindGroup(mVideoContainer);
         //展示其他数据
         if (!TextUtils.isEmpty(model.getUserAvatar())) {
 //                Picasso.get().load(model.getUserAvatar()).placeholder(R.drawable.meeting_head).into(mUserHeadImg);
@@ -254,5 +263,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
+//        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
     }
 }

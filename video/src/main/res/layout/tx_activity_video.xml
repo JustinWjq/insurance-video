@@ -67,7 +67,7 @@
     </LinearLayout>
 
 
-    <FrameLayout
+    <com.txt.video.ui.weight.view.BigScreenView
         android:id="@+id/bigscreen"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -78,75 +78,57 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_title" />
 
-    <FrameLayout
-        android:id="@+id/trtc_fl_no_video"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/tx_black"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title">
-
-
-        <ImageView
-            android:id="@+id/iv_video_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/tx_icon_bigscreen_close" />
-
-    </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_bigscreen_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginStart="20dp"
-        android:background="@drawable/tx_shape_round_08101d"
+        android:id="@+id/rl_screen"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/tx_color_FA9B00"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/tx_business_video"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:onClick="onTxClick"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title"
+        >
+
         <ImageView
-            android:id="@+id/trtc_icon_host"
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            />
-        <ImageView
-            android:id="@+id/bigscreen_trtc_pb_audio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/tx_icon_roomshare"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/tx_icon_volume_0" />
+            android:layout_toLeftOf="@+id/tv_shareingname"
+            android:layout_marginRight="@dimen/tx_dp_20"
+            />
 
         <TextView
-            android:id="@+id/bigscreen_trtc_tv_content"
-            android:layout_width="60dp"
+            android:id="@+id/tv_shareingname"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/bigscreen_trtc_pb_audio"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="#FFFFFFFF"
-            android:textSize="14sp"
-            tools:text="XXXX" />
+            android:text="正在同屏"
+            android:textColor="@color/tx_white"
+            android:layout_centerInParent="true"
+            tools:text = "xxxx正在同屏"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tx_icon_right"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_shareingname"
+            android:layout_marginLeft="@dimen/tx_dp_20"
+            />
 
 
     </RelativeLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trtc_video_view_layout"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+        app:layout_constraintTop_toBottomOf="@+id/rl_screen"
+        app:layout_constraintBottom_toTopOf="@+id/tx_business_video"
+        />
 
     <ImageView
         android:id="@+id/tx_icon_invite"
@@ -161,158 +143,170 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/board_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/tx_white"
-        android:visibility="gone"
-        app:layout_constraintDimensionRatio="h,16:9"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trtc_video_view_layout"
-        app:layout_constraintBottom_toTopOf="@+id/ll_board_business"
-        />
-
-
-    <!-- Board -->
-    <LinearLayout
-        android:id="@+id/ll_board_business"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_view_container"
-        app:layout_constraintBottom_toTopOf="@+id/tx_business_video"
-        tools:visibility="gone">
-
-        <RelativeLayout
-            android:id="@+id/tx_rl"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <FrameLayout
+            android:id="@+id/board_view_container"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="5dp"
-            android:paddingStart="20dp">
-
-            <LinearLayout
-                android:id="@+id/tx_board_view_business"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/tx_shape_round_3e3e3e"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/tx_pen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:padding="@dimen/tx_dp_5"
-                    android:src="@drawable/tx_pen_status_selector"
-                    android:onClick="onTxClick"
-                    style="@style/tx_style_button"
-                   />
-
-
-                <ImageButton
-                    android:id="@+id/tx_eraser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:padding="@dimen/tx_dp_5"
-                    android:src="@drawable/tx_eraser_status_selector"
-                    android:onClick="onTxClick"
-                    style="@style/tx_style_button"
-                    />
-
-
-                <ImageButton
-                    android:id="@+id/tx_textstyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:padding="@dimen/tx_dp_5"
-                    android:src="@drawable/tx_textsize_status_selector"
-                    android:onClick="onTxClick"
-                    style="@style/tx_style_button"
-                    />
-
-
-                <ImageButton
-                    android:id="@+id/tx_zoom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/tx_dp_5"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="30dp"
-                    android:src="@drawable/tx_zoom_status_selector"
-                    android:onClick="onTxClick"
-                    style="@style/tx_style_button"
-                    />
-
-                <ImageButton
-                    android:id="@+id/tx_laststep"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/tx_dp_5"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="30dp"
-                    android:src="@drawable/tx_laststep_status_selector"
-                    android:onClick="onTxClick"
-                    android:visibility="gone" />
-
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/tx_boardtools"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/tx_boardtools_status_selector"
-                android:visibility="gone"
-                android:onClick="onTxClick"
-                />
-
-            <ImageButton
-                android:id="@+id/tx_ib_checkscreen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tx_icon_portrait"
-                android:onClick="onTxClick"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/tx_dp_10"
-                style="@style/tx_style_button"
-                />
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/rl_rv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/tx_black_80"
-            android:paddingTop="@dimen/tx_dp_5"
-            android:paddingBottom="@dimen/tx_dp_5"
+            android:layout_height="200dp"
+            android:background="@color/tx_white"
             android:visibility="gone"
-            >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tx_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             />
 
-        </RelativeLayout>
 
-    </LinearLayout>
+        <!-- Board -->
+        <LinearLayout
+            android:id="@+id/ll_board_business"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/tx_rl"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:paddingStart="20dp">
+
+                <LinearLayout
+                    android:id="@+id/tx_board_view_business"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/tx_shape_round_3e3e3e"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:id="@+id/tx_pen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:padding="@dimen/tx_dp_5"
+                        android:src="@drawable/tx_pen_status_selector"
+                        android:onClick="onTxClick"
+                        style="@style/tx_style_button"
+                        />
 
 
+                    <ImageButton
+                        android:id="@+id/tx_eraser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:padding="@dimen/tx_dp_5"
+                        android:src="@drawable/tx_eraser_status_selector"
+                        android:onClick="onTxClick"
+                        style="@style/tx_style_button"
+                        />
+
+
+                    <ImageButton
+                        android:id="@+id/tx_textstyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:padding="@dimen/tx_dp_5"
+                        android:src="@drawable/tx_textsize_status_selector"
+                        android:onClick="onTxClick"
+                        style="@style/tx_style_button"
+                        />
+
+
+                    <ImageButton
+                        android:id="@+id/tx_zoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/tx_dp_5"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="30dp"
+                        android:src="@drawable/tx_zoom_status_selector"
+                        android:onClick="onTxClick"
+                        style="@style/tx_style_button"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/tx_laststep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/tx_dp_5"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="30dp"
+                        android:src="@drawable/tx_laststep_status_selector"
+                        android:onClick="onTxClick"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/tx_boardtools"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/tx_boardtools_status_selector"
+                    android:visibility="gone"
+                    android:onClick="onTxClick"
+                    />
+
+                <ImageButton
+                    android:id="@+id/tx_ib_checkscreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/tx_icon_portrait"
+                    android:onClick="onTxClick"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/tx_dp_10"
+                    style="@style/tx_style_button"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/tx_black_80"
+                android:paddingTop="@dimen/tx_dp_5"
+                android:paddingBottom="@dimen/tx_dp_5"
+                android:visibility="gone"
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tx_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.txt.video.ui.weight.view.BigScreenView
+        android:id="@+id/bigscreenview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/tx_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
     <ImageButton
         android:id="@+id/tx_business_video"
         android:layout_width="wrap_content"
