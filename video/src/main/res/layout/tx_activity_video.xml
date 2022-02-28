@@ -104,7 +104,6 @@
             android:id="@+id/tv_shareingname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在同屏"
             android:textColor="@color/tx_white"
             android:layout_centerInParent="true"
             tools:text = "xxxx正在同屏"
@@ -112,7 +111,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tx_icon_right"
+            android:src="@drawable/tx_icon_right_white_arrow"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_shareingname"
             android:layout_marginLeft="@dimen/tx_dp_20"
