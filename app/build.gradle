@@ -118,4 +118,7 @@ dependencies {
 //        exclude group: 'com.github.bumptech.glide:', module: 'glide'
 //
 //    }
+    implementation 'com.umeng.umsdk:common:9.4.4' //（必选）
+    implementation 'com.umeng.umsdk:asms:1.2.1' // asms包依赖(必选)
+    implementation 'com.umeng.umsdk:apm:1.5.2' // U-APM包依赖(必选)
 }

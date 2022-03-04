@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
     fun changeUI() {
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "test_org2"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "xhrsOrg"
                 else -> "gsc_test"
             }
         )
@@ -257,18 +257,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tv_config, R.id.check_bt -> {
-                XPopup.Builder(this)
-                    .setPopupCallback(object : SimpleCallback() {
-                        override fun onDismiss() {
-                            super.onDismiss()
-                            changeUI()
-
-                        }
-                    })
-                    .hasStatusBarShadow(true)
-                    .autoOpenSoftInput(true)
-                    .asCustom(CustomFullScreenPopup(this))
-                    .show()
+//                XPopup.Builder(this)
+//                    .setPopupCallback(object : SimpleCallback() {
+//                        override fun onDismiss() {
+//                            super.onDismiss()
+//                            changeUI()
+//
+//                        }
+//                    })
+//                    .hasStatusBarShadow(true)
+//                    .autoOpenSoftInput(true)
+//                    .asCustom(CustomFullScreenPopup(this))
+//                    .show()
             }
             else -> {
             }

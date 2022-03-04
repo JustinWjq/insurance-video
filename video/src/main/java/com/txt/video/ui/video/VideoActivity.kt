@@ -443,7 +443,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mPresenter?.startRecord()
             // 发起云端混流
             mPresenter?.getTRTCRemoteUserManager()!!.updateCloudMixtureParams()
-            showActivityFloat()
+//            showActivityFloat()
         } else {
             TxLogUtils.i("txsdk---onEnterRoom-----耗时$elapsed 毫秒")
             ToastUtils.showShort(R.string.tx_joinroom_error)

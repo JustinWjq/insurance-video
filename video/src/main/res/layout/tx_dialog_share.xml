@@ -40,6 +40,7 @@
         android:gravity="center"
         android:src="@drawable/tx_icon_share_fd"
         android:layout_marginTop="30dp"
+        android:visibility="gone"
         style="@style/tx_style_click"
         app:layout_constraintLeft_toRightOf="@+id/tv_uploadpic"
         app:layout_constraintRight_toLeftOf="@+id/tv_uploadfile"
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/tx_icon_share_msg"
         style="@style/tx_style_click"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@+id/tv_share_fd"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_uploadpic" />

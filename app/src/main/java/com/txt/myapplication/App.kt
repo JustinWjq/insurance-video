@@ -6,6 +6,7 @@ import android.content.Context
 import com.tencent.bugly.crashreport.CrashReport
 import com.txt.video.TXSdk
 import com.txt.video.net.bean.TxConfig
+import com.umeng.commonsdk.UMConfigure
 
 /**
  * Created by JustinWjq
@@ -31,6 +32,7 @@ class App : Application() {
         TXSdk.getInstance().isDemo = true
         CrashReport.initCrashReport(this, "8351c98a70", true)
 
+        UMConfigure.init(this, "6221de8a2b8de26e11e1ad81", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     override fun attachBaseContext(base: Context?) {

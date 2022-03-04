@@ -20,7 +20,7 @@ public data class TxConfig(
 
     @JvmField var  miniprogramDescription: String = "",
 
-    @JvmField var  miniProgramPath: String = "/pages/index/index"
+    @JvmField var  miniProgramPath: String = "/components/PromoteBusiness/pages/index/index"
 
 
 )
