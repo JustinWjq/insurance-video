@@ -21,4 +21,6 @@ public interface PageListener {
     void onPageSelect(int pageIndex);
 
     void onItemVisible(int fromItem, int toItem);
+
+    void onLayoutCompleted(int count);
 }

@@ -6,6 +6,7 @@ import android.content.Context
 import com.tencent.bugly.crashreport.CrashReport
 import com.txt.video.TXSdk
 import com.txt.video.net.bean.TxConfig
+import com.umeng.commonsdk.UMConfigure
 
 /**
  * Created by JustinWjq
@@ -25,12 +26,13 @@ class App : Application() {
         txConfig.userName = "gh_9fd3da8ad9f6"
         txConfig.miniprogramTitle = ""//显示小程序描述
         txConfig.miniprogramDescription = ""//显示小程序描述
+        txConfig.miniProgramPath = "/components/PromoteBusiness/pages/index/index"//小程序跳转路径
         //2。域名环境 3。log显示 4。分享小程序的配置
         TXSdk.getInstance().init(this, TXSdk.Environment.TEST, true, txConfig)
         //设置演示demo 为true 为了一个手机装两个app，一个是客户的，一个是演示的app，区分隐式跳转
         TXSdk.getInstance().isDemo = true
-        CrashReport.initCrashReport(this, "8351c98a70", true)
-
+//        CrashReport.initCrashReport(this, "8351c98a70", true)
+        UMConfigure.init(this, "621f2caa2b8de26e11d7f5c3", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     override fun attachBaseContext(base: Context?) {

@@ -115,7 +115,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun initViews() {
-
         //子view的布局先绘制完成了，
         // 自定义layoutmannger修改子布局的大小位置
         showInviteBt(isShow = true, noRemoterUser = true)
@@ -138,8 +137,33 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     if (fromItem == 0) {
                         processSelfVideoPlay()
                         mPresenter?.processVideoPlay(1, toItem)
+                        if (0 != toItem) {
+                            TxLogUtils.i(
+                                "MeetingVideoView",
+                                "onItemVisible : fromItem--${fromItem}--toItem${toItem}"
+                            )
+                            //todo layoutmannger 没有绘制完成，导致width height 都是0
+
+
+                        }
+
                     } else {
                         mPresenter?.processVideoPlay(fromItem, toItem)
+                    }
+                }
+
+                override fun onLayoutCompleted(count: Int) {
+                    if (count >= 2 ) {
+                        mPresenter?.getAllMemberEntityList()?.forEach {
+                            TxLogUtils.i(
+                                "onLayoutCompleted--${count}--${it?.meetingVideoView?.playVideoView?.width}"
+
+                            )
+                            if (0 == it?.meetingVideoView?.playVideoView?.width){
+                                Handler().postDelayed({ mMemberListAdapter?.notifyItemChanged(0, NAME_CHANGE)},2000)
+                            }
+                        }
+
                     }
                 }
 
@@ -162,6 +186,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     } else {
                         mPresenter?.processVideoPlay(fromItem, toItem)
                     }
+                }
+
+                override fun onLayoutCompleted(count: Int) {
+
                 }
 
                 override fun onPageSelect(pageIndex: Int) {
@@ -210,7 +238,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         mListRv?.layoutManager = pageLayoutManager
         mListRv?.adapter = mMemberListAdapter
-
         mStubRemoteUserView = findViewById<ViewStub>(R.id.view_stub_remote_user)
         initPicAdapter()
         regToWx()
@@ -228,6 +255,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         TxLogUtils.i("isEnableVideo---$isEnableVideo")
         mPresenter?.muteLocalVideo(!isEnableVideo)
         mPresenter?.isCloseVideo = !isEnableVideo
+
+//        Handler().postDelayed({
+//            mMemberListAdapter?.notifyItemChanged(0, VOLUME)
+//
+//        }, 3000)
     }
 
     fun selectIb(imageButton: ImageButton) {
@@ -241,11 +273,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         if (null != mPresenter?.getMemberEntityList()) {
             if (0 != mPresenter?.getMemberEntityList()!!.size) {
                 if (null != mPresenter!!.getMemberEntityList().get(0)) {
-                    if (mPresenter!!.getMemberEntityList().get(0).isShowOutSide()) {
+                    if (mPresenter!!.getMemberEntityList()[0].isShowOutSide) {
                         return
                     }
                     val meetingVideoView: MeetingVideoView =
-                        mPresenter!!.getMemberEntityList().get(0).getMeetingVideoView()
+                        mPresenter!!.getMemberEntityList()[0].meetingVideoView
                     meetingVideoView.refreshParent()
                 }
             }
@@ -361,32 +393,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 ), VIDEO_SCREEN_CLOSE
             )
         }
-    }
-
-    private fun test() {
-        TxLogUtils.i("test")
-        val mMeetingVideoView = MeetingVideoView(this@VideoActivity).apply {
-            meetingUserId = "${System.currentTimeMillis()}"
-            isNeedAttach = false
-            isPlaying = true
-        }
-
-        val insertIndex = mPresenter?.getMemberEntityList()!!.size
-        val entity = MemberEntity().apply {
-            userId = "${System.currentTimeMillis()}"
-            userName = ""
-            meetingVideoView = mMeetingVideoView
-            isMuteAudio = true
-            isMuteVideo = true
-            isVideoAvailable = false
-            isAudioAvailable = false
-            isNeedFresh = true
-            isShowAudioEvaluation = false
-        }
-
-        mPresenter?.addToAllMemberEntity(entity)
-        mPresenter?.addMemberEntity(entity)
-        mMemberListAdapter!!.notifyItemInserted(insertIndex)
     }
 
 
@@ -661,7 +667,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 }
 
             } else {
-                if (entity != null) {
+                if (null != entity) {
                     mMemberListAdapter!!.notifyItemChanged(
                         mPresenter?.getMemberEntityList()!!.indexOf(
                             entity
@@ -735,7 +741,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     entity.isShowAudioEvaluation = available
                     mMemberListAdapter!!.notifyItemChanged(
                         mPresenter?.getMemberEntityList()!!.indexOf(entity),
-                        MemberListAdapter.VOLUME_SHOW
+                        MemberListAdapter.VOLUME
                     )
                     //界面暂时没有变更
                 }
@@ -1451,9 +1457,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         rl_screen.visibility = View.GONE
     }
 
-    private fun showSharePersonTipLayout() {
-        rl_screen.visibility = View.VISIBLE
-        tv_shareingname.text = "${mPresenter?.getShareUserName()}正在共享，点击查看"
+    override fun showSharePersonTipLayout() {
+        if (VIDEOMODE_HORIZONTAL != TXSdk.getInstance().roomControlConfig.videoMode) {
+            rl_screen.visibility = View.VISIBLE
+            tv_shareingname.text = "${mPresenter?.getShareUserName()}正在共享，点击查看"
+        }
     }
 
 
@@ -2051,7 +2059,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 showBroadFileRv(false)
             } else {
                 //显示出展示白板分享的人员
-                showSharePersonTipLayout()
+//                showSharePersonTipLayout()
 
             }
 

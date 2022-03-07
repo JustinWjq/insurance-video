@@ -202,6 +202,10 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         changeUserName(model);
         TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + mVideoContainer);
         MeetingVideoView videoView = mMemberEntity.getMeetingVideoView();
+        TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + videoView.getPlayVideoView().getWidth());
+        TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + videoView.getPlayVideoView());
+        TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + videoView);
+        TxLogUtils.d("bind: " + mMemberEntity.getUserId() + " mVideoContainer " + mVideoContainer.getWidth());
         if (videoView != null) {
         }
         mVideoContainer.removeAllViews();

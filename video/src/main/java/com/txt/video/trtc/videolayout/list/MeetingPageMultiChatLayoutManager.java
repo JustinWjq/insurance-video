@@ -222,6 +222,8 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
         // 页面状态回调
         setPageCount(getTotalPageCount());
         setPageIndex(getPageIndexByOffset(), false);
+        setOnLayoutCompleted(getTotalCount());
+        TxLogUtils.i("onLayoutCompleted");
     }
 
     /**
@@ -526,6 +528,11 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
         return totalCount;
     }
 
+    private int getTotalCount() {
+
+        return getItemCount();
+    }
+
     /**
      * 根据pos，获取该View所在的页面
      *
@@ -801,6 +808,12 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             if (null != mPageListener) {
                 mPageListener.onPageSelect(pageIndex);
             }
+        }
+    }
+
+    private void setOnLayoutCompleted(int count){
+        if (null != mPageListener) {
+            mPageListener.onLayoutCompleted(count);
         }
     }
 
