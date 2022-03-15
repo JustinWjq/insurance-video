@@ -234,7 +234,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                     }
 
                     override fun onResultFail(errCode: Int, errMsg: String) {
-
+                        Toast.makeText(this@MainActivity,errMsg,Toast.LENGTH_LONG).show()
                     }
 
                 })
