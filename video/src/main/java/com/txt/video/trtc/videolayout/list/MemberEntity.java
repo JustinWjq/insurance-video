@@ -14,6 +14,15 @@ public class MemberEntity {
     private String userAvatar;
     private String userRole = "";
     private String userRoleIconPath = "";
+    private String userHeadPath = "";
+
+    public String getUserHeadPath() {
+        return userHeadPath;
+    }
+
+    public void setUserHeadPath(String userHeadPath) {
+        this.userHeadPath = userHeadPath;
+    }
 
     private int videoMode = TXSdk.getInstance().getRoomControlConfig().getVideoMode();
 

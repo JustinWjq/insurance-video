@@ -22,18 +22,26 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_video_close"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal"
+                />
+            <ImageView
+                android:id="@+id/iv_video_srccen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/tx_icon_close_video" />
-
+                android:src="@drawable/tx_icon_close_screen"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,7 +66,6 @@
             android:layout_width="15dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:src="@drawable/tx_icon_volume_0"
             android:visibility="invisible" />
 
         <ImageView

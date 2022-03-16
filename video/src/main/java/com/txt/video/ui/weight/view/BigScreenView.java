@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,10 +14,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.content.ContextCompat;
 
 import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.common.glide.TxGlide;
+import com.txt.video.net.utils.TxLogUtils;
 
 /**
  * @author ：Justin
@@ -42,7 +45,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     FrameLayout bigscreen;
     FrameLayout mCloseVideo;
     Group mGroup;
-    ImageView mIconHostPath, mAudioIB;
+    ImageView mIconHostPath, mAudioIB,iv_video_close,iv_video_srccen;
     TextView mName;
     private BigScreenViewCallback mBigScreenViewCallback;
 
@@ -52,6 +55,8 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
         mAudioIB = itemView.findViewById(R.id.trtc_pb_audio);
         mName = itemView.findViewById(R.id.trtc_tv_content);
         mCloseVideo = itemView.findViewById(R.id.trtc_fl_no_video);
+        iv_video_close = itemView.findViewById(R.id.iv_video_close);
+        iv_video_srccen = itemView.findViewById(R.id.iv_video_srccen);
 //
         bigscreen.setOnClickListener(this);
 //        mVideoIB.setOnClickListener(this);
@@ -90,7 +95,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     }
 
     public void muteVideo(boolean isMute) {
-        mIconHostPath.setSelected(isMute);
+       closeVideo(isMute);
     }
 
     public void muteAudio(boolean isMute) {
@@ -121,10 +126,46 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     }
 
     public void closeVideo(boolean isClose) {
+        TxLogUtils.d("closeVideo1234"+"isClose"+isClose);
         if (isClose) {
+            iv_video_close.setVisibility(VISIBLE);
+            ViewGroup.LayoutParams layoutParams = iv_video_close.getLayoutParams();
+            layoutParams.width = 300;
+            layoutParams.height = 440;
+            iv_video_close.setLayoutParams(layoutParams);
+            iv_video_close.setBackground(ContextCompat.getDrawable(this.getContext(),R.drawable.tx_icon_close_video));
             mCloseVideo.setVisibility(VISIBLE);
         } else {
+            iv_video_close.setVisibility(GONE);
             mCloseVideo.setVisibility(GONE);
+        }
+    }
+
+    public void showScreenIcon(boolean isShow){
+        if (isShow) {
+            mCloseVideo.setVisibility(VISIBLE);
+            iv_video_srccen.setVisibility(VISIBLE);
+            iv_video_close.setVisibility(GONE);
+        }else{
+            mCloseVideo.setVisibility(GONE);
+            iv_video_srccen.setVisibility(GONE);
+            iv_video_close.setVisibility(VISIBLE);
+        }
+    }
+
+
+    public void closeVideo(boolean isClose,String url) {
+        TxLogUtils.d("closeVideo1234"+url+"isClose"+isClose);
+        if (isClose) {
+            mCloseVideo.setVisibility(VISIBLE);
+            iv_video_close.setVisibility(VISIBLE);
+
+            TxGlide.with(iv_video_close.getContext()).load(url)
+                    .placeholder(R.drawable.tx_icon_close_video)
+                    .into(iv_video_close);
+        } else {
+            mCloseVideo.setVisibility(GONE);
+            iv_video_close.setVisibility(GONE);
         }
     }
 

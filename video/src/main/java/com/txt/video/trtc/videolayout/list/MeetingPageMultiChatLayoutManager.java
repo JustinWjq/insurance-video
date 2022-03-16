@@ -89,10 +89,10 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
      */
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        TxLogUtils.i("Item onLayoutChildren");
-        TxLogUtils.i("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
-        TxLogUtils.i("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
-        TxLogUtils.i("Item onLayoutChildren state = " + state);
+        TxLogUtils.d("Item onLayoutChildren");
+        TxLogUtils.d("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
+        TxLogUtils.d("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
+        TxLogUtils.d("Item onLayoutChildren state = " + state);
         int mScreenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         if (getItemCount() > 4) {
             mColumns = 3;
@@ -164,7 +164,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             mPageCount++;
         }
 
-        TxLogUtils.i(TAG,"mPageCount:"+mPageCount);
+        TxLogUtils.d(TAG,"mPageCount:"+mPageCount);
 
         // 计算可以滚动的最大数值，并对滚动距离进行修正
         if (canScrollHorizontally()) {
@@ -195,7 +195,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
 
         mWidthUsed = getUsableWidth() - mItemWidth;
         mHeightUsed = getUsableHeight() - mItemWidth;
-        TxLogUtils.i("mOnePageSize =" + mOnePageSize + "count = " + getItemCount() + "\n" + "mWidthUsed = " + mWidthUsed + "\n" + "mHeightUsed=" + mHeightUsed);
+        TxLogUtils.d("mOnePageSize =" + mOnePageSize + "count = " + getItemCount() + "\n" + "mWidthUsed = " + mWidthUsed + "\n" + "mHeightUsed=" + mHeightUsed);
         // 预存储两页的View显示区域
         //count 大于4 原来存的尺寸需要更新
         //count 由5变成4的尺寸也要更新
@@ -223,7 +223,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
         setPageCount(getTotalPageCount());
         setPageIndex(getPageIndexByOffset(), false);
         setOnLayoutCompleted(getTotalCount());
-        TxLogUtils.i("onLayoutCompleted");
+        TxLogUtils.d("onLayoutCompleted");
     }
 
     /**
@@ -239,21 +239,21 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             return;
         }
 
-        TxLogUtils.i("mOffsetX = " + mOffsetX);
-        TxLogUtils.i("mOffsetY = " + mOffsetY);
+        TxLogUtils.d("mOffsetX = " + mOffsetX);
+        TxLogUtils.d("mOffsetY = " + mOffsetY);
 
         // 计算显示区域区前后多存储一列或则一行
         Rect displayRect = new Rect(mOffsetX - mItemWidth, mOffsetY - mItemHeight,
                 getUsableWidth() + mOffsetX + mItemWidth, getUsableHeight() + mOffsetY + mItemHeight);
         // 对显显示区域进行修正(计算当前显示区域和最大显示区域对交集)
         displayRect.intersect(0, 0, mMaxScrollX + getUsableWidth(), mMaxScrollY + getUsableHeight());
-        TxLogUtils.i("displayRect = " + displayRect.toString());
+        TxLogUtils.d("displayRect = " + displayRect.toString());
 
         int startPos = 0;                  // 获取第一个条目的Pos
         int pageIndex = getPageIndexByOffset();
         startPos = pageIndex * mOnePageSize;
-        TxLogUtils.i("startPos = " + startPos);
-        TxLogUtils.i("pageIndex = " + pageIndex);
+        TxLogUtils.d("startPos = " + startPos);
+        TxLogUtils.d("pageIndex = " + pageIndex);
         startPos = startPos - mOnePageSize * 2;
         if (startPos < 0) {
             startPos = 0;
@@ -263,8 +263,8 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             stopPos = getItemCount();
         }
 
-        TxLogUtils.i("startPos = " + startPos);
-        TxLogUtils.i("stopPos = " + stopPos);
+        TxLogUtils.d("startPos = " + startPos);
+        TxLogUtils.d("stopPos = " + stopPos);
 
         detachAndScrapAttachedViews(recycler); // 移除所有View
 
@@ -277,13 +277,13 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
                 addOrRemove(recycler, displayRect, i);
             }
         }
-        TxLogUtils.i("child count = " + getChildCount());
+        TxLogUtils.d("child count = " + getChildCount());
         startPos = pageIndex * mOnePageSize;
         stopPos = startPos + mOnePageSize - 1;
         if (stopPos >= getItemCount()) {
             stopPos = getItemCount() - 1;
         }
-        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
+        TxLogUtils.d("visible from " + startPos + " to " + stopPos);
         if (mPageListener != null) {
             mPageListener.onItemVisible(startPos, stopPos);
         }
@@ -363,19 +363,19 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             state) {
         int newY = mOffsetY + dy;
         int result = dy;
-        TxLogUtils.i(TAG,"scrollVerticallyBy----newY" + newY);
-        TxLogUtils.i(TAG,"scrollVerticallyBy----result" + result);
-        TxLogUtils.i(TAG,"scrollVerticallyBy----mMaxScrollY" + mMaxScrollY);
+        TxLogUtils.d(TAG,"scrollVerticallyBy----newY" + newY);
+        TxLogUtils.d(TAG,"scrollVerticallyBy----result" + result);
+        TxLogUtils.d(TAG,"scrollVerticallyBy----mMaxScrollY" + mMaxScrollY);
         if (newY > mMaxScrollY) {
             result = mMaxScrollY - mOffsetY;
         } else if (newY < 0) {
             result = 0 - mOffsetY;
         }
         mOffsetY += result;
-        TxLogUtils.i(TAG,"scrollVerticallyBy----result" + result);
+        TxLogUtils.d(TAG,"scrollVerticallyBy----result" + result);
         setPageIndex(getPageIndexByOffset(), true);
         offsetChildrenVertical(-result);
-        TxLogUtils.i(TAG,"scrollVerticallyBy" + result);
+        TxLogUtils.d(TAG,"scrollVerticallyBy" + result);
 //        onLayoutChildren(recycler, state);
         if (result > 0) {
             recycleAndFillItems(recycler, state, true);
@@ -392,7 +392,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
      */
     @Override
     public void onScrollStateChanged(int state) {
-        TxLogUtils.i("onScrollStateChanged = " + state);
+        TxLogUtils.d("onScrollStateChanged = " + state);
         mScrollState = state;
         super.onScrollStateChanged(state);
         if (state == SCROLL_STATE_IDLE) {
@@ -429,7 +429,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
 
             // 3. 根据在当前页面中的位置确定具体偏移量
             int pagePos = pos % mOnePageSize;       // 在当前页面中是第几个
-            TxLogUtils.i("mColumns = " + mColumns);
+            TxLogUtils.d("mColumns = " + mColumns);
 
             int row = pagePos / mColumns;           // 获取所在行 ,起步是0行
             int col = pagePos - (row * mColumns);   // 获取所在列 ,起步是0列
@@ -439,7 +439,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
                 //大于1行，大于1列
                 if (row >= 1) {
                     int allSize = pagePos+1+page*mOnePageSize;
-                    TxLogUtils.i(TAG,"总个数："+allSize+"第"+page+"页,第"+row+"行，第"+col+"列，当前页面第"+pagePos+"个");
+                    TxLogUtils.d(TAG,"总个数："+allSize+"第"+page+"页,第"+row+"行，第"+col+"列，当前页面第"+pagePos+"个");
                     if (getItemCount() % mColumns == 1 && allSize== getItemCount()  ) {
                         offsetX = offsetX + col * mItemWidth + mItemWidth;
                         offsetY = offsetY + row * mItemWidth;
@@ -476,13 +476,13 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
 
 
             // 状态输出，用于调试
-            TxLogUtils.i("pagePos = " + pagePos);
-            TxLogUtils.i("行 = " + row);
-            TxLogUtils.i("列 = " + col);
+            TxLogUtils.d("pagePos = " + pagePos);
+            TxLogUtils.d("行 = " + row);
+            TxLogUtils.d("列 = " + col);
 
-            TxLogUtils.i("offsetX = " + offsetX);
-            TxLogUtils.i("offsetY = " + offsetY);
-            TxLogUtils.i("mItemWidth = " + mItemWidth);
+            TxLogUtils.d("offsetX = " + offsetX);
+            TxLogUtils.d("offsetY = " + offsetY);
+            TxLogUtils.d("mItemWidth = " + mItemWidth);
 
             rect.left = offsetX;
             rect.top = offsetY;
@@ -555,14 +555,14 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
             if (mOffsetY <= 0 || pageHeight <= 0) {
                 pageIndex = 0;
             } else {
-                TxLogUtils.i(TAG,"mOffsetY-----"+mOffsetY);
+                TxLogUtils.d(TAG,"mOffsetY-----"+mOffsetY);
                 pageIndex = mOffsetY / pageHeight;
-                TxLogUtils.i(TAG,"mOffsetY-----pageIndex"+(mOffsetY % pageHeight));
-                TxLogUtils.i(TAG,"mOffsetY-----pageHeight"+(pageHeight / 3));
+                TxLogUtils.d(TAG,"mOffsetY-----pageIndex"+(mOffsetY % pageHeight));
+                TxLogUtils.d(TAG,"mOffsetY-----pageHeight"+(pageHeight / 3));
                 if (mOffsetY % pageHeight > 0) {
                     pageIndex++;
                 }
-                TxLogUtils.i(TAG,"mOffsetY-----pageIndex"+pageIndex);
+                TxLogUtils.d(TAG,"mOffsetY-----pageIndex"+pageIndex);
             }
         } else {
             int pageWidth = getUsableWidth();
@@ -575,7 +575,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
                 }
             }
         }
-        TxLogUtils.i("getPageIndexByOffset pageIndex = " + pageIndex);
+        TxLogUtils.d("getPageIndexByOffset pageIndex = " + pageIndex);
         return pageIndex;
     }
 
@@ -652,7 +652,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
         if (page >= getTotalPageCount()) {
             page = getTotalPageCount() - 1;
         }
-        TxLogUtils.i("computeScrollVectorForPosition next = " + page);
+        TxLogUtils.d("computeScrollVectorForPosition next = " + page);
         return page * mOnePageSize;
     }
 
@@ -665,11 +665,11 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
         // 在获取时由于前一页的View预加载出来了，所以获取到的直接就是前一页
         int page = mLastPageIndex;
         page--;
-        TxLogUtils.i("computeScrollVectorForPosition pre = " + page);
+        TxLogUtils.d("computeScrollVectorForPosition pre = " + page);
         if (page < 0) {
             page = 0;
         }
-        TxLogUtils.i("computeScrollVectorForPosition pre = " + page);
+        TxLogUtils.d("computeScrollVectorForPosition pre = " + page);
         return page * mOnePageSize;
     }
 
@@ -792,7 +792,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
      * @param isScrolling 是否处于滚动状态
      */
     private void setPageIndex(int pageIndex, boolean isScrolling) {
-        TxLogUtils.i("setPageIndex = " + pageIndex + ":" + isScrolling);
+        TxLogUtils.d("setPageIndex = " + pageIndex + ":" + isScrolling);
         if (pageIndex == mLastPageIndex) return;
         // 如果允许连续滚动，那么在滚动过程中就会更新页码记录
         if (isAllowContinuousScroll()) {
@@ -834,7 +834,7 @@ public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManage
      */
     @OrientationType
     public int setOrientationType(@OrientationType int orientation) {
-        TxLogUtils.i(TAG,"setOrientationType");
+        TxLogUtils.d(TAG,"setOrientationType");
         if (mOrientation == orientation || mScrollState != SCROLL_STATE_IDLE) return mOrientation;
         mOrientation = orientation;
         mItemFrames.clear();

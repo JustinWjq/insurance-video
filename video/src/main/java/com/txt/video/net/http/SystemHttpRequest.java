@@ -52,7 +52,7 @@ public class SystemHttpRequest {
     public void changeIP(TXSdk.Environment environment) {
         switch (environment) {
             case DEV:
-                IP = "https://developer.ikandy.cn:60723";
+                IP = "https://dev1.ikandy.cn:60312";
                 break;
             case RELEASE:
                 IP = "https://video-sells.cloud-ins.cn";

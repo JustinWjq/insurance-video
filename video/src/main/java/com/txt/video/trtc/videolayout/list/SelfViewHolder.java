@@ -3,7 +3,6 @@ package com.txt.video.trtc.videolayout.list;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     private FrameLayout mNoVideoContainer;
     private ImageView mUserSignal;
     private ImageView mPbAudioVolume;
-    private ImageView mIvVideClose;
+    private ImageView mIvVideClose, mIvVideCloseScreen;
     private ImageView mIvIconHost;
 
     public SelfViewHolder(View itemView) {
@@ -132,8 +131,29 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
 
-        mIvVideClose.setBackground(isVideoClose ? ContextCompat.getDrawable(itemView.getContext(), R.drawable.tx_icon_close_video) : ContextCompat.getDrawable(itemView.getContext(), R.drawable.tx_icon_close_screen));
+        if (isShow) {
+            if (isVideoClose){
+                mIvVideCloseScreen.setVisibility(View.GONE);
+                mIvVideClose.setVisibility(View.VISIBLE);
+                if (mMemberEntity.getUserHeadPath().isEmpty()){
+                    ViewGroup.LayoutParams layoutParams = mIvVideClose.getLayoutParams();
+                    layoutParams.width =300 ;
+                    layoutParams.height = 420;
+                    mIvVideClose.setLayoutParams(layoutParams);
+                    mIvVideClose.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_video));
+                }else{
+                    TxGlide.with(mIvVideClose.getContext()).load(mMemberEntity.getUserHeadPath())
+                            .placeholder(R.drawable.tx_icon_close_video)
+                            .into(mIvVideClose);
+                }
+            }else {
+                mIvVideCloseScreen.setVisibility(View.VISIBLE);
+                mIvVideClose.setVisibility(View.GONE);
+            }
 
+        }else{
+
+        }
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
@@ -239,6 +259,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
         mNoVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_fl_no_video);
         mIvVideClose = (ImageView) itemView.findViewById(R.id.iv_video_close);
+        mIvVideCloseScreen = (ImageView) itemView.findViewById(R.id.iv_video_srccen);
 //            mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.img_user_head);
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
