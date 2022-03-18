@@ -2732,8 +2732,13 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             )
             if (indexOf < 0) {
                 mMeetingVideoView?.detach()
-                mMeetingVideoView?.addViewToViewGroup(bigScreenVerticalView.bigScreenView)
-                changeBigVideo(entity!!)
+                if (TXSdk.getInstance().roomControlConfig.videoMode == VideoMode.VIDEOMODE_VERTICAL) {
+                    mMeetingVideoView?.addViewToViewGroup(bigScreenVerticalView.bigScreenView)
+                }else{
+                    mMeetingVideoView?.addViewToViewGroup(bigscreen.bigScreenView)
+                }
+
+                changeBigVideo(bigMeetingEntity!!)
             } else {
                 mMemberListAdapter?.notifyItemChanged(
                     mPresenter!!.getMemberEntityList().indexOf(
