@@ -297,7 +297,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.txt.video.ui.weight.view.BigScreenView
-        android:id="@+id/bigscreenview"
+        android:id="@+id/bigScreenVerticalView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"

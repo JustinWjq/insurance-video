@@ -24,7 +24,7 @@ import com.txt.video.net.utils.TxLogUtils;
 /**
  * @author ：Justin
  * time ：2021/3/1.
- * des ：用来显示投屏的view
+ * des ：用来显示大屏幕的view
  */
 public class BigScreenView extends RelativeLayout implements View.OnClickListener {
     public BigScreenView(@NonNull Context context) {
@@ -128,14 +128,12 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     public void closeVideo(boolean isClose) {
         TxLogUtils.d("closeVideo1234"+"isClose"+isClose);
         if (isClose) {
-            iv_video_close.setVisibility(VISIBLE);
-            ViewGroup.LayoutParams layoutParams = iv_video_close.getLayoutParams();
-            layoutParams.width = 300;
-            layoutParams.height = 440;
-            iv_video_close.setLayoutParams(layoutParams);
-            iv_video_close.setBackground(ContextCompat.getDrawable(this.getContext(),R.drawable.tx_icon_close_video));
+            iv_video_srccen.setVisibility(VISIBLE);
+            iv_video_close.setVisibility(GONE);
+            iv_video_srccen.setBackground(ContextCompat.getDrawable(this.getContext(),R.drawable.tx_icon_close_video));
             mCloseVideo.setVisibility(VISIBLE);
         } else {
+            iv_video_srccen.setVisibility(GONE);
             iv_video_close.setVisibility(GONE);
             mCloseVideo.setVisibility(GONE);
         }
@@ -145,6 +143,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
         if (isShow) {
             mCloseVideo.setVisibility(VISIBLE);
             iv_video_srccen.setVisibility(VISIBLE);
+            iv_video_srccen.setBackground(ContextCompat.getDrawable(this.getContext(),R.drawable.tx_icon_close_screen));
             iv_video_close.setVisibility(GONE);
         }else{
             mCloseVideo.setVisibility(GONE);
@@ -155,16 +154,17 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
 
 
     public void closeVideo(boolean isClose,String url) {
-        TxLogUtils.d("closeVideo1234"+url+"isClose"+isClose);
+        TxLogUtils.i("closeVideo1234"+url+"isClose"+isClose);
         if (isClose) {
             mCloseVideo.setVisibility(VISIBLE);
             iv_video_close.setVisibility(VISIBLE);
-
+            iv_video_srccen.setVisibility(GONE);
             TxGlide.with(iv_video_close.getContext()).load(url)
                     .placeholder(R.drawable.tx_icon_close_video)
                     .into(iv_video_close);
         } else {
             mCloseVideo.setVisibility(GONE);
+            iv_video_srccen.setVisibility(GONE);
             iv_video_close.setVisibility(GONE);
         }
     }

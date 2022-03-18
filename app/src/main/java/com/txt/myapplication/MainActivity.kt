@@ -158,7 +158,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             put("province", "上海市")
             put("city", "上海市")
             put("adr", "上海市")
-            put("userHead","https://cos.ap-shenzhen-fsi.myqcloud.com/wisdom-exhibition-1301905869/wjqdev123456/1612146168774.jpeg")
+//            put("userHead","https://cos.ap-shenzhen-fsi.myqcloud.com/wisdom-exhibition-1301905869/wjqdev123456/1612146168774.jpeg")
+            put("userHead","https://cos.ap-shenzhen-fsi.myqcloud.com/wisdom-exhibition-1301905869/5fa21f563b165e74b0f3bc26/1628480799658.jpg")
 //            put("userHead","")
             }
         val loginName = et.text.toString()

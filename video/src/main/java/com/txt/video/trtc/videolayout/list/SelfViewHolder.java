@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.common.glide.TxGlide;
+import com.txt.video.net.utils.TxLogUtils;
 
 /**
  * Created by JustinWjq
@@ -130,24 +131,25 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
-
+        TxLogUtils.i("getRoomInfoSuccess",""+mMemberEntity.getUserHeadPath());
         if (isShow) {
             if (isVideoClose){
-                mIvVideCloseScreen.setVisibility(View.GONE);
-                mIvVideClose.setVisibility(View.VISIBLE);
                 if (mMemberEntity.getUserHeadPath().isEmpty()){
-                    ViewGroup.LayoutParams layoutParams = mIvVideClose.getLayoutParams();
-                    layoutParams.width =300 ;
-                    layoutParams.height = 420;
-                    mIvVideClose.setLayoutParams(layoutParams);
-                    mIvVideClose.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_video));
+                    mIvVideCloseScreen.setVisibility(View.VISIBLE);
+                    mIvVideClose.setVisibility(View.GONE);
+                    mIvVideCloseScreen.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_video));
                 }else{
+                    mIvVideCloseScreen.setVisibility(View.GONE);
+                    mIvVideClose.setVisibility(View.VISIBLE);
+                    TxLogUtils.i("getRoomInfoSuccess","mIvVideClose:"+mIvVideClose.getWidth()+ "---" + mIvVideClose.getHeight());
                     TxGlide.with(mIvVideClose.getContext()).load(mMemberEntity.getUserHeadPath())
                             .placeholder(R.drawable.tx_icon_close_video)
                             .into(mIvVideClose);
                 }
+
             }else {
                 mIvVideCloseScreen.setVisibility(View.VISIBLE);
+                mIvVideCloseScreen.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_screen));
                 mIvVideClose.setVisibility(View.GONE);
             }
 
@@ -204,11 +206,16 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
             mVideoContainer.setVisibility(View.GONE);
 //                mUserHeadImg.setVisibility(View.VISIBLE);
         }
-        if (model.isMuteVideo()) {
-            showNoVideo(true, true);
-        } else {
-            showNoVideo(false, true);
+        if (model.isScreen()){
+            showNoVideo(true, false);
+        }else{
+            if (model.isMuteVideo()) {
+                showNoVideo(true, true);
+            } else {
+                showNoVideo(false, true);
+            }
         }
+
         if (model.getQuality() == MemberEntity.QUALITY_GOOD) {
             mUserSignal.setVisibility(View.VISIBLE);
             mUserSignal.setImageResource(R.drawable.tx_signal6);
@@ -247,10 +254,14 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
             mUserSignal.setVisibility(View.GONE);
         }
         showVolume(model.isShowAudioEvaluation());
-        if (model.isMuteVideo()) {
-            showNoVideo(true, true);
-        } else {
-            showNoVideo(false, true);
+        if (model.isScreen()){
+            showNoVideo(true, false);
+        }else{
+            if (model.isMuteVideo()) {
+                showNoVideo(true, true);
+            } else {
+                showNoVideo(false, true);
+            }
         }
         showHost(model.isHost());
     }

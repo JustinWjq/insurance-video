@@ -46,12 +46,12 @@ object TxLogUtils {
 
     @JvmStatic
     fun d(msg: String?) {
-        if (TXSdk.getInstance().isDebug) {
-            d(
-                DEFAULT_TAG,
-                msg
-            )
-        }
+//        if (TXSdk.getInstance().isDebug) {
+//            d(
+//                DEFAULT_TAG,
+//                msg
+//            )
+//        }
     }
 
     @JvmStatic

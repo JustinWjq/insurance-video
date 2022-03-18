@@ -33,6 +33,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final String VIDEO_SCREEN_CLOSE = "video_screen_close";
     public static final String VIDEOVIEW_CHANGE = "videoview_change";
     public static final String NAME_CHANGE = "name_change";
+    public static final String NAMEANDUSERHEAD_CHANGE = "nameanduserhead_change";
 
     private Context context;
     private List<MemberEntity> list;
@@ -168,6 +169,16 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 } else if (holder instanceof SelfViewHolder) {
                     MemberEntity item = list.get(position);
                     ((SelfViewHolder) holder).showHost(item.isHost());
+                }
+            }else if (NAMEANDUSERHEAD_CHANGE.equals(payloads.get(0))){
+                if (holder instanceof OtherViewHolder) {
+                    MemberEntity item = list.get(position);
+                    ((OtherViewHolder) holder).changeUserName(item);
+                    ((OtherViewHolder) holder).showNoVideo(item.isMuteVideo(),true);
+                } else if (holder instanceof SelfViewHolder) {
+                    MemberEntity item = list.get(position);
+                    ((SelfViewHolder) holder).changeUserName(item);
+                    ((SelfViewHolder) holder).showNoVideo(item.isMuteVideo(),true);
                 }
             }
 

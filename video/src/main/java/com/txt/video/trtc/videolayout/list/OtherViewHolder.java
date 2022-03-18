@@ -146,17 +146,17 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
+        TxLogUtils.i("getRoomInfoSuccess",""+mMemberEntity.getUserHeadPath());
         if (isShow) {
             if (isVideoClose){
-                mIvVideCloseScreen.setVisibility(View.GONE);
-                mIvVideClose.setVisibility(View.VISIBLE);
                 if (mMemberEntity.getUserHeadPath().isEmpty()){
-                    ViewGroup.LayoutParams layoutParams = mIvVideClose.getLayoutParams();
-                    layoutParams.width =300 ;
-                    layoutParams.height = 420;
-                    mIvVideClose.setLayoutParams(layoutParams);
-                    mIvVideClose.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_video));
+                    mIvVideCloseScreen.setVisibility(View.VISIBLE);
+                    mIvVideClose.setVisibility(View.GONE);
+                    mIvVideCloseScreen.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_video));
                 }else{
+                    mIvVideCloseScreen.setVisibility(View.GONE);
+                    mIvVideClose.setVisibility(View.VISIBLE);
+                    TxLogUtils.i("getRoomInfoSuccess","mIvVideClose:"+mIvVideClose.getWidth()+ "---" + mIvVideClose.getHeight());
                     TxGlide.with(mIvVideClose.getContext()).load(mMemberEntity.getUserHeadPath())
                             .placeholder(R.drawable.tx_icon_close_video)
                             .into(mIvVideClose);
@@ -164,6 +164,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
 
             }else {
                 mIvVideCloseScreen.setVisibility(View.VISIBLE);
+                mIvVideCloseScreen.setBackground(ContextCompat.getDrawable(mIvVideClose.getContext(),R.drawable.tx_icon_close_screen));
                 mIvVideClose.setVisibility(View.GONE);
             }
 
@@ -202,10 +203,14 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             mUserSignal.setVisibility(View.GONE);
         }
         showVolume(model.isShowAudioEvaluation());
-        if (model.isMuteVideo()) {
-            showNoVideo(true, true);
-        } else {
-            showNoVideo(false, true);
+        if (model.isScreen()){
+            showNoVideo(true, false);
+        }else{
+            if (model.isMuteVideo()) {
+                showNoVideo(true, true);
+            } else {
+                showNoVideo(false, true);
+            }
         }
         showHost(model.isHost());
     }
@@ -248,7 +253,15 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             mUserSignal.setVisibility(View.GONE);
         }
         showVolume(model.isShowAudioEvaluation());
-        showNoVideo(!model.isVideoAvailable(), true);
+        if (model.isScreen()){
+            showNoVideo(true, false);
+        }else{
+            if (model.isMuteVideo()) {
+                showNoVideo(true, true);
+            } else {
+                showNoVideo(false, true);
+            }
+        }
 
 //        item_view.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

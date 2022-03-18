@@ -306,6 +306,11 @@ public class SystemHttpRequest {
             jsonObject.put("sign", sign);
             if (null != businessData) {
                 jsonObject.put("extraData", businessData);
+                if (businessData.has("userHead")){
+                    String userHead = businessData.optString("userHead");
+                    jsonObject.put("userHead",userHead);
+                    businessData.remove("userHead");
+                }
             }
         } catch (Exception e) {
 

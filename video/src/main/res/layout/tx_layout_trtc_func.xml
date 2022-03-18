@@ -47,7 +47,6 @@
                 android:id="@+id/iv_video_srccen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tx_icon_close_screen"
                 android:visibility="gone"
                 />
             <TextView
