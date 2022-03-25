@@ -251,16 +251,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         modifyExitBt()
         mPresenter?.muteLocalAudio(!mPresenter!!.getRoomSoundStatus())
-//        tx_business_video.isSelected = !TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
         val isEnableVideo = TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
         TxLogUtils.i("isEnableVideo---$isEnableVideo")
         mPresenter?.muteLocalVideo(!isEnableVideo)
         mPresenter?.isCloseVideo = !isEnableVideo
 
-//        Handler().postDelayed({
-//            mMemberListAdapter?.notifyItemChanged(0, VOLUME)
-//
-//        }, 3000)
     }
 
     fun selectIb(imageButton: ImageButton) {
@@ -909,24 +904,27 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
 
         if (dialog == null) {
-            dialog = if (mPresenter?.isOwner()!!) {
-                ExitDialog(
-                    this,
-                    "暂时离开",
-                    "确定离开",
-                    "结束会话",
-                    "请选择暂时离开还是结束会话？"
-                )
-            } else {
+            var cancelStr = ""
+            var confirmStr = ""
+            var contentStr = ""
+            if (mPresenter?.isOwner()!!) {
+                 cancelStr = "暂时离开"
+                 confirmStr = "结束会话"
+                 contentStr = "请选择暂时离开还是结束会话?"
 
-                ExitDialog(
-                    this,
-                    "取消",
-                    "确定离开",
-                    "离开",
-                    "请确认是否离开会议？"
-                )
+            } else {
+                 cancelStr = "取消"
+                 confirmStr = "离开"
+                 contentStr = "请确认是否离开会议?"
+
             }
+            dialog =   ExitDialog(
+                this,
+                cancelStr,
+                "确定离开",
+                confirmStr,
+                contentStr
+            )
 
             dialog?.setOnConfirmlickListener(object :
                 onExitDialogListener {
