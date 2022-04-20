@@ -18,13 +18,15 @@ import kotlin.jvm.JvmStatic;
  * description： 加密工具类
  */
 public class SignUtils {
+    //测试 "aesIv" : "2preuq9nudmga7lk",
+    // "aesKey" : "clued5ptm+v0welq"
     //解密密钥
     //测试密钥key
-    public static final String key = "net02d2geftdt4tj";
+    public static final String key = "clued5ptm+v0welq";
     //正式密钥key
     public static final String rekey = "nvvmjk1hi8qlvoy4";
     //测试向量iv
-    public static final String initVector = "4kz8rn8a7yxdy9u8";
+    public static final String initVector = "2preuq9nudmga7lk";
     //正式向量iv
     public static final String reinitVector = "fstvas2suhosmvjl";
 
