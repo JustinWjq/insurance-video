@@ -95,7 +95,13 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
         layoutParams.topMargin = 30
-        board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        if (null != boardController?.boardRenderView){
+            board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        }else{
+            finish()
+            TxLogUtils.i("boardController?.boardRenderView为空")
+        }
+
         instance.addIMMessageListener(this)
         showAudioStatus()
         videoBoradBusiness = arrayListOf(
