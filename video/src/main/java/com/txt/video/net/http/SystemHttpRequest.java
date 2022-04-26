@@ -55,7 +55,10 @@ public class SystemHttpRequest {
                 IP = "https://developer.ikandy.cn:60723";
                 break;
             case RELEASE:
-                IP = "https://video-sells.cloud-ins.cn";
+                IP = "https://video-sells-uat.ikandy.cn";
+                break;
+            case TEST:
+                IP = "https://video-sells-uat.ikandy.cn";
                 break;
             default:
                 IP = "https://video-sells-test.ikandy.cn";

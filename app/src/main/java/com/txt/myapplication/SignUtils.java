@@ -20,6 +20,8 @@ import kotlin.jvm.JvmStatic;
 public class SignUtils {
     //保联测试 "aesIv" : "2preuq9nudmga7lk",
     // "aesKey" : "clued5ptm+v0welq"
+    //  "aesIv": "4kz8rn8a7yxdy9u",
+    //    "aesKey": "net02d2geftdt4tj",
     public static final String key = "net02d2geftdt4tj";
     //正式密钥key
     public static final String rekey = "nvvmjk1hi8qlvoy4";

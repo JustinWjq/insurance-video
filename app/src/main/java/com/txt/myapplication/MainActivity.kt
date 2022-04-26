@@ -74,8 +74,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         bt.text = btStr
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "gscyf_test"
-                else -> "gsc_test"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "txuat"
+                else -> "txuat"
             }
         )
         bt.setOnClickListener {
@@ -114,8 +114,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
     fun changeUI() {
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "test_org2"
-                else -> "gsc_test"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "txuat"
+                else -> "txuat"
             }
         )
         var sdkVersion = "SDK：" + TXSdk.getInstance().sdkVersion
