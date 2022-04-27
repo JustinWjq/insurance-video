@@ -221,7 +221,7 @@ public class VideoContract {
 
         fun startRecord()
 
-        fun endRecord()
+        fun endRecord(needEndUser:Boolean = true)
 
         fun initVideoSDK()
 
@@ -303,7 +303,7 @@ public class VideoContract {
 
         fun setAllVideoStatusMemberToJSON(isVideoType: Boolean, isMute: Boolean): JSONArray
 
-        fun unitConfig()
+        fun unitConfig(needEndUser: Boolean = false)
 
         fun destroyRoom()
 

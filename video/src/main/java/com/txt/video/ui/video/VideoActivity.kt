@@ -938,14 +938,14 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 }
 
                 override fun onTemporarilyLeave() {
-                    if (mPresenter?.isOwner()!!) {
-                        TXSdk.getInstance().share = true
-                        //暂时离开
-                        skipCaller()
-                    } else {
-
-                    }
-
+//                    if (mPresenter?.isOwner()!!) {
+//                        TXSdk.getInstance().share = true
+//                        //暂时离开
+//                        skipCaller()
+//                    } else {
+//
+//                    }
+                    mPresenter?.unitConfig(needEndUser = true)
 
                 }
 
@@ -1200,7 +1200,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             mPresenter?.getServiceId()!!,
                             mPresenter?.getSelfUserId()!!
                         )
-                        TXSdk.getInstance().share = true
+//                        TXSdk.getInstance().share = true
                         //暂时离开
 //                        skipCaller()
                     }
@@ -1615,6 +1615,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun onDestroy() {
+        mBoard!!.uninit()
         EasyFloat.hide(this)
         paintColorPostion = 0
         paintSizeIntPostion = 1
