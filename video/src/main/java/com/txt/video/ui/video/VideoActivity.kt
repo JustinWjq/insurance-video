@@ -938,14 +938,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 }
 
                 override fun onTemporarilyLeave() {
-//                    if (mPresenter?.isOwner()!!) {
-//                        TXSdk.getInstance().share = true
-//                        //暂时离开
-//                        skipCaller()
-//                    } else {
-//
-//                    }
-                    mPresenter?.unitConfig(needEndUser = true)
+                    if (mPresenter?.isOwner()!!) {
+                        mPresenter?.unitConfig(needEndUser = true)
+                    } else {
+
+                    }
+
 
                 }
 
