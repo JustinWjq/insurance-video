@@ -1,0 +1,27 @@
+apply plugin: 'maven'
+
+def group ='com.tencent.gs'
+def version = '1.4.0'
+def artifactId = 'starnet'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://packages.aliyun.com/maven/repository/2183731-release-nyzpgT/') {
+                authentication(
+                        userName: '60750d5b3a10edbf36287464',
+                        password: 'ZWvJI9GOcwTw'
+                )
+            }
+            snapshotRepository(url: 'https://packages.aliyun.com/maven/repository/2183731-snapshot-xzM1NX/') {
+                authentication(
+                        userName: '60750d5b3a10edbf36287464',
+                        password: 'ZWvJI9GOcwTw'
+                )
+            }
+            pom.version = version
+            pom.artifactId = artifactId
+            pom.groupId = group
+        }
+    }
+}
