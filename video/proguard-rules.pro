@@ -417,17 +417,26 @@
 
 -dontwarn   com.tencent.cloud.ai.fr.sdksupport.**
 
-
--dontwarn com.lxj.xpopup.widget.**
--keep class com.lxj.xpopup.widget.**{*;}
+-keep  public class com.txt.video.common.**{*;}
+-keep public class com.txt.video.data.bean.**{*;}
 
 
 -dontwarn com.tencent.bugly.**
--keep  class com.tencent.bugly.**{*;}
--keep  class com.tencent.bugly.crashreport.CrashReport
-
-#自己的库
-#-keep class com.txt.video.ui.videoadapter.**{*;}
+-keep public class com.tencent.bugly.**{*;}
+-keep public class com.tencent.bugly.crashreport.CrashReport{*;}
 -keep class com.txt.video.net.bean.**{*;}
+-keep class com.txt.video.net.constant.**{*;}
 -keep class com.txt.video.TXSdk{*;}
 -keep class com.txt.video.common.callback.**{*;}
+-keep class com.txt.video.trtc.ticimpl.utils.**{*;}
+
+
+-keep class com.txt.video.common.adapter.base.** {
+*;
+}
+-keep public class * extends com.txt.video.common.adapter.base.TxBaseQuickAdapter
+-keep public class * extends com.txt.video.common.adapter.base.TxBaseViewHolder
+-keepclassmembers  class **$** extends com.txt.video.common.adapter.base.TxBaseViewHolder {
+     <init>(...);
+}
+-keepattributes InnerClasses
