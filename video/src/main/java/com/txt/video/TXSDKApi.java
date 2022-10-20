@@ -142,21 +142,7 @@ public abstract class TXSDKApi {
     public abstract void checkoutNetEnv(TXSdk.Environment en);
 
     /**
-     * 开始视频
-     *
-     * @param context
-     * @param agent
-     * @param orgAccount
-     * @param sign
-     * @param businessData 额外字段
-     * @param listener     操作回调
-     * @note
-     */
-    public abstract void startTXVideo(final Activity context, final String agent, String orgAccount, String sign, JSONObject businessData, final StartVideoResultOnListener listener);
-
-
-    /**
-     * 开始视频
+     * 快速会议
      *
      * @param context
      * @param agent
@@ -183,48 +169,6 @@ public abstract class TXSDKApi {
      * @note
      */
     public abstract void createRoom(final String agent, String orgAccount, String sign, final onCreateRoomListener listener);
-
-    /**
-     * 预约会议
-     *
-     * @param agent
-     * @param orgAccount
-     * @param sign
-     * @param roomInfo   房间信息
-     * @param listener   操作回调
-     * @note
-     */
-    public abstract void createRoom(final String agent, String orgAccount, String sign, JSONObject roomInfo, final onCreateRoomListener listener);
-
-    /**
-     * 预约会议
-     *
-     * @param agent
-     * @param orgAccount
-     * @param sign
-     * @param roomInfo     房间信息
-     * @param businessData 附加数据
-     * @param listener     操作回调
-     * @note
-     */
-    public abstract void createRoom(final String agent, String orgAccount, String sign, JSONObject roomInfo, JSONObject businessData, final onCreateRoomListener listener);
-
-
-    /**
-     * 加入会议
-     *
-     * @param context
-     * @param roomId       邀请码
-     * @param account      账号
-     * @param userName     用户名字
-     * @param orgAccount   机构
-     * @param sign         aes 签名
-     * @param businessData 额外字段
-     * @param listener     操作回调
-     * @note
-     */
-    public abstract void joinRoom(final Activity context, String roomId, String account, String userName, String orgAccount, String sign, JSONObject businessData, final StartVideoResultOnListener listener);
-
 
     /**
      * 加入会议

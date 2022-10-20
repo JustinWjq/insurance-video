@@ -178,10 +178,6 @@ public class TXSdk extends TXSDKApi {
         SystemHttpRequest.getInstance().changeIP(en);
     }
 
-    @Override
-    public void startTXVideo(final Activity context, final String agent, String orgAccount, String sign, JSONObject businessData, final StartVideoResultOnListener listener) {
-        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, businessData, listener, true);
-    }
 
     @Override
     public void startTXVideo(Activity context, String agent, String orgAccount, String sign, JSONObject businessData, RoomControlConfig roomControlConfig, StartVideoResultOnListener listener) {
@@ -189,29 +185,11 @@ public class TXSdk extends TXSDKApi {
         TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, businessData, listener, true);
     }
 
-    public void startTXVideo(final Activity context, final String agent, String orgAccount, String sign, final StartVideoResultOnListener listener) {
-        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, null, listener, true);
-    }
-
     @Override
     public void createRoom(final String agent, String orgAccount, String sign, final onCreateRoomListener listener) {
         TXManagerImpl.getInstance().createRoom(agent, orgAccount, sign, null, null, listener);
     }
 
-    @Override
-    public void createRoom(String agent, String orgAccount, String sign, JSONObject roomInfo, onCreateRoomListener listener) {
-        TXManagerImpl.getInstance().createRoom(agent, orgAccount, sign, roomInfo, null, listener);
-    }
-
-    @Override
-    public void createRoom(String agent, String orgAccount, String sign, JSONObject roomInfo, JSONObject businessData, onCreateRoomListener listener) {
-        TXManagerImpl.getInstance().createRoom(agent, orgAccount, sign, roomInfo, businessData, listener);
-    }
-
-    @Override
-    public void joinRoom(final Activity context, String roomId, String account, String userName, String orgAccount, String sign, JSONObject businessData, final StartVideoResultOnListener listener) {
-        TXManagerImpl.getInstance().checkPermission(context, roomId, account, userName, orgAccount, sign, businessData, listener, false);
-    }
 
     RoomControlConfig mRoomControlConfig;
 
