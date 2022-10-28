@@ -1440,6 +1440,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         //在蓝牙耳机先连接的情况下，有线耳机连接了，会自动切到有线耳机
         //有线耳机不能切换
         //蓝牙耳机可以切换
+        //会议时，检测耳机的状态，逻辑跟上面一样
 
 
     }
