@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/tx_white"
-    android:fitsSystemWindows="true"
     android:keepScreenOn="true"
     tools:context=".ui.boardpage.BoardViewActivity">
 
@@ -23,12 +22,12 @@
     <RelativeLayout
         android:id="@+id/rl_board_business"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="@dimen/tx_dp_20"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/tx_dp_20"
-        android:layout_marginTop="5dp"
+       android:layout_marginEnd="@dimen/tx_dp_20"
+        android:background="@drawable/tx_shape_shadow"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
        >
 
         <LinearLayout
@@ -36,8 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/tx_dp_16"
-            android:background="@drawable/tx_shape_round_3e3e3e"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -108,7 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tx_board_view_business"
             android:onClick="onTxClick"
+            android:padding="@dimen/tx_dp_6"
             android:src="@drawable/tx_paint_default"
             android:visibility="visible" />
 
@@ -173,7 +172,7 @@
         android:layout_marginEnd="@dimen/tx_dp_20"
         style="@style/tx_style_button"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
          />
 
 
@@ -185,9 +184,24 @@
         android:layout_marginEnd="@dimen/tx_dp_20"
         android:src="@drawable/tx_audio_notext_status_selector"
         style="@style/tx_style_button"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tx_ib_checkscreen1"
          />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/tx_icon_whiteborad_share"
+        android:text="结束共享"
+        android:textSize="@dimen/tx_sp_14"
+        android:textColor="@color/tx_white"
+        android:padding="@dimen/tx_dp_8"
+        android:layout_marginTop="@dimen/tx_dp_20"
+        android:layout_marginRight="@dimen/tx_dp_20"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:drawablePadding="@dimen/tx_dp_8"
+        android:background="@drawable/tx_shape_round_5_color_ff6666"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

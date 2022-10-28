@@ -3,6 +3,8 @@ package com.txt.video.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.txt.video.R
+import com.txt.video.common.action.ActivityAction
+import com.txt.video.common.bar.OnKeyboardListener
 import com.txt.video.common.bar.TxBarHide
 import com.txt.video.common.bar.TximmersionBar
 
@@ -51,9 +53,9 @@ abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity() {
     protected open fun openImmersionBar() {
         TximmersionBar {
                 reset()
-                navigationBarColor(R.color.tx_white)
-                transparentStatusBar()
-                statusBarDarkFont(true)
+                navigationBarColor(R.color.tx_color_424548)
+                statusBarColor(R.color.tx_color_424548)
+                statusBarDarkFont(false)
                 navigationBarDarkIcon(true)
                 keyboardEnable(false)
         }
@@ -62,14 +64,32 @@ abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity() {
     protected open fun hideStatusBar() {
         TximmersionBar{
             hideBar(TxBarHide.FLAG_HIDE_STATUS_BAR)
+            setOnKeyboardListener(object :OnKeyboardListener{
+                override fun onKeyboardChange(isPopup: Boolean, keyboardHeight: Int) {
+
+                }
+
+            })
+        }
+    }
+
+    protected open fun showStatusBar() {
+        TximmersionBar{
+            hideBar(TxBarHide.FLAG_SHOW_BAR)
+            setOnKeyboardListener(object :OnKeyboardListener{
+                override fun onKeyboardChange(isPopup: Boolean, keyboardHeight: Int) {
+
+                }
+
+            })
         }
     }
 
     protected open fun closeImmersionBar() {
         TximmersionBar {
             reset()
-            statusBarColor(R.color.tx_white)
-            navigationBarColor(R.color.tx_white)
+            statusBarColor(R.color.tx_color_424548)
+            navigationBarColor(R.color.tx_color_424548)
             statusBarDarkFont(true)
             navigationBarDarkIcon(true)
             keyboardEnable(false)

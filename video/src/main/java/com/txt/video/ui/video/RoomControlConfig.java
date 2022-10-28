@@ -3,7 +3,7 @@ package com.txt.video.ui.video;
 /**
  * author ：Justin
  * time ：2021/12/27.
- * des ：
+ * des ： 暴露给外部会议内音视频控制类
  */
 public class RoomControlConfig {
 

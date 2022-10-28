@@ -17,7 +17,6 @@ import com.txt.video.TXSdk
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onFriendBtListener
-import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.ui.video.RoomControlConfig
 //import com.txt.video.common.utils.ToastUtils
 //import com.txt.video.net.utils.TxLogUtils
@@ -74,7 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         bt.text = btStr
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "txuat"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "sunshineLifeOrg"
                 else -> "txuat"
             }
         )
@@ -114,7 +113,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
     fun changeUI() {
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "txuat"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "sunshineLifeOrg"
                 else -> "txuat"
             }
         )

@@ -1,6 +1,7 @@
 package com.txt.video.common.glide.load;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 /**
@@ -12,7 +13,7 @@ import java.security.MessageDigest;
  */
 public interface Key {
     String STRING_CHARSET_NAME = "UTF-8";
-
+    Charset CHARSET = Charset.forName(STRING_CHARSET_NAME);
     /**
      * Adds all uniquely identifying information to the given digest.
      *

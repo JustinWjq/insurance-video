@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/tx_black"
+    android:paddingTop="@dimen/tx_dp_15"
+    android:paddingBottom="@dimen/tx_dp_15"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="展业"
+        android:textColor="@color/tx_color_e6b980"
+        android:textStyle="bold"
+        android:textSize="@dimen/tx_sp_16"
+        android:paddingStart="@dimen/tx_dp_52"
+        android:layout_marginEnd="@dimen/tx_dp_10"
+        />
+
+    <TextView
+        android:id="@+id/tv_div"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/tx_color_e6b980"
+        android:visibility="gone"
+        />
+
+</LinearLayout>
+

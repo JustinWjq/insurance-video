@@ -7,7 +7,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
@@ -19,6 +21,10 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
+
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -46,14 +52,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *    desc   : Dialog 基类
+ * desc   : Dialog 基类
  */
 public class TxBaseDialog extends Dialog implements
         ActivityAction, ResourcesAction, HandlerAction, ClickAction, AnimAction, KeyboardAction,
-        DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+        DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener, LifecycleOwner {
 
     private final ListenersWrapper<TxBaseDialog> mListeners = new ListenersWrapper<>(this);
-//    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
+    private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
 
     private List<OnShowListener> mShowListeners;
     private List<OnCancelListener> mCancelListeners;
@@ -66,6 +72,47 @@ public class TxBaseDialog extends Dialog implements
     public TxBaseDialog(Context context, @StyleRes int themeResId) {
         super(context, themeResId);
     }
+
+    /**
+     * Dialog弹出时不显示导航栏
+     *
+     * @param view
+     */
+
+    private void fullScreenImmersive(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            view.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    @Override
+    public void show() {
+        if (isHideBar) {
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+        super.show();
+        if (isHideBar) {
+            fullScreenImmersive(getWindow().getDecorView());
+            this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
+
+    }
+
+    private boolean isHideBar = false;
+
+    /**
+     * 设置隐藏状态栏和导航栏
+     */
+    public void setHideBar(boolean isHide) {
+        this.isHideBar = isHide;
+    }
+
 
     /**
      * 获取 Dialog 的根布局
@@ -208,8 +255,8 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 设置一个显示监听器
      *
-     * @param listener       显示监听器对象
-     * @deprecated           请使用 {@link #addOnShowListener(OnShowListener)}}
+     * @param listener 显示监听器对象
+     * @deprecated 请使用 {@link #addOnShowListener(OnShowListener)}}
      */
     @Deprecated
     @Override
@@ -223,8 +270,8 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 设置一个取消监听器
      *
-     * @param listener       取消监听器对象
-     * @deprecated           请使用 {@link #addOnCancelListener(OnCancelListener)}
+     * @param listener 取消监听器对象
+     * @deprecated 请使用 {@link #addOnCancelListener(OnCancelListener)}
      */
     @Deprecated
     @Override
@@ -238,8 +285,8 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 设置一个销毁监听器
      *
-     * @param listener       销毁监听器对象
-     * @deprecated           请使用 {@link #addOnDismissListener(OnDismissListener)}
+     * @param listener 销毁监听器对象
+     * @deprecated 请使用 {@link #addOnDismissListener(OnDismissListener)}
      */
     @Deprecated
     @Override
@@ -253,8 +300,8 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 设置一个按键监听器
      *
-     * @param listener       按键监听器对象
-     * @deprecated           请使用 {@link #setOnKeyListener(OnKeyListener)}
+     * @param listener 按键监听器对象
+     * @deprecated 请使用 {@link #setOnKeyListener(OnKeyListener)}
      */
     @Deprecated
     @Override
@@ -269,7 +316,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 添加一个显示监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void addOnShowListener(@Nullable TxBaseDialog.OnShowListener listener) {
         if (mShowListeners == null) {
@@ -282,7 +329,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 添加一个取消监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void addOnCancelListener(@Nullable TxBaseDialog.OnCancelListener listener) {
         if (mCancelListeners == null) {
@@ -295,7 +342,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 添加一个销毁监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void addOnDismissListener(@Nullable TxBaseDialog.OnDismissListener listener) {
         if (mDismissListeners == null) {
@@ -308,7 +355,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 移除一个显示监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void removeOnShowListener(@Nullable TxBaseDialog.OnShowListener listener) {
         if (mShowListeners != null) {
@@ -319,7 +366,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 移除一个取消监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void removeOnCancelListener(@Nullable TxBaseDialog.OnCancelListener listener) {
         if (mCancelListeners != null) {
@@ -330,7 +377,7 @@ public class TxBaseDialog extends Dialog implements
     /**
      * 移除一个销毁监听器
      *
-     * @param listener      监听器对象
+     * @param listener 监听器对象
      */
     public void removeOnDismissListener(@Nullable TxBaseDialog.OnDismissListener listener) {
         if (mDismissListeners != null) {
@@ -367,7 +414,7 @@ public class TxBaseDialog extends Dialog implements
      */
     @Override
     public void onShow(DialogInterface dialog) {
-//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
 
         if (mShowListeners == null) {
             return;
@@ -397,7 +444,7 @@ public class TxBaseDialog extends Dialog implements
      */
     @Override
     public void onDismiss(DialogInterface dialog) {
-//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
 
         if (mDismissListeners == null) {
             return;
@@ -411,72 +458,121 @@ public class TxBaseDialog extends Dialog implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_START);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+        mLifecycle.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycle;
     }
 
     @SuppressWarnings("unchecked")
     public static class Builder<B extends Builder> implements
             ActivityAction, ResourcesAction, ClickAction, KeyboardAction {
 
-        /** Activity 对象 */
+        /**
+         * Activity 对象
+         */
         private final Activity mActivity;
-        /** Context 对象 */
+        /**
+         * Context 对象
+         */
         private final Context mContext;
-        /** Dialog 对象 */
+        /**
+         * Dialog 对象
+         */
         private TxBaseDialog mDialog;
-        /** Dialog 布局 */
+        /**
+         * Dialog 布局
+         */
         private View mContentView;
 
-        /** 主题样式 */
+        /**
+         * 主题样式
+         */
         private int mThemeId = R.style.tx_BaseDialogTheme;
-        /** 动画样式 */
+        /**
+         * 动画样式
+         */
         private int mAnimStyle = TxBaseDialog.ANIM_DEFAULT;
-        /** 重心位置 */
+        /**
+         * 重心位置
+         */
         private int mGravity = Gravity.NO_GRAVITY;
 
-        /** 水平偏移 */
+        /**
+         * 水平偏移
+         */
         private int mXOffset;
-        /** 垂直偏移 */
+        /**
+         * 垂直偏移
+         */
         private int mYOffset;
 
-        /** 宽度和高度 */
+        /**
+         * 宽度和高度
+         */
         private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
         private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        /** 背景遮盖层开关 */
+        /**
+         * 背景遮盖层开关
+         */
         private boolean mBackgroundDimEnabled = true;
-        /** 背景遮盖层透明度 */
+        /**
+         * 背景遮盖层透明度
+         */
         private float mBackgroundDimAmount = 0.5f;
-
-        /** 是否能够被取消 */
+        /**
+         * 是否隐藏状态栏
+         */
+        private boolean isHideBar = false;
+        /**
+         * 是否能够被取消
+         */
         private boolean mCancelable = true;
-        /** 点击空白是否能够取消  前提是这个对话框可以被取消 */
+        /**
+         * 点击空白是否能够取消  前提是这个对话框可以被取消
+         */
         private boolean mCanceledOnTouchOutside = true;
 
-        /** Dialog 创建监听 */
+        /**
+         * Dialog 创建监听
+         */
         private OnCreateListener mCreateListener;
-        /** Dialog 显示监听 */
+        /**
+         * Dialog 显示监听
+         */
         private List<OnShowListener> mShowListeners = new ArrayList<>();
-        /** Dialog 取消监听 */
+        /**
+         * Dialog 取消监听
+         */
         private List<OnCancelListener> mCancelListeners = new ArrayList<>();
-        /** Dialog 销毁监听 */
+        /**
+         * Dialog 销毁监听
+         */
         private List<OnDismissListener> mDismissListeners = new ArrayList<>();
-        /** Dialog 按键监听 */
+        /**
+         * Dialog 按键监听
+         */
         private OnKeyListener mKeyListener;
 
-        /** 点击事件集合 */
+        /**
+         * 点击事件集合
+         */
         private SparseArray<OnClickListener> mClickArray;
 
         public Builder(Activity activity) {
@@ -501,12 +597,25 @@ public class TxBaseDialog extends Dialog implements
         }
 
         /**
+         * 设置隐藏状态栏和导航栏
+         */
+        public B setHideBar(boolean isHide) {
+            if (isCreated()) {
+
+            }
+            mDialog.setHideBar(isHide);
+            return (B) this;
+        }
+
+
+        /**
          * 设置布局
          */
         public B setContentView(@LayoutRes int id) {
             // 这里解释一下，为什么要传 new FrameLayout，因为如果不传的话，XML 的根布局获取到的 LayoutParams 对象会为空，也就会导致宽高参数解析不出来
             return setContentView(LayoutInflater.from(mContext).inflate(id, new FrameLayout(mContext), false));
         }
+
         public B setContentView(View view) {
             // 请不要传入空的布局
             if (view == null) {
@@ -724,6 +833,7 @@ public class TxBaseDialog extends Dialog implements
         public B setText(@IdRes int viewId, @StringRes int stringId) {
             return setText(viewId, getString(stringId));
         }
+
         public B setText(@IdRes int id, CharSequence text) {
             ((TextView) findViewById(id)).setText(text);
             return (B) this;
@@ -743,6 +853,7 @@ public class TxBaseDialog extends Dialog implements
         public B setHint(@IdRes int viewId, @StringRes int stringId) {
             return setHint(viewId, getString(stringId));
         }
+
         public B setHint(@IdRes int id, CharSequence text) {
             ((TextView) findViewById(id)).setHint(text);
             return (B) this;
@@ -762,6 +873,7 @@ public class TxBaseDialog extends Dialog implements
         public B setBackground(@IdRes int viewId, @DrawableRes int drawableId) {
             return setBackground(viewId, ContextCompat.getDrawable(mContext, drawableId));
         }
+
         public B setBackground(@IdRes int id, Drawable drawable) {
             findViewById(id).setBackground(drawable);
             return (B) this;
@@ -773,6 +885,7 @@ public class TxBaseDialog extends Dialog implements
         public B setImageDrawable(@IdRes int viewId, @DrawableRes int drawableId) {
             return setBackground(viewId, ContextCompat.getDrawable(mContext, drawableId));
         }
+
         public B setImageDrawable(@IdRes int id, Drawable drawable) {
             ((ImageView) findViewById(id)).setImageDrawable(drawable);
             return (B) this;
@@ -886,6 +999,19 @@ public class TxBaseDialog extends Dialog implements
             return mDialog;
         }
 
+
+        private void fullScreenImmersive(View view) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                view.setSystemUiVisibility(uiOptions);
+            }
+        }
+
         /**
          * 显示
          */
@@ -905,7 +1031,6 @@ public class TxBaseDialog extends Dialog implements
             if (isShowing()) {
                 return;
             }
-
             mDialog.show();
         }
 
@@ -999,7 +1124,7 @@ public class TxBaseDialog extends Dialog implements
          * 根据 id 查找 View
          */
         @Override
-        public  <V extends View> V findViewById(@IdRes int id) {
+        public <V extends View> V findViewById(@IdRes int id) {
             if (mContentView == null) {
                 // 没有 setContentView 就想 findViewById ?
                 throw new IllegalStateException("are you ok?");
@@ -1030,7 +1155,9 @@ public class TxBaseDialog extends Dialog implements
         private TxBaseDialog mDialog;
         private Activity mActivity;
 
-        /** Dialog 动画样式（避免 Dialog 从后台返回到前台后再次触发动画效果） */
+        /**
+         * Dialog 动画样式（避免 Dialog 从后台返回到前台后再次触发动画效果）
+         */
         private int mDialogAnim;
 
         private DialogLifecycle(Activity activity, TxBaseDialog dialog) {
@@ -1040,10 +1167,12 @@ public class TxBaseDialog extends Dialog implements
         }
 
         @Override
-        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {}
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        }
 
         @Override
-        public void onActivityStarted(@NonNull Activity activity) {}
+        public void onActivityStarted(@NonNull Activity activity) {
+        }
 
         @Override
         public void onActivityResumed(@NonNull Activity activity) {
@@ -1076,10 +1205,12 @@ public class TxBaseDialog extends Dialog implements
         }
 
         @Override
-        public void onActivityStopped(@NonNull Activity activity) {}
+        public void onActivityStopped(@NonNull Activity activity) {
+        }
 
         @Override
-        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {}
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+        }
 
         @Override
         public void onActivityDestroyed(@NonNull Activity activity) {
@@ -1147,7 +1278,7 @@ public class TxBaseDialog extends Dialog implements
      * Dialog 监听包装类（修复原生 Dialog 监听器对象导致的内存泄漏）
      */
     private static final class ListenersWrapper<T extends DialogInterface.OnShowListener & DialogInterface.OnCancelListener & DialogInterface.OnDismissListener>
-                        extends SoftReference<T> implements DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
+            extends SoftReference<T> implements DialogInterface.OnShowListener, DialogInterface.OnCancelListener, DialogInterface.OnDismissListener {
 
         private ListenersWrapper(T referent) {
             super(referent);

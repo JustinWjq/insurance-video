@@ -1,38 +1,30 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.kezong.fat-aar'
 
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
+
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    signingConfigs {
-        config {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('debug.keystore')
-            storePassword 'android'
-        }
-    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 19
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
         consumerProguardFiles 'proguard-rules.pro'
-        defaultConfig {
-            ndk {
-                abiFilters "armeabi-v7a"//, "arm64-v8a"
-            }
-//            ndk {
-//                abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
-//            }
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        ndk {
+            abiFilters "armeabi-v7a"//, "arm64-v8a"
         }
+
     }
+
 
     //统一资源前缀，规范资源引用
     resourcePrefix "tx_"
@@ -40,15 +32,13 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
 
 
-        lintOptions {
-            abortOnError false
-        }
-
+    lintOptions {
+        abortOnError false
+    }
 
 
     packagingOptions {
@@ -65,32 +55,26 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    //自动提取编译生成的aar文件，重命名，最后自动复制到appmodule下的libs目录，方便调试验证。
-    libraryVariants.all { variant ->
-//        if (variant.buildType.name == 'release') {
-//            variant.assembleProvider.get().doLast {
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('release.aar')) {
-//                        def fileName = "tx${project.name}-release-${android.defaultConfig.versionName}-${releaseTime()}"
-//                        def libPath = "../app/libs"
-//
-//                        //直接复制到App的libs目录下，方便调试
-//
-//                        copy {
-//                            from outputFile
-//                            into libPath
-//                            rename { fileName + ".aar" }
-//                        }
-//                    }
-//                }
-//            }
-//        }
+    buildFeatures {
+        viewBinding true
     }
 
-
-
+    android.libraryVariants.all { variant ->
+        variant.outputs.all {
+            //输出apk名称为：渠道名_app_版本名_时间戳.apk
+            outputFileName = "androidsdk_v${defaultConfig.versionName}_${releaseTime()}.aar"
+        }
+    }
+}
+fataar {
+    /**
+     * If transitive is true, local jar module and remote library's dependencies will be embed.
+     * If transitive is false, just embed first level dependency
+     * Local aar project does not support transitive, always embed first level
+     * Default value is false
+     * @since 1.3.0
+     */
+    transitive = true
 }
 
 dependencies {
@@ -99,6 +83,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0-rc02'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0-rc02'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
     testImplementation 'junit:junit:4.12'
 
     androidTestCompile('androidx.test.espresso:espresso-core:3.1.0', {
@@ -106,53 +92,23 @@ dependencies {
     })
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    //TRTC SDK
     api 'com.tencent.teduboard:TEduBoardSdk:2.5.2.48'
-//    api 'com.tencent.liteav:LiteAVSDK_TRTC:8.3.9882'
-//    //IMSDK
-//    api 'com.tencent.imsdk:imsdk:4.6.56'
-    //wechat share
+
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
     api 'com.tencent.liteav:LiteAVSDK_TRTC:9.2.10639'
-    //IMSDK
-//    implementation 'com.tencent.imsdk:imsdk:4.6.56'
 
-//    api 'com.tencent.edu:TEduBoardSdk:2.5.7.86'
     api 'com.tencent.imsdk:imsdk:5.1.66'
 
     api 'com.squareup.okhttp3:okhttp:3.10.0'
 
     api 'com.google.code.gson:gson:2.8.5'
 
-//    api "com.squareup.retrofit2:converter-gson:2.4.0"
+
 }
 
-//tasks.withType(Javadoc) {
-//    options.addStringOption('Xdoclint:none', '-quiet')
-//    options.addStringOption('encoding', 'UTF-8')
-//    options.addStringOption('charSet', 'UTF-8')
-//}
-//
-//task sourcesJar(type: Jar) {
-//    from android.sourceSets.main.java.srcDirs
-//    classifier = 'sources'
-//}
-//
-//task javadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//}
-//
-//task javadocJar(type: Jar, dependsOn: javadoc) {
-//    classifier = 'javadoc'
-//    from javadoc.destinationDir
-//}
-//
-//artifacts {
-//    archives javadocJar
-//    archives sourcesJar
-//}
-
+repositories {
+    mavenCentral()
+}

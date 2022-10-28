@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="35dp"
+    android:gravity="center_vertical"
+    android:padding="9dp"
+    android:background="@drawable/tx_shape_round_5_color_282a2c"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_icon"
+        android:layout_marginEnd="@dimen/tx_dp_10"
+        />
+    <View
+        android:layout_width="@dimen/tx_dp_1"
+        android:layout_height="@dimen/tx_dp_20"
+        android:background="@color/tx_color_ff4b4c4e"
+        android:layout_marginEnd="@dimen/tx_dp_10"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="快来说一说…"
+        android:textColor="@color/tx_color_dadada"
+        android:textSize="@dimen/tx_sp_14"
+        android:layout_marginEnd="@dimen/tx_dp_13"
+        />
+</LinearLayout>

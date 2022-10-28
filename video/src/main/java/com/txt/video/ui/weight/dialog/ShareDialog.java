@@ -26,7 +26,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     private onShareDialogListener mListener;
     private Context mContext;
 
-    private ExpandableItemAdapter baseQuickAdapter;
 
     public ShareDialog(Context context) {
         super(context, R.style.tx_MyDialog);
@@ -45,9 +44,8 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.tx_dialog_share);
         Window window = getWindow();
         WindowManager.LayoutParams attributes = window.getAttributes();
-//        attributes.height = Utils.getWindowHeight(mContext)/2;
-        attributes.width = Utils.getWindowWidth(mContext);
-        window.setGravity(Gravity.BOTTOM);
+        attributes.width = Utils.getWindowWidth(mContext)/3*2;
+        window.setGravity(Gravity.CENTER);
 
         setCanceledOnTouchOutside(true);
         initView();
@@ -69,10 +67,10 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     }
 
     public void setShareContent(String shareNum){
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("会议中支持"+shareNum+"位成员同时在线,\n超出数量后，后面成员将无法进入会话！");
-        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.tx_color_ce1b2b));
-        spannableStringBuilder.setSpan(foregroundColorSpan,5,5+shareNum.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        tv_top.setText(spannableStringBuilder);
+//        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("会议中支持"+shareNum+"位成员同时在线,\n超出数量后，后面成员将无法进入会话！");
+//        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.tx_color_ce1b2b));
+//        spannableStringBuilder.setSpan(foregroundColorSpan,5,5+shareNum.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        tv_top.setText(spannableStringBuilder);
     }
 
 

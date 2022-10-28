@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/tx_dp_10"
+    android:background="@drawable/tx_shape_round_5_color_f1f1f1"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/ll_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tx_shape_round_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_icon_name"
+            android:layout_width="@dimen/tx_dp_30"
+            android:layout_height="@dimen/tx_dp_30"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/tx_dp_15"
+            android:layout_marginTop="@dimen/tx_dp_10"
+            android:layout_marginBottom="@dimen/tx_dp_10"
+            android:background="@drawable/tx_shape_oval_e6b980"
+            android:gravity="center"
+            android:textColor="@color/tx_white"
+            android:textSize="@dimen/tx_sp_10"
+            tools:text="张思思" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/tx_dp_10"
+            android:layout_toRightOf="@+id/tv_icon_name"
+            android:gravity="center"
+            android:textColor="@color/tx_color_333333"
+            android:textSize="@dimen/tx_sp_15"
+            tools:text="张思思" />
+
+        <TextView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:drawableEnd="@drawable/tx_icon_close_gray"
+            android:gravity="center"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_control"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tx_shape_round_5"
+        android:layout_margin="@dimen/tx_dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/atv_muteaudio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="静音"
+            android:gravity="center"
+            android:textColor="@color/tx_color_333333"
+            android:paddingTop="@dimen/tx_dp_16"
+            android:paddingBottom="@dimen/tx_dp_16"
+            android:textSize="@dimen/tx_sp_15" />
+        <View
+            android:layout_width="match_parent"
+            android:id="@+id/xpopup_divider"
+            android:background="@color/tx_divider"
+            android:layout_height=".5dp"/>
+
+        <TextView
+            android:id="@+id/atv_mutevideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="打开摄像头"
+            android:gravity="center"
+            android:textColor="@color/tx_color_333333"
+            android:paddingTop="@dimen/tx_dp_16"
+            android:paddingBottom="@dimen/tx_dp_16"
+            android:textSize="@dimen/tx_sp_15" />
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/tx_divider"
+            android:layout_height=".5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="移除会议室"
+            android:gravity="center"
+            android:textColor="@color/tx_color_333333"
+            android:paddingTop="@dimen/tx_dp_16"
+            android:paddingBottom="@dimen/tx_dp_16"
+            android:textSize="@dimen/tx_sp_15" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:gravity="center"
+        android:textColor="@color/tx_color_333333"
+        android:paddingTop="@dimen/tx_dp_16"
+        android:paddingBottom="@dimen/tx_dp_16"
+        android:textSize="@dimen/tx_sp_15"
+        android:background="@drawable/tx_shape_round_5"
+        android:layout_marginTop="@dimen/tx_dp_10"
+        android:layout_marginStart="@dimen/tx_dp_15"
+        android:layout_marginEnd="@dimen/tx_dp_15"
+        android:layout_marginBottom="@dimen/tx_dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_control"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

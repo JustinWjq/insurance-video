@@ -45,4 +45,8 @@
         <attr name="tx_civ_border_overlay" format="boolean" />
         <attr name="tx_civ_circle_background_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="tx_BulletRecyclerView">
+        <attr name="tx_maxHeight" format="dimension" />
+    </declare-styleable>
 </resources>

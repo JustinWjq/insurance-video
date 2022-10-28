@@ -18,7 +18,6 @@ class SplachActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splach)
         Handler().postDelayed({
             MainActivity.gotoActivity(this, "1")
-//            startActivity(Intent(this,MeetingActivity::class.java))
             finish()
         },500)
     }

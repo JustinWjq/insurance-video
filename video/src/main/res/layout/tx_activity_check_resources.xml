@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/ll_left"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@color/tx_black"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tx_dp_52"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/tx_color_313235"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/ll_left"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            >
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tx_icon_back_white"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/tx_dp_25"
+                />
+            <LinearLayout
+                android:id="@+id/sv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/tx_dp_40"
+                android:layout_toLeftOf="@+id/ll_close"
+                android:background="@drawable/tx_shape_round_15_color_54000000"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/tx_dp_12"
+                android:paddingTop="@dimen/tx_dp_7"
+                android:paddingBottom="@dimen/tx_dp_7">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/tx_icon_res_search" />
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/tx_dp_5"
+                    android:layout_marginEnd="@dimen/tx_dp_21"
+                    android:background="@null"
+                    android:hint="请输入搜索内容"
+                    android:imeOptions="flagNoExtractUi"
+                    android:textColor="@color/tx_white"
+                    android:textColorHint="@color/tx_white"
+                    android:textSize="@dimen/tx_sp_12" />
+
+                <ImageView
+                    android:id="@+id/iv_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/tx_dp_25"
+                    android:src="@drawable/tx_icon_close_gray"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/tx_dp_12"
+                    android:text="搜索"
+                    android:textColor="@color/tx_color_e6b980"
+                    android:textSize="@dimen/tx_sp_15"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                >
+                <TextView
+                    android:id="@+id/tv_video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/tx_dp_12"
+
+                    android:text="视频"
+                    android:textColor="@color/tx_color_e6b980"
+                    android:textSize="@dimen/tx_sp_14" />
+
+                <ImageButton
+                    android:id="@+id/tx_search"
+                    style="@style/tx_style_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/tx_dp_40"
+                    android:layout_toLeftOf="@+id/tx_business_close"
+                    android:onClick="onTxClick"
+                    android:src="@drawable/tx_icon_search"
+                    android:textColor="@color/tx_color_dadada" />
+
+                <ImageButton
+                    android:id="@+id/tx_business_close"
+                    style="@style/tx_style_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="@dimen/tx_dp_15"
+                    android:layout_marginEnd="@dimen/tx_dp_25"
+                    android:onClick="onTxClick"
+                    android:src="@drawable/tx_icon_close_white"
+                    android:textColor="@color/tx_color_dadada" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:textSize="@dimen/tx_sp_15"
+                android:textColor="@color/tx_white"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/tx_dp_25"
+                android:visibility="gone"
+                />
+
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_zhany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/tx_dp_12"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_zy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

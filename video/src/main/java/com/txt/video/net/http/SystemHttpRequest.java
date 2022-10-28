@@ -35,10 +35,8 @@ public class SystemHttpRequest {
         return singleton;
     }
 
-//        private String IP = "https://developer.ikandy.cn:60723";
     private String IP = "https://video-sells-test.ikandy.cn";
 
-//    private String TAG = SystemHttpRequest.class.getSimpleName();
     private String TAG = "Txlog";
 
 
@@ -52,13 +50,13 @@ public class SystemHttpRequest {
     public void changeIP(TXSdk.Environment environment) {
         switch (environment) {
             case DEV:
-                IP = "https://developer.ikandy.cn:60723";
+                IP = "https://dev1.ikandy.cn:60312";
                 break;
             case RELEASE:
                 IP = "https://video-sells-uat.ikandy.cn";
                 break;
             case TEST:
-                IP = "https://video-sells-uat.ikandy.cn";
+                IP = "https://video-sells-test.ikandy.cn";
                 break;
             default:
                 IP = "https://video-sells-test.ikandy.cn";

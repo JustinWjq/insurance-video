@@ -11,22 +11,35 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application>
-
+        <activity
+            android:name="com.txt.video.ui.weight.danmu.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing"
+            android:label="@string/title_activity_check_resources"
+            android:theme="@style/tx_NewActivityTheme1" />
+        <activity
+            android:name=".ui.checkres.CheckResourcesActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:label="@string/title_activity_check_resources"
+            android:theme="@style/tx_NewActivityTheme1" />
         <activity
             android:name=".ui.boardpage.BoardViewActivity"
-            android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="landscape"
             android:theme="@style/tx_NewActivityTheme1" />
         <activity
             android:name=".ui.video.VideoActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="net.sourceforge.simcpuxdemo"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/tx_NewActivityTheme"
-            android:windowSoftInputMode="adjustPan" /> <!-- 适配华为（huawei）刘海屏 -->
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
+            android:value="true" />
+
+        <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />

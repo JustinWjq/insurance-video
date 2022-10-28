@@ -1,25 +1,21 @@
 package com.txt.video.ui.video
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
-//import com.google.gson.Gson
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -36,15 +32,18 @@ import com.txt.video.base.constants.IntentKey
 import com.txt.video.base.constants.VideoCode
 import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
+import com.txt.video.common.dialog.TxMessageDialog
+import com.txt.video.common.dialog.TxRemoteUserControlDialog
+import com.txt.video.common.dialog.TxRemoteUserDialog
+import com.txt.video.common.dialog.common.TxBaseDialog
 import com.txt.video.common.floatview.FloatingView
 import com.txt.video.common.glide.TxGlide
-import com.txt.video.common.utils.CheckDoubleClickListener
-import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.ConfigHelper
 import com.txt.video.trtc.TRTCCloudIView
+import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.TRTCCloudManagerListener
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserIView
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
@@ -53,11 +52,11 @@ import com.txt.video.trtc.videolayout.list.*
 import com.txt.video.trtc.videolayout.list.MemberListAdapter.*
 import com.txt.video.ui.TXManagerImpl
 import com.txt.video.ui.boardpage.BoardViewActivity
-import com.txt.video.ui.video.remote.RemoteUserListView
+import com.txt.video.ui.checkres.CheckResourcesActivity
+import com.txt.video.ui.video.remoteuser.RemoteUserListView
 import com.txt.video.ui.weight.PicQuickAdapter
 import com.txt.video.ui.weight.dialog.*
 import com.txt.video.ui.weight.easyfloat.EasyFloat
-import com.txt.video.ui.weight.easyfloat.interfaces.OnInvokeView
 import com.txt.video.ui.weight.view.ScreenView
 import kotlinx.android.synthetic.main.tx_activity_video.*
 import org.json.JSONArray
@@ -73,7 +72,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     TRTCCloudManagerListener,
     TRTCRemoteUserIView, VideoContract.ICollectView,
     onShareWhiteBroadDialogListener, onMuteDialogListener,
-    RemoteUserListView.RemoteUserListCallback, onCheckDialogListenerCallBack,
+    onCheckDialogListenerCallBack,
     ScreenView.BigScreenViewCallback {
 
     private var mMemberListAdapter: MemberListAdapter? = null
@@ -83,7 +82,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     private var bigMeetingEntity: MemberEntity? = null
     private var screenMeetingEntity: MemberEntity? = null
-    private var mStubRemoteUserView: ViewStub? = null
 
     private var mListRv: androidx.recyclerview.widget.RecyclerView? = null
     var mViewVideo: MeetingVideoView? = null
@@ -113,14 +111,56 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
+    //横竖屏切换逻辑
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        TxLogUtils.i("onConfigurationChanged")
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            TxLogUtils.i("Configuration.ORIENTATION_LANDSCAPE")
+            pageLayoutManager?.orientation =
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 
+            if (null != mTxBaseDialog) {
+                if (mTxBaseDialog?.isShowing!!) {
+                    changeDialogLandscape(true)
+                }
+            }
+        } else {
+            TxLogUtils.i("Configuration.ORIENTATION_PORTRAIT")
+            pageLayoutManager?.orientation =
+                androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+            if (null != mTxBaseDialog) {
+                if (mTxBaseDialog?.isShowing!!) {
+                    changeDialogLandscape(false)
+                }
+            }
+        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+    }
+
+    private fun changeDialogLandscape(isShow: Boolean) {
+
+        if (mTxBaseDialog != null) {
+            var window = mTxBaseDialog?.getWindow();
+            var lp = window?.attributes
+            if (isShow) {
+                lp!!.gravity = Gravity.RIGHT
+            } else {
+                lp!!.gravity = Gravity.CENTER
+            }
+
+            window?.attributes = lp
+        }
+    }
+
+    var pageLayoutManager: MeetingPageLM? = null
     override fun initViews() {
-
+        checkAudioHand()
         showInviteBt(isShow = true, noRemoterUser = true)
         mViewVideo = mPresenter!!.getMemberEntityList()[0].meetingVideoView
-        val pageLayoutManager = MeetingPageLM(this)
-        pageLayoutManager.orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-        pageLayoutManager.setPageListener(object : MeetingPageLayoutManager.PageListener {
+        pageLayoutManager = MeetingPageLM(this)
+        pageLayoutManager?.orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+        pageLayoutManager?.setPageListener(object : MeetingPageLayoutManager.PageListener {
             override fun onItemVisible(fromItem: Int, toItem: Int) {
                 if (fromItem == 0) {
                     processSelfVideoPlay()
@@ -165,7 +205,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mListRv?.layoutManager = pageLayoutManager
         mListRv?.adapter = mMemberListAdapter
 
-        mStubRemoteUserView = findViewById<ViewStub>(R.id.view_stub_remote_user)
         initPicAdapter()
         regToWx()
         videoBoradBusiness = arrayListOf(
@@ -177,7 +216,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         modifyExitBt()
         mPresenter?.muteLocalAudio(!mPresenter!!.getRoomSoundStatus())
-//        tx_business_video.isSelected = !TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
         val isEnableVideo = TXManagerImpl.instance?.getRoomControlConfig()?.isEnableVideo!!
         TxLogUtils.i("isEnableVideo---$isEnableVideo")
         mPresenter?.muteLocalVideo(!isEnableVideo)
@@ -264,7 +302,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         )
         mPresenter?.setRoomScreenStatus(true)
         mPresenter?.isShare = true
-        tx_business_screen.isSelected = true
         val entity =
             mPresenter!!.getStringMemberEntityMap()[mPresenter!!.getTRTCParams().userId]
         entity?.isScreen = true
@@ -288,7 +325,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mPresenter?.setScreenStatus(false)
         mPresenter?.setRoomScreenStatus(false)
         mPresenter?.isShare = false
-        tx_business_screen.isSelected = false
         hideFloatingWindow()
         val entity =
             mPresenter!!.getStringMemberEntityMap()[mPresenter!!.getTRTCParams().userId]
@@ -357,7 +393,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity,
                         true
                     )
-                    trtc_fl_no_video.visibility  = View.VISIBLE
+                    trtc_fl_no_video.visibility = View.VISIBLE
                 } else {
                     mPresenter?.addMemberEntity(entity)
                     mMemberListAdapter!!.notifyItemInserted(insertIndex)
@@ -399,11 +435,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mPresenter?.removeForAllMemberEntity(userId!!)
         mRemoteUserListView?.notifyDataSetChanged()
 
-        if (userId == changeUserStateDialog?.userId) {
-            if (changeUserStateDialog?.isShowing!!) {
-                changeUserStateDialog?.dismiss()
-            }
-        }
+//        if (userId == changeUserStateDialog?.userId) {
+//            if (changeUserStateDialog?.isShowing!!) {
+//                changeUserStateDialog?.dismiss()
+//            }
+//        }
 
         if (index!! >= 0) {
             mMemberListAdapter!!.notifyItemRemoved(index)
@@ -422,11 +458,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         if (mPresenter?.getAllMemberEntityList()!!.size == 0) {
 //            如果当前没有客户 隐藏
-            tx_icon_invite.visibility = View.GONE
             showInviteBt(isShow = true, noRemoterUser = true)
-            if (changeUserStateDialog?.isShowing!!) {
-                changeUserStateDialog?.dismiss()
-            }
+//            if (changeUserStateDialog?.isShowing!!) {
+//                changeUserStateDialog?.dismiss()
+//            }
         }
 
     }
@@ -444,7 +479,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mPresenter?.startRecord()
             // 发起云端混流
             mPresenter?.getTRTCRemoteUserManager()!!.updateCloudMixtureParams()
-//            showActivityFloat()
         } else {
             TxLogUtils.i("txsdk---onEnterRoom-----耗时$elapsed 毫秒")
             ToastUtils.showShort(R.string.tx_joinroom_error)
@@ -472,11 +506,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         if (entity1 != null) {
             entity1.isMuteVideo = !available
         }
-        if (changeUserStateDialog?.isShowing!!) {
-            if (changeUserStateDialog?.memberEntity?.userId == entity1?.userId) {
-                changeUserStateDialog?.changeLay(entity1)
-            }
-        }
+//        if (changeUserStateDialog?.isShowing!!) {
+//            if (changeUserStateDialog?.memberEntity?.userId == entity1?.userId) {
+//                changeUserStateDialog?.changeLay(entity1)
+//            }
+//        }
 
 
         mRemoteUserListView?.notifyDataSetChanged()
@@ -529,8 +563,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
             if (!mPresenter?.getTRTCParams()!!.userId?.equals(userId)!!) { //开启定时器
-
-                tx_icon_invite.visibility = View.GONE
                 showInviteBt(isShow = true, noRemoterUser = false)
             }
 
@@ -573,11 +605,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         if (entity1 != null) {
             entity1.isMuteAudio = !available
         }
-        if (changeUserStateDialog?.isShowing!!) {
-            if (changeUserStateDialog?.memberEntity?.userId == entity1?.userId) {
-                changeUserStateDialog?.changeLay(entity1)
-            }
-        }
+//        if (changeUserStateDialog?.isShowing!!) {
+//            if (changeUserStateDialog?.memberEntity?.userId == entity1?.userId) {
+//                changeUserStateDialog?.changeLay(entity1)
+//            }
+//        }
         mRemoteUserListView?.notifyDataSetChanged()
 
 
@@ -662,6 +694,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
      * @param isError true错误消息（必须退出） false提示消息（可选择是否退出）
      */
     var dialog: ExitDialog? = null
+    var mTxBaseDialog: TxBaseDialog? = null
     private fun showExitInfoDialog() {
 
         if (mPresenter?.isOwner()!!) {
@@ -672,35 +705,16 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 showMessage("当前正在共享，请结束后再试")
                 return
             }
-            if (tx_business_screen.isSelected) {
-                showMessage("当前正在投屏，请结束后再试")
-                return
-            }
         }
 
-        if (dialog == null) {
-            dialog = if (mPresenter?.isOwner()!!) {
-                ExitDialog(
-                    this,
-                    "暂时离开",
-                    "确定离开",
-                    "结束会话",
-                    "请选择暂时离开还是结束会话？"
-                )
-            } else {
 
-                ExitDialog(
-                    this,
-                    "取消",
-                    "确定离开",
-                    "离开",
-                    "请确认是否离开会议？"
-                )
-            }
-
-            dialog?.setOnConfirmlickListener(object :
-                onExitDialogListener {
-                override fun onConfirm() {
+        mTxBaseDialog = TxMessageDialog.Builder(this)
+            .setTitle("确定离开")
+            .setMessage("请确认是否离开会议?")
+            .setConfirm("离开")
+            .setCancel("取消")
+            .setListener(object : TxMessageDialog.OnListener {
+                override fun onConfirm(dialog: TxBaseDialog?) {
                     if (mPresenter?.isOwner()!!) {
                         TXSdk.getInstance().share = false
                     } else {
@@ -709,25 +723,19 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
                 }
 
-                override fun onTemporarilyLeave() {
-                    if (mPresenter?.isOwner()!!) {
-                        TXSdk.getInstance().share = true
-                        //暂时离开
-                        skipCaller()
-                    } else {
-
-                    }
-
+                override fun onCancel(dialog: TxBaseDialog?) {
+//                    if (mPresenter?.isOwner()!!) {
+//                        TXSdk.getInstance().share = true
+//                        //暂时离开
+//                        skipCaller()
+//                    } else {
+//
+//                    }
 
                 }
 
-            })
-        } else {
-
-        }
-
-        dialog?.show()
-
+            }).create()
+        mTxBaseDialog?.show()
     }
 
 
@@ -748,36 +756,29 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         )
     }
 
-    var dialog1: ExitDialog? = null
     fun showDeleteFileDialog(id: String?, isDeleteFile: Boolean = true) {
-        if (dialog1 == null) {
-            dialog1 = ExitDialog(
-                this,
-                resources.getString(R.string.tx_dialog_exit_cancel),
-                resources.getString(R.string.tx_dialog_exit_title),
-                resources.getString(R.string.tx_dialog_exit_confirm),
-                ""
-            )
-        }
+         TxMessageDialog.Builder(this)
+                    .setTitle( resources.getString(R.string.tx_dialog_exit_title))
+                    .setMessage("")
+                    .setConfirm(resources.getString(R.string.tx_dialog_exit_confirm))
+                    .setCancel(resources.getString(R.string.tx_dialog_exit_cancel))
+                    .setListener(object : TxMessageDialog.OnListener {
+                        override fun onConfirm(dialog: TxBaseDialog?) {
 
-        dialog1?.setOnConfirmlickListener(object :
-            onExitDialogListener {
-            override fun onConfirm() {
-                TxLogUtils.i("txsdk---deleteFile-----$id")
-                if (isDeleteFile) {
-                    mPresenter?.deleteFile(id)
-                } else {
-                    mPresenter?.deleteScreenFile(id)
-                }
+                            TxLogUtils.i("txsdk---deleteFile-----$id")
+                            if (isDeleteFile) {
+                                mPresenter?.deleteFile(id)
+                            } else {
+                                mPresenter?.deleteScreenFile(id)
+                            }
 
-            }
+                        }
 
-            override fun onTemporarilyLeave() {
+                        override fun onCancel(dialog: TxBaseDialog?) {
 
-            }
+                        }
 
-        })
-        dialog1?.show()
+                    }).create().show()
 
     }
 
@@ -883,14 +884,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun showBroad() {
         ll_board_business?.visibility = View.GONE
 
-        if (mPresenter?.getAllMemberEntityList()!!.size == 0) {
-            //如果没有客户
-            tx_icon_invite.visibility = View.GONE
-        } else {
-
-        }
-
-
     }
 
     var changeFileDialog: SelectFileDialog? = null
@@ -935,19 +928,24 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     var shareWhiteBroadDialog: ShareWhiteBroadDialog? = null
     override fun showChangeBroadModeDialog(isShow: Boolean) {
-        if (isShow) {
-            onEnd()
-        } else {
-            if (shareWhiteBroadDialog == null) {
-                shareWhiteBroadDialog =
-                    ShareWhiteBroadDialog(this)
-            }
-
-            shareWhiteBroadDialog?.setOnShareWhiteBroadDialogListener(this)
-            shareWhiteBroadDialog?.show()
-        }
-
-
+//        if (isShow) {
+//            onEnd()
+//        } else {
+//            if (shareWhiteBroadDialog == null) {
+//                shareWhiteBroadDialog =
+//                    ShareWhiteBroadDialog(this)
+//            }
+//
+//            shareWhiteBroadDialog?.setOnShareWhiteBroadDialogListener(this)
+//            shareWhiteBroadDialog?.show()
+//        }
+        var paintThickPopup = ShareScreenPopup(
+            tx_business_share,
+            R.layout.tx_layout_popup_sharescreen
+        )
+        paintThickPopup?.setBgColor(ContextCompat.getColor(this@VideoActivity, R.color.tx_white));
+        paintThickPopup?.setArrowOffsetXDp(36)
+        paintThickPopup?.show()
     }
 
     var shareDialog: ShareDialog? = null
@@ -1123,34 +1121,66 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     var mRemoteUserListView: RemoteUserListView? = null
 
     override fun handleMemberListView() {
-        if (mRemoteUserListView == null) {
-            mStubRemoteUserView?.inflate()
-            mRemoteUserListView = findViewById<RemoteUserListView>(R.id.view_remote_user)
-            mRemoteUserListView?.setRemoteUserListCallback(
-                this
-            )
-            mRemoteUserListView?.setRemoteUser(mPresenter?.getAllMemberEntityList())
+        TxRemoteUserDialog.Builder(this)
+            .setRemoteUser(mPresenter?.getMemberEntityList())
+            .setListener(object :RemoteUserListView.RemoteUserListCallback{
+                override fun onFinishClick() {
+                    hideRemoteUserListView(true)
+                }
 
-        } else {
-            mRemoteUserListView?.visibility = if (mRemoteUserListView?.isShown!!) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-            mRemoteUserListView?.post {
-                mRemoteUserListView?.notifyDataSetChanged()
-            }
-        }
+                override fun onMuteAllAudioClick() {
+                    showTimerDialog("4", 1, 1, 1, 1)
+                }
+
+                override fun onMuteAllAudioOffClick() {
+                    showMessage(getString(R.string.tx_toast_muteallmember))
+                    mPresenter?.sendGroupMessage(
+                        mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
+                            .put(
+                                IMkey.USERS,
+                                mPresenter?.setAllVideoStatusMemberToJSON(false, isMute = false)
+                            ).toString()
+                    )
+                    mPresenter?.setSoundStatus(true)
+                    mRemoteUserListView?.selectAudioBtn(false)
+                }
+
+                override fun onMuteAllVideoClick() {
+                    showShareDialog()
+                }
+
+                override fun onMuteAudioClick(position: Int) {
+                    val memberEntity = mPresenter!!.getMemberEntityList()[position]
+                    showChangeUserStateDialog(memberEntity)
+                }
+
+                override fun onMuteVideoClick(position: Int) {
+                    val memberEntity = mPresenter!!.getAllMemberEntityList()[position]
+                    showChangeUserStateDialog(memberEntity)
+                }
+
+            })
+            .show()
+//        if (mRemoteUserListView == null) {
+//            mRemoteUserListView = findViewById<RemoteUserListView>(R.id.view_remote_user)
+//            mRemoteUserListView?.setRemoteUserListCallback(
+//                this
+//            )
+//            mRemoteUserListView?.setRemoteUser(mPresenter?.getMemberEntityList())
+//
+//        } else {
+//            mRemoteUserListView?.visibility = if (mRemoteUserListView?.isShown!!) {
+//                View.GONE
+//            } else {
+//                View.VISIBLE
+//            }
+//            mRemoteUserListView?.post {
+//                mRemoteUserListView?.notifyDataSetChanged()
+//            }
+//        }
     }
 
 
-    override fun onMuteAllVideoClick() {
-        showShareDialog()
-    }
-
-    override fun onFinishClick() {
-        hideRemoteUserListView(true)
-    }
 
     override fun onSwitch() {
         switchCamera()
@@ -1169,34 +1199,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun hideRemoteUserListView(isHiden: Boolean) {
         mRemoteUserListView?.visibility = View.GONE
-    }
-
-    override fun onMuteAudioClick(position: Int) {
-        val memberEntity = mPresenter!!.getAllMemberEntityList()[position]
-        showChangeUserStateDialog(memberEntity)
-
-    }
-
-    override fun onMuteVideoClick(position: Int) {
-        val memberEntity = mPresenter!!.getAllMemberEntityList()[position]
-        showChangeUserStateDialog(memberEntity)
-    }
-
-    override fun onMuteAllAudioClick() {
-        showTimerDialog("4", 1, 1, 1, 1)
-    }
-
-    override fun onMuteAllAudioOffClick() {
-        showMessage(getString(R.string.tx_toast_muteallmember))
-        mPresenter?.sendGroupMessage(
-            mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
-                .put(
-                    IMkey.USERS,
-                    mPresenter?.setAllVideoStatusMemberToJSON(false, isMute = false)
-                ).toString()
-        )
-        mPresenter?.setSoundStatus(true)
-        mRemoteUserListView?.selectAudioBtn(false)
     }
 
     override fun showPersonWhiteBroad(isShow: Boolean) {
@@ -1403,7 +1405,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         trtc_ib_back.text = if (
             mPresenter?.isOwner()!!
         ) {
-            "结束会议"
+            "退出"
         } else {
             "离开会议"
         }
@@ -1430,20 +1432,45 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mPresenter?.setScreenStatus(screenStatus = false)
     }
 
+    //实时监听耳机状态
+
+
+    fun checkAudioHand(){
+        //进入房间后，判断需要切换成外放还是耳机类型，判断当前是外放还是耳机模式
+
+         var intent = registerReceiver(null, IntentFilter(Intent.ACTION_HEADSET_PLUG))
+         var headsetExists = intent?.getIntExtra("state", 0) == 1;
+         TxLogUtils.i("headsetExists-----"+headsetExists)
+
+
+    }
+
     fun onTxClick(v: View?) {
         val id = v?.id
         if (id == R.id.trtc_ib_back) {
             showExitInfoDialog()
 
-        } else if (id == R.id.tv_invite || id == R.id.tx_icon_invite) {
-            //邀请好友
-            if (tv_invite.text == getString(R.string.tx_str_invite)) {
-                showShareDialog()
-            } else {
-                handleMemberListView()
-            }
+        }else if(id == R.id.iv_switchscreen){
+            //切换屏幕方向
+            switchScreen()
+        } else if (id == R.id.tx_business_switchmic) {
+            //true 扬声器
 
+            TRTCCloudManager.sharedInstance().enableAudioHandFree(true)
+            TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode
+        } else if (id == R.id.tv_invite ) {
+            //邀请好友
+//            if (tv_invite.text == getString(R.string.tx_str_invite)) {
+//                showShareDialog()
+//            } else {
+//            }
+//            showShareDialog()
+            handleMemberListView()
+//            ll_title.animate().translationYBy(-200f).setDuration(500).start()
+//            hideStatusBar()
         } else if (id == R.id.tx_business_video) {
+            ll_title.animate().translationYBy(200f).setDuration(500).start()
+            showStatusBar()
             //关闭视频
             if (mPresenter?.isShare!! && mPresenter?.isOwner()!!) {
                 ToastUtils.showShort(getString(R.string.tx_str_share))
@@ -1459,29 +1486,14 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else if (id == R.id.tx_business_switch) {
             //反转镜头
             switchCamera()
+            startActivity(Intent(this, CheckResourcesActivity::class.java))
+//            startActivity(Intent(this,MainActivity::class.java))
         } else if (id == R.id.tx_business_share) {
-            if (tx_business_screen.isSelected) {
-                showMessage("您当前正在投屏，此时无法发起共享")
-                return
-            }
             //文档共享
             if (tx_business_share.isSelected) {
                 //如果选择了，证明是可以点击的
                 showChangeBroadModeDialog(mPresenter?.isBroad!!)
             } else {
-//                if (mPresenter?.getShareUserId()?.isNotEmpty()!!) {
-//                    //当前共享白板人 离开房间的话，需要释放这个权限
-//
-//                    val entity = mPresenter!!.getAllMemberEntityMap()[ mPresenter?.getShareUserId()!!]
-//                    if (null==entity){
-//                        //证明离开了
-//                        mPresenter?.setShareStatus(false,"",null)
-//
-//                    }else{
-//
-//                    }
-//
-//                }
                 //判断共享
                 if (mPresenter?.getRoomShareStatus()!!) {
                     showMessage("他人正在共享，此时无法发起共享")
@@ -1492,39 +1504,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     return
                 }
                 showChangeBroadModeDialog(mPresenter?.isBroad!!)
-            }
-
-
-        } else if (id == R.id.tx_business_screen) {
-            if (tx_business_share.isSelected) {
-                showMessage("您当前正在共享，此时无法发起投屏")
-                return
-            }
-            //投屏 如果关闭摄像头，投屏中自动打开
-            if (tx_business_screen.isSelected) {
-                if (mPresenter?.isShare!!) {
-                    //关闭
-                    mPresenter?.stopScreenCapture()
-                } else {
-                    mPresenter?.setScreenStatus(screenStatus = true)
-
-                }
-            } else {
-                if (mPresenter?.getRoomShareStatus()!!) {
-                    showMessage("他人正在共享，此时无法发起投屏")
-                    return
-                }
-//                if (mPresenter?.getRoomScreenStatus()!!) {
-//                    showMessage("他人正在投屏，此时无法发起投屏")
-//                    return
-//                }
-
-                if (mPresenter?.isShare!!) {
-                    //关闭
-                    mPresenter?.stopScreenCapture()
-                } else {
-                    mPresenter?.setScreenStatus(screenStatus = true)
-                }
             }
 
 
@@ -1591,6 +1570,23 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
     }
 
+    /**
+     * 切换屏幕。对应的视图也要切换
+     */
+    private fun switchScreen() {
+        //判断当前是横屏还是竖屏
+        if (requestedOrientation ==ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            TxLogUtils.i("switchScreen----SCREEN_ORIENTATION_LANDSCAPE")
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        }else if (requestedOrientation ==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+            TxLogUtils.i("switchScreen----SCREEN_ORIENTATION_PORTRAIT")
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        }
+    }
+
     private fun skipToBoardPage() {
         val intent = Intent(this, BoardViewActivity::class.java)
         val data = picQuickAdapter?.data
@@ -1636,7 +1632,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     var picQuickAdapter: PicQuickAdapter? = null
-    var changeUserStateDialog: ChangeUserStateDialog? = null
     var mCheckPostion = 0
 
 
@@ -1660,11 +1655,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mBoard?.gotoBoard(boardIdList[position])
         }
 
-        if (changeUserStateDialog == null) {
-            changeUserStateDialog =
-                ChangeUserStateDialog(this@VideoActivity)
-        }
-        changeUserStateDialog?.setOnMuteDialogListener(this)
+//        if (changeUserStateDialog == null) {
+//            changeUserStateDialog =
+//                ChangeUserStateDialog(this@VideoActivity)
+//        }
+//        changeUserStateDialog?.setOnMuteDialogListener(this)
     }
 
 
@@ -1766,34 +1761,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
     }
 
-
-    //展示录像计时器
-    var timer: CountDownTimer? = null
-    var mCurrentTimer = 0L
     override fun startTimer() {
-        if (timer == null) {
-            timer = object : CountDownTimer(60000, 1000) {
-                @SuppressLint("SetTextI18n")
-                override fun onTick(millisUntilFinished: Long) {
-                    mCurrentTimer += 1000
-                    tx_time.text = DatetimeUtil.getFormatHMS(mCurrentTimer)
-                }
-
-                override fun onFinish() {
-                    timer!!.start()
-
-                }
-            }
-
-            timer!!.start()
-        }
-
-
+        tx_time.text = "远程会议"
     }
 
     override fun stopTimer() {
-        timer?.cancel()
-        timer = null
+
     }
 
     override fun addBoardView() {
@@ -1842,27 +1815,27 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun showInviteBt(isShow: Boolean, noRemoterUser: Boolean) {
-        if (mPresenter!!.isOwner()) {
-            tv_invite.visibility = if (isShow) {
-                tv_invite.text = if (noRemoterUser) {
-                    getString(R.string.tx_str_invite)
-                } else {
-                    getString(R.string.tx_str_invite1)
-                }
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        } else {
-            tv_invite.visibility = if (isShow) {
-                tv_invite.text = getString(R.string.tx_str_invite)
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        }
+//        if (mPresenter!!.isOwner()) {
+//            tv_invite.visibility = if (isShow) {
+//                tv_invite.text = if (noRemoterUser) {
+//                    getString(R.string.tx_str_invite)
+//                } else {
+//                    getString(R.string.tx_str_invite1)
+//                }
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
+//
+//        } else {
+//            tv_invite.visibility = if (isShow) {
+//                tv_invite.text = getString(R.string.tx_str_invite)
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
+//
+//        }
 
     }
 
@@ -2108,7 +2081,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             trtc_fl_no_video.visibility = View.VISIBLE
             bigscreen?.visibility = View.GONE
         }
-        changeBigScreenViewName(bigMeetingEntity.userName, bigMeetingEntity.userRole,bigMeetingEntity.userRoleIconPath)
+        changeBigScreenViewName(
+            bigMeetingEntity.userName,
+            bigMeetingEntity.userRole,
+            bigMeetingEntity.userRoleIconPath
+        )
         changeBigScreenViewVoice(50)
     }
 
@@ -2151,10 +2128,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String) {
         rl_bigscreen_name.visibility = View.VISIBLE
         bigscreen_trtc_tv_content.text = text
-        trtc_icon_host.visibility = if (userRole=="owner" || userRole=="assistant") {
-            TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath).into(trtc_icon_host)
+        trtc_icon_host.visibility = if (userRole == "owner" || userRole == "assistant") {
+            TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath)
+                .into(trtc_icon_host)
             View.VISIBLE
-        }else{
+        } else {
             View.GONE
         }
 
@@ -2181,13 +2159,13 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     R.drawable.tx_icon_volume_2
                 }
                 in 40..59 -> {
-                    R.drawable.tx_icon_volume_3
-                }
-                in 60..79 -> {
                     R.drawable.tx_icon_volume_4
                 }
-                in 80..100 -> {
+                in 60..79 -> {
                     R.drawable.tx_icon_volume_5
+                }
+                in 80..100 -> {
+                    R.drawable.tx_icon_volume_6
                 }
                 else -> R.drawable.tx_icon_volume_4
             }
@@ -2196,8 +2174,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     private fun showChangeUserStateDialog(memberEntity: MemberEntity) {
-        changeUserStateDialog?.show()
-        changeUserStateDialog?.changeLay(memberEntity)
+        TxRemoteUserControlDialog.Builder(this)
+            .changeLay(memberEntity)
+            .show()
+
     }
 
     var paintThickPopup: PaintThickPopup? = null
@@ -2345,7 +2325,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     val memberEntity = memberEntityList.get(i)
                     val userId = memberEntity.userId
                     TxLogUtils.i("memberEntityList" + userId)
-                    if (userId ==  mPresenter!!.getSelfUserId()) {
+                    if (userId == mPresenter!!.getSelfUserId()) {
                         //本人不添加
                     } else {
                         if (isSameScreen) {
@@ -2470,7 +2450,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String) {
         if (!clientUrl.isEmpty()) {
             mPresenter!!.getRoomInfo(webId, clientUrl, name, name)
-        }else{
+        } else {
             ToastUtils.showShort("返回的clientUrl为空")
         }
 
@@ -2508,7 +2488,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     mPresenter!!.getServiceId(),
                     url,
                     name
-                   )
+                )
 
             }
 
@@ -2523,7 +2503,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         } else {
                             if (name.isEmpty()) {
                                 showMessage("产品名称不能为空")
-                            }else{
+                            } else {
                                 showMessage("产品链接不能为空")
                             }
                         }
@@ -2690,37 +2670,4 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         selectWebUrlDialog?.request()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun showActivityFloat() {
-        Handler().postDelayed({
-            EasyFloat.with(this)
-                .setGravity(Gravity.BOTTOM or Gravity.RIGHT, -30, -300)
-                .setLayout(R.layout.tx_float_custom, OnInvokeView {
-                    it.findViewById<TextView>(R.id.tx_float).setOnClickListener(CheckDoubleClickListener(){
-                        showSmartDialog()
-                    })
-
-                })
-                .registerCallback {
-
-                }
-                .show()
-        },200)
-
-    }
-
-    var mSmartWebDialog: SmartWebDialog? = null
-    private fun showSmartDialog(){
-        if (mSmartWebDialog == null) {
-            mSmartWebDialog =
-                SmartWebDialog(this)
-        }
-        mSmartWebDialog?.show()
-        mSmartWebDialog?.request("https://ics.webank.com/s/serviceHall/?app_id=W4054396&user_id=12345675&nonce=5wpnjcQ5UUedWDacb1aKcBhQIl9jFsd4&sign=93fb1153abafba8f847259b92211eb09fdb23e93&version=1.0.0#/index",
-            "智慧锦囊")
-    }
-
-    private fun hideSmartWebDialog(){
-        mSmartWebDialog?.dismiss()
-    }
 }

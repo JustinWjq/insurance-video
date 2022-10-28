@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:padding="10dp"
-        android:drawableEnd="@drawable/tx_icon_close"
+        android:drawableEnd="@drawable/tx_icon_gray_close"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/xpopup_divider"
         app:layout_constraintRight_toRightOf="parent"

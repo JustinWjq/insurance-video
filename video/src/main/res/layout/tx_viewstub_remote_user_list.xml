@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.txt.video.ui.video.remote.RemoteUserListView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.txt.video.ui.video.remoteuser.RemoteUserListView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_remote_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tx_white" />
+    android:background="@drawable/tx_shape_round_5"
+    />

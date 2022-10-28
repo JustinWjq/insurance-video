@@ -34,9 +34,11 @@
         <item name="android:windowIsFloating">true</item>
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
+
+        <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="tx_BaseDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert"><!-- @android:style/Theme.Dialog -->
+    <style name="tx_BaseDialogTheme" parent="android:style/Theme.Dialog"><!-- @android:style/Theme.Dialog -->
         <!-- 无边框 -->
         <item name="android:windowFrame">@null</item>
         <!-- 浮在 Activity 之上 -->
@@ -67,6 +69,7 @@
         <!--<item name="android:windowSoftInputMode">stateHidden</item>-->
         <!-- Dialog 全屏显示 -->
         <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 
@@ -154,6 +157,11 @@
     <style name="tx_RightAnimStyle" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/tx_right_in_window</item>
         <item name="android:windowExitAnimation">@anim/tx_right_out_window</item>
+    </style>
+
+    <style name="tx_InputDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 </resources>

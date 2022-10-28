@@ -39,7 +39,11 @@ import kotlinx.android.synthetic.main.tx_activity_board_view.tx_rv
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_textstyle
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_zoom
 import org.json.JSONObject
-
+/**
+ * author ：Justin
+ * time ：2021/3/17.
+ * des ：白板业务
+ */
 class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardViewPresenter>(),
     BoardViewContract.ICollectView, onCheckDialogListenerCallBack, TICMessageListener {
 
@@ -48,7 +52,6 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun init(savedInstanceState: Bundle?) {
-        openImmersionBar()
         hideStatusBar()
         initView()
 

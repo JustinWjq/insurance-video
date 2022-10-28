@@ -36,12 +36,16 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <ImageView
+            <TextView
                 android:id="@+id/iv_video_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/tx_dp_52"
+                android:layout_height="@dimen/tx_dp_52"
+                android:textColor="@color/tx_white"
+                android:textSize="@dimen/tx_sp_15"
+                android:gravity="center"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/tx_icon_close_video" />
+                android:background="@drawable/tx_shape_oval_e6b980"
+                />
 
 
             <TextView
@@ -76,8 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/tx_icon_volume_0"
+            android:src="@drawable/tx_icon_volume_small_0"
             />
+
         <TextView
             android:id="@+id/trtc_tv_content"
             android:layout_width="60dp"
@@ -85,12 +90,11 @@
             android:layout_centerHorizontal="true"
             android:layout_toRightOf="@+id/trtc_pb_audio"
             android:ellipsize="end"
-            android:singleLine="true"
-            tools:text="XXXX"
-            android:textColor="#FFFFFFFF"
-            android:textSize="14sp"
             android:gravity="center"
-            />
+            android:singleLine="true"
+            android:textColor="@color/tx_color_d7d7d7"
+            android:textSize="@dimen/tx_sp_12"
+            tools:text="XXXX" />
 
 
     </RelativeLayout>

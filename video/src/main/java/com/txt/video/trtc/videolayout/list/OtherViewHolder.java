@@ -55,7 +55,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     private FrameLayout mNoVideoContainer;
     private ImageView mUserSignal;
     private ImageView mPbAudioVolume;
-    private ImageView mIvVideClose;
+    private TextView mIvVideClose;
     private ImageView mIvIconHost;
     private ConstraintLayout item_view;
     private boolean isPlaying = false;
@@ -82,7 +82,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
 
     public void setVolume(int progress) {
         if (!mMemberEntity.isShowAudioEvaluation()) {
-            mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_mute);
+            mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
             return;
         }
         if (mPbAudioVolume != null) {
@@ -92,19 +92,19 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             //60-79
             //80-100
             if (progress == -1) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_mute);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
             } else if (progress == 0) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_0);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_1);
             } else if (progress >= 1 && progress <= 19) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_1);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_1);
             } else if (progress >= 20 && progress <= 39) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_2);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_2);
             } else if (progress >= 40 && progress <= 59) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_3);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_3);
             } else if (progress >= 60 && progress <= 79) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_4);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_5);
             } else if (progress >= 80 && progress <= 100) {
-                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_5);
+                mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_6);
             }
 
 
@@ -117,7 +117,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         if (isShow) {
 
         } else {
-            mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_mute);
+            mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
         }
 
     }
@@ -143,12 +143,12 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
-        if (isShow) {
-            mIvVideClose.setBackground(isVideoClose ? ContextCompat.getDrawable(itemView.getContext(), R.drawable.tx_icon_close_video) : ContextCompat.getDrawable(itemView.getContext(), R.drawable.tx_icon_close_screen));
-
-        }else{
-
+        String userName = mMemberEntity.getUserName();
+        if (mMemberEntity.getUserName().length()>2) {
+            userName = userName.substring(userName.length()-2, userName.length());
         }
+        mIvVideClose.setText(userName);
+
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
@@ -249,7 +249,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
         mNoVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_fl_no_video);
-        mIvVideClose = (ImageView) itemView.findViewById(R.id.iv_video_close);
+        mIvVideClose = (TextView) itemView.findViewById(R.id.iv_video_close);
 //            mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.img_user_head);
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
