@@ -429,6 +429,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+        <Button
+            style="@style/tx_style_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/tx_icon_more"
+            android:onClick="onTxClick"
+            android:text="更多"
+            android:textColor="@color/tx_color_dadada"
+            android:textSize="@dimen/tx_sp_12" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

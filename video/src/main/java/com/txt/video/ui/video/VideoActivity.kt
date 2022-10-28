@@ -1434,14 +1434,33 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     //实时监听耳机状态
 
+    fun autoCheckAudioHand(){
+        //进入房间后，判断需要切换成外放还是耳机类型，判断当前是外放还是耳机模式
+        //在有线耳机先连接的情况下，蓝牙连接了，自动切到蓝牙耳机
+        //在蓝牙耳机先连接的情况下，有线耳机连接了，会自动切到有线耳机
+        //有线耳机不能切换
+        //蓝牙耳机可以切换
+
+
+    }
+
+    fun switchAudioHand(){
+
+        //听筒模式
+        if (TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode) {
+            TRTCCloudManager.sharedInstance().enableAudioHandFree(true)
+        }else{
+            TRTCCloudManager.sharedInstance().enableAudioHandFree(false)
+        }
+
+        tx_business_switchmic.isSelected = TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode
+
+    }
 
     fun checkAudioHand(){
-        //进入房间后，判断需要切换成外放还是耳机类型，判断当前是外放还是耳机模式
-
-         var intent = registerReceiver(null, IntentFilter(Intent.ACTION_HEADSET_PLUG))
-         var headsetExists = intent?.getIntExtra("state", 0) == 1;
-         TxLogUtils.i("headsetExists-----"+headsetExists)
-
+        var intent = registerReceiver(null, IntentFilter(Intent.ACTION_HEADSET_PLUG))
+        var headsetExists = intent?.getIntExtra("state", 0) == 1
+        TxLogUtils.i("headsetExists-----"+headsetExists)
 
     }
 
@@ -1455,9 +1474,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             switchScreen()
         } else if (id == R.id.tx_business_switchmic) {
             //true 扬声器
-
-            TRTCCloudManager.sharedInstance().enableAudioHandFree(true)
-            TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode
+            switchAudioHand()
         } else if (id == R.id.tv_invite ) {
             //邀请好友
 //            if (tv_invite.text == getString(R.string.tx_str_invite)) {

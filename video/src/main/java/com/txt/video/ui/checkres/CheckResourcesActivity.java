@@ -34,7 +34,7 @@ import java.util.ArrayList;
 /**
  * author ：Justin
  * time ：2021/3/17.
- * des ：选择共享页面
+ * des ：选择共享页面，暂时不做
  */
 public class CheckResourcesActivity extends BaseActivity<CheckResourcesContract.ICollectView, CheckResourcesPresenter>
         implements CheckResourcesContract.ICollectView {
