@@ -4,12 +4,14 @@ import android.graphics.Color
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import android.widget.TextView
 import com.txt.video.R
 import com.txt.video.net.bean.ThickType
 import com.txt.video.net.bean.ToolType
 import com.txt.video.ui.weight.adapter.PaintColorAdapter
 import com.txt.video.ui.weight.PaintThickAdapter
 import com.txt.video.common.callback.onCheckDialogListenerCallBack
+import com.txt.video.common.callback.onShareWhiteBroadDialogListener
 import com.txt.video.common.dialog.config.TransformersTip
 import com.txt.video.common.dialog.config.gravity.ArrowGravity
 import com.txt.video.common.dialog.config.gravity.TipGravity
@@ -37,15 +39,27 @@ open class ShareScreenPopup : TransformersTip {
     }
 
 
-    private var mListener: onCheckDialogListenerCallBack? = null
-    open fun setOnCheckDialogListener(listener: onCheckDialogListenerCallBack) {
+    private var mListener: onShareWhiteBroadDialogListener? = null
+    open fun setOnCheckDialogListener(listener: onShareWhiteBroadDialogListener) {
         mListener = listener
     }
 
 
     override fun initView(contentView: View) {
         super.initView(contentView)
-
+        contentView.findViewById<TextView>(R.id.tv_file).setOnClickListener {
+            //点击文件
+            if (null != mListener) {
+                mListener?.onCheckFileWhiteBroad()
+            }
+        }
+        contentView.findViewById<TextView>(R.id.tv_whitebroad).setOnClickListener {
+            //点击白板
+            if (null != mListener) {
+                mListener?.onCheckBroad()
+                dismissTip()
+            }
+        }
 
     }
 

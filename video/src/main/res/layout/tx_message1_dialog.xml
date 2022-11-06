@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_ui_container"
+    android:layout_gravity="center"
+    android:background="@drawable/tx_shape_round_5"
+    android:orientation="vertical">
+
+    <com.txt.video.ui.weight.view.SmartTextView
+        android:id="@+id/tv_ui_title"
+        android:textSize="@dimen/tx_sp_15"
+        android:textColor="@color/tx_color_333333"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingTop="30dp"
+        android:paddingBottom="@dimen/tx_dp_25"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="确定离开"
+        />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:paddingTop="5dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/tx_black"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="请选择暂时离开还是结束会话？" />
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:paddingTop="15dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/tx_color_ce1b2b"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="请选择暂时离开还是结束会话？" />
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:id="@+id/xpopup_divider"
+        android:background="@color/tx_divider"
+        android:layout_height=".5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_onlytext"
+            android:textSize="16sp"
+            tools:text="结束会话"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/tx_color_006dff"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            style="@style/tx_style_click_bottom"
+            android:layout_height="match_parent" />
+
+
+        <com.txt.video.ui.weight.view.SmartTextView
+            android:id="@+id/tv_ui_cancel"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/tx_color_666666"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            style="@style/tx_style_click_2"
+            tools:text="暂时离开"
+            />
+
+        <View
+            android:id="@+id/v_ui_line"
+            android:layout_width=".5dp"
+            android:background="@color/tx_divider"
+            android:layout_height="match_parent"/>
+
+        <com.txt.video.ui.weight.view.SmartTextView
+            android:id="@+id/tv_ui_confirm"
+            android:textSize="16sp"
+            tools:text="结束会话"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/tx_color_e6b980"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/tx_style_click_3"
+            android:layout_height="match_parent" />
+
+
+
+    </LinearLayout>
+</LinearLayout>

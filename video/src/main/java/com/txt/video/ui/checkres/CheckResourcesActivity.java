@@ -2,7 +2,6 @@ package com.txt.video.ui.checkres;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -20,8 +19,7 @@ import android.widget.TextView;
 import com.txt.video.R;
 import com.txt.video.base.BaseActivity;
 import com.txt.video.common.adapter.base.TxBaseQuickAdapter;
-import com.txt.video.common.dialog.TxSearchcriteriaDialog;
-import com.txt.video.net.bean.ResourceConditionsBean;
+import com.txt.video.ui.weight.dialog.TxSearchcriteriaDialog;
 import com.txt.video.net.bean.ResourceTypeBean;
 import com.txt.video.net.bean.ResourcegsConditionsBean;
 import com.txt.video.net.utils.TxLogUtils;

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tx_chat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tx_shape_round_topright_15"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <RelativeLayout
+        android:id="@+id/ll_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/tx_white"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableEnd="@drawable/tx_icon_close_gray"
+            android:gravity="center"
+            android:padding="@dimen/tx_dp_15"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:paddingTop="@dimen/tx_dp_15"
+            android:paddingBottom="@dimen/tx_dp_15"
+            android:singleLine="true"
+            android:text="聊天"
+            android:textColor="@color/tx_color_333333"
+            android:textSize="@dimen/tx_sp_16"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/tx_color_fff5f5f5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+
+
+    <RelativeLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tx_white"
+        android:padding="@dimen/tx_dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_chat_list"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/tx_dp_17"
+            android:paddingTop="@dimen/tx_dp_5"
+            android:paddingBottom="@dimen/tx_dp_5"
+            android:background="@drawable/tx_shape_round_20_color_e5e5e5">
+
+            <EditText
+                android:id="@+id/et_sendmsg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLength="50"
+                android:imeOptions="flagNoExtractUi"
+                android:hint="快来说一说"
+                android:textColorHint="@color/tx_color_999999"
+                android:textColor="@color/tx_black"
+                android:textSize="@dimen/tx_sp_15" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/tx_dp_15"
+                android:background="@color/tx_color_ffe5e5e5"
+
+                />
+            <TextView
+                android:id="@+id/tv_sendmsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发送"
+                android:layout_marginStart="@dimen/tx_dp_15"
+                android:layout_marginEnd="@dimen/tx_dp_17"
+                android:textColor="@color/tx_color_666666"
+                android:textSize="@dimen/tx_sp_15" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

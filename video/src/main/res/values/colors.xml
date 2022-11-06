@@ -30,14 +30,37 @@
     <color name="tx_color_d7d7d7">#D7D7D7</color>
     <color name="tx_color_33d6d6d6">#33D6D6D6</color>
     <color name="tx_color_2d2d2d">#2D2D2D</color>
+    <color name="tx_color_222222">#222222</color>
     <color name="tx_color_ff6666">#FF6666</color>
     <color name="tx_color_f7f7f7">#f7f7f7</color>
     <color name="tx_color_bd000000">#BD000000</color>
     <color name="tx_color_54000000">#54000000</color>
+    <color name="tx_color_99000000">#99000000</color>
     <color name="tx_color_ff737373">#ff737373</color>
     <color name="tx_color_fff1f1f1">#fff1f1f1</color>
     <color name="tx_color_cccccc">#cccccc</color>
     <color name="tx_color_ff4b4c4e">#ff4b4c4e</color>
     <color name="tx_color_ff282a2c">#ff282a2c</color>
+    <color name="tx_color_bf000000">#bf000000</color>
+    <color name="tx_color_212226">#ff212226</color>
+    <color name="tx_color_080808">#ff080808</color>
+    <color name="tx_color_fff5f5f5">#fff5f5f5</color>
+    <color name="tx_color_ffe5e5e5">#ffe5e5e5</color>
+    <color name="tx_color_dfdfdf">#dfdfdf</color>
 
+
+    <color name="tuibarrage_color_white">#FFFFFFFF</color>
+    <color name="tuibarrage_color_black">#000000</color>
+    <color name="tuibarrage_color_half_black">#44777777</color>
+    <color name="tuibarrage_bg_send_view">#BF000000</color>
+    <color name="tuichorus_transparent">#00000000</color>
+
+    <!--    消息的颜色-->
+    <color name="tuibarrage_color_msg_1">#3074FD</color>
+    <color name="tuibarrage_color_msg_2">#3CCFA5</color>
+    <color name="tuibarrage_color_msg_3">#FF8607</color>
+    <color name="tuibarrage_color_msg_4">#F7AF97</color>
+    <color name="tuibarrage_color_msg_5">#FF8BB7</color>
+    <color name="tuibarrage_color_msg_6">#FC6091</color>
+    <color name="tuibarrage_color_msg_7">#FCAF41</color>
 </resources>

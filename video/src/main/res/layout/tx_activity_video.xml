@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tx_black"
+    android:background="@color/tx_color_222222"
     android:fitsSystemWindows="true"
     android:keepScreenOn="true">
+
 
 
     <RelativeLayout
@@ -74,25 +75,25 @@
 
     <FrameLayout
         android:id="@+id/bigscreen"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/tx_black"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/tx_color_222222"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/trtc_fl_no_video"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/tx_black"
+        android:background="@color/tx_color_222222"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
@@ -110,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/tx_shape_round_5_color_ff6666"
+        android:background="@drawable/tx_shape_08101d"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
         app:layout_constraintLeft_toLeftOf="parent">
@@ -152,21 +153,21 @@
         android:layout_height="150dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_title" />
+        app:layout_constraintTop_toBottomOf="@+id/bigscreen" />
 
 
-    <FrameLayout
-        android:id="@+id/board_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/tx_white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ll_board_business"
-        app:layout_constraintDimensionRatio="h,16:9"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trtc_video_view_layout" />
+<!--    <FrameLayout-->
+<!--        android:id="@+id/board_view_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="@color/tx_white"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/ll_board_business"-->
+<!--        app:layout_constraintDimensionRatio="h,16:9"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/trtc_video_view_layout" />-->
 
 
     <!-- Board -->
@@ -312,15 +313,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ll_title" />
 
-    <include
-        layout="@layout/tx_layout_video_danmu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/tx_dp_15"
-        android:layout_marginBottom="@dimen/tx_dp_15"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
-        />
+
 
     <ImageButton
         android:id="@+id/iv_switchscreen"
@@ -331,9 +324,22 @@
         android:layout_marginBottom="@dimen/tx_dp_15"
         android:onClick="onTxClick"
         style="@style/tx_style_button"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/rl_word_show"
         app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
         />
+
+    <RelativeLayout
+        android:id="@+id/rl_word_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="@dimen/tx_dp_10"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_switchscreen"
+        />
+
 
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -416,6 +422,7 @@
             android:layout_weight="1" />
 
         <Button
+            android:id="@+id/bt_startrecord"
             style="@style/tx_style_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -430,6 +437,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         <Button
+            android:id="@+id/bt_more"
             style="@style/tx_style_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -444,5 +452,59 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_barrage_show_audience"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="@dimen/tx_dp_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/rl_barrage_audience"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
+
+    <RelativeLayout
+        android:id="@+id/rl_barrage_audience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tx_dp_15"
+        android:layout_marginBottom="@dimen/tx_dp_15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_chat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tx_dp_15"
+        android:visibility="gone"
+        android:onClick="onTxClick"
+        android:padding="@dimen/tx_dp_8"
+        android:layout_marginBottom="@dimen/tx_dp_8"
+        android:layout_marginEnd="@dimen/tx_dp_25"
+        android:background="@drawable/tx_shape_round_10_color_080808"
+        app:layout_constraintRight_toLeftOf="@+id/iv_switchscreen"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tx_shape_round_6_color_212226"
+            android:drawableTop="@drawable/tx_icon_chat"
+            android:paddingLeft="@dimen/tx_dp_12"
+            android:paddingTop="@dimen/tx_dp_5"
+            android:paddingRight="@dimen/tx_dp_12"
+            android:paddingBottom="@dimen/tx_dp_3"
+            android:text="聊天"
+            android:textColor="@color/tx_color_dadada"
+            android:textSize="@dimen/tx_sp_10" />
+
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

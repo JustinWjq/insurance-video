@@ -17,19 +17,51 @@ import org.json.JSONObject
  * time ：2021/3/17.
  * des ：
  */
-public class BoardViewContract{
+public class BoardViewContract {
     interface ICollectModel {
     }
 
     interface ICollectView : IBaseView {
+        fun showTimerDialog(
+            type: String,
+            maxRoomTime: Int,
+            extendRoomTime: Int,
+            notifyExtendTime: Int,
+            notifyEndTime: Int
+        )
 
+        fun finishPage()
+
+        fun sendIMSuccess()
+
+        fun  startShareSuccess(
+            shareStatus: Boolean,
+            url: String?,
+            images: MutableList<String>?
+        )
+
+        fun  startShareFail(shareStatus: Boolean)
     }
 
 
     interface ICollectPresenter {
-        fun setServiceId(serviceId :String)
+        fun setServiceId(serviceId: String)
 
-       fun extendTime()
+        fun extendTime()
+
+        fun sendGroupMessage(msg: String, type: String)
+
+        fun setIMTextData(type: String): JSONObject
+
+        fun setShareStatus(
+            isShareStatus: Boolean,
+            url: String?,
+            images: MutableList<String>?
+        )
+
+        fun setAgentId(mAgentId: String)
+
+        fun getAgentId() :String
     }
 
 }

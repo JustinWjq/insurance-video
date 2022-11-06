@@ -86,7 +86,7 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
     implementation 'com.tencent.liteav:LiteAVSDK_TRTC:9.2.10639'
 
-    implementation 'com.tencent.imsdk:imsdk:5.1.66'
+//    implementation 'com.tencent.imsdk:imsdk:5.1.66'
 
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 

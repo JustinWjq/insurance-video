@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="35dp"
+    android:orientation="horizontal"
+    android:background="@drawable/tx_shape_round_5_color_282a2c"
+    android:gravity="center_vertical"
+  >
+
+    <ImageView
+        android:id="@+id/iv_emoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/tx_dp_10"
+        android:src="@drawable/tx_icon" />
+
+    <View
+        android:layout_width="@dimen/tx_dp_1"
+        android:layout_height="@dimen/tx_dp_20"
+        android:layout_marginEnd="@dimen/tx_dp_10"
+        android:background="@color/tx_color_ff4b4c4e" />
+
+    <TextView
+        android:id="@+id/iv_linkto_send_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tx_dp_13"
+        android:text="快来说一说…"
+        android:textColor="@color/tx_color_dadada"
+        android:textSize="@dimen/tx_sp_14" />
+</LinearLayout>

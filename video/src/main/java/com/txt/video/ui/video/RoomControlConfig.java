@@ -24,7 +24,7 @@ public class RoomControlConfig {
     }
 
     public static class Builder {
-        boolean enableVideo = true;
+        boolean enableVideo = false;
 
 
         public Builder() {

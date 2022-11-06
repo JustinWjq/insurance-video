@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:orientation="vertical"
+    android:background="@color/tx_color_80_black"
     android:gravity="center"
    >
     <TextView
+        android:id="@+id/tv_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="文件"
@@ -17,6 +19,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_whitebroad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="电子白板"

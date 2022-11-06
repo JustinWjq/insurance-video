@@ -1,18 +1,27 @@
 package com.txt.video.ui.boardpage
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.os.CountDownTimer
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.RelativeLayout
+import com.google.gson.Gson
 import com.tencent.imsdk.TIMMessage
 import com.tencent.teduboard.TEduBoardController
 import com.txt.video.R
+import com.txt.video.TXSdk
 import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
 import com.txt.video.base.constants.VideoCode
+import com.txt.video.common.callback.onCheckDialogListenerCallBack
+import com.txt.video.common.callback.onExitDialogListener
+import com.txt.video.common.dialog.common.TxBaseDialog
+import com.txt.video.common.utils.AppUtils
+import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.ThickType
 import com.txt.video.net.bean.ToolType
 import com.txt.video.net.utils.TxLogUtils
@@ -22,30 +31,33 @@ import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.ticimpl.TICMessageListener
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
+import com.txt.video.ui.video.barrage.model.TUIBarrageModel
+import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
+import com.txt.video.ui.video.barrage.view.TUIBarrageButton
+import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
 import com.txt.video.ui.weight.PicQuickAdapter
-import com.txt.video.common.callback.onCheckDialogListenerCallBack
-import com.txt.video.common.callback.onExitDialogListener
-import com.txt.video.common.dialog.CommonDialog
+import com.txt.video.ui.weight.dialog.CommonDialog
 import com.txt.video.ui.weight.dialog.PaintThickPopup
-import com.txt.video.common.utils.AppUtils
-import com.txt.video.common.utils.ToastUtils
+import com.txt.video.ui.weight.dialog.TxMessageDialog
 import kotlinx.android.synthetic.main.tx_activity_board_view.*
-import kotlinx.android.synthetic.main.tx_activity_board_view.board_view_container
+import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_show_audience
+import kotlinx.android.synthetic.main.tx_activity_board_view.rl_rv
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_board_view_business
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_eraser
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_boardtools
+import kotlinx.android.synthetic.main.tx_activity_board_view.tx_eraser
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_pen
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_rv
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_textstyle
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_zoom
 import org.json.JSONObject
+
 /**
  * author ：Justin
  * time ：2021/3/17.
  * des ：白板业务
  */
 class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardViewPresenter>(),
-    BoardViewContract.ICollectView, onCheckDialogListenerCallBack, TICMessageListener {
+    BoardViewContract.ICollectView, onCheckDialogListenerCallBack {
 
     override fun getContentViewId(): Int {
         return R.layout.tx_activity_board_view
@@ -85,7 +97,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             )
 
         board_view_container.addView(boardController?.boardRenderView, layoutParams)
-        instance.addIMMessageListener(this)
+
         showAudioStatus()
         videoBoradBusiness = arrayListOf(
             tx_pen,
@@ -97,6 +109,31 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
         initBoardTools()
         initPicAdapter()
+        iv_endshare.setOnClickListener {
+            //结束共享
+            TxMessageDialog.Builder(this)
+                .setTitle("确定结束")
+                .setMessage("您确定要结束共享吗?")
+                .setConfirm("结束")
+                .setCancel("取消")
+                .setListener(object : TxMessageDialog.OnListener {
+                    override fun onConfirm(dialog: TxBaseDialog?) {
+                        mPresenter?.sendGroupMessage(
+                            mPresenter?.setIMTextData(IMkey.ENDWHITEBOARD)
+                                ?.put(IMkey.SHAREUSERID, mPresenter?.getAgentId()).toString(),
+                            "1"
+                        )
+                        mPresenter?.setShareStatus(false, "", null)
+//            mPresenter?.setRoomShareStatus(false)
+                    }
+
+                    override fun onCancel(dialog: TxBaseDialog?) {
+
+                    }
+
+                }).show()
+
+        }
     }
 
     fun showAudioStatus() {
@@ -118,6 +155,13 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         val extras = intent.extras
         val stringArrayList = extras?.getStringArrayList(IntentKey.BOARDLISTS)
         extras?.getString(IntentKey.SERVICEID)?.let { mPresenter?.setServiceId(it) }
+        extras?.getString(IntentKey.AGENTID)?.let { mPresenter?.setAgentId(it) }
+        extras?.getString( IntentKey.GROUPID)?.let {
+            initBarrage(it,
+            extras?.getString(IntentKey.SERVICEID)!!
+        ) }
+
+
         if (null != stringArrayList && stringArrayList.size > 1) {
             ll_borads.visibility = View.VISIBLE
             val boardIdLists = intent.extras?.getStringArrayList(IntentKey.BOARDIDLISTS)
@@ -143,7 +187,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
 
-    private fun finishPage() {
+    override fun finishPage() {
         board_view_container.removeView(boardController?.boardRenderView)
         val selectToolsPosition = getSelectToolsPosition()
         intent.putExtra(IntentKey.CHECKTOOLSPOSTIONS, selectToolsPosition)
@@ -155,6 +199,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
         setResult(VideoCode.FINISHPAGE_CODE, intent)
         finish()
+    }
+
+    override fun sendIMSuccess() {
     }
 
     fun getSelectToolsPosition(): Int {
@@ -185,7 +232,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             } else {
                 //展示
                 boardController?.isDrawEnable = true
-                tx_boardtools.setImageResource(R.drawable.tx_paint_check)
+                tx_boardtools.setImageResource(R.drawable.tx_paint_default)
                 val color = PaintThickPopup.mColorMap[VideoActivity.paintColorPostion].color
                 boardController!!.brushColor = TEduBoardController.TEduBoardColor(color!!)
                 boardController!!.toolType =
@@ -202,9 +249,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             val size = PaintThickPopup.mColorMap1[VideoActivity.paintSizeIntPostion].size
             boardController!!.brushColor = TEduBoardController.TEduBoardColor(color!!)
             boardController!!.brushThin = size
-            boardController!!.toolType =
-                TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_PEN
-
+//            boardController!!.setGraphStyle(TEduBoardController.TEduBoardGraphStyle.solidLineEndArrow())
+            boardController!!.setToolType(TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_PEN)
+//            boardController!!.setToolType(TEduBoardController.TEduBoardArrowType.TEDU_BOARD_ARROW_TYPE_SOLID)
             if (tx_pen.isSelected) {
                 showPopupWindow(
                     "1",
@@ -272,7 +319,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     private fun showPopupWindow(type: String, paintColorPostion: Int, paintSizeIntPostion: Int) {
         paintThickPopup = PaintThickPopup(
-            tx_boardtools,
+            tx_pen,
             R.layout.tx_layout_paintstyle
         )
         val xDp = if (type == "1") {
@@ -310,58 +357,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         }
     }
 
-    override fun onTICRecvTextMessage(fromUserId: String?, text: String?) {
-    }
-
-    override fun onTICRecvMessage(message: TIMMessage?) {
-    }
-
-    override fun onTICRecvGroupTextMessage(fromUserId: String?, text: String?) {
-        TxLogUtils.i("onTICRecvGroupTextMessage" + text)
-        val jsonObject = JSONObject(text)
-        val hasType = jsonObject.has("type")
-        if (hasType) {
-            val type = jsonObject.getString("type")
-            val hasData = jsonObject.has("data")
-
-            when (type) {
-                "notifyExtend" -> {
-                    if (hasData) {
-                        val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
-                        val notifyExtendTime = dataJO.getInt("notifyExtendTime")
-                        showTimerDialog("2", 0, extendRoomTime, notifyExtendTime, 0)
-                    }
-
-                }
-                "notifyEnd" -> {
-                    if (hasData) {
-                        val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
-                        val notifyEndTime = dataJO.getInt("notifyEndTime")
-                        showTimerDialog("3", 0, extendRoomTime, 0, notifyEndTime)
-                    }
-                }
-                //去除白板
-                IMkey.ENDWHITEBOARD -> {
-                    intent.putExtra(IntentKey.ENDWHITEBROAD, true)
-                    finishPage()
-                }
-                else -> {
-                }
-            }
-        }
-    }
-
-    override fun onTICRecvCustomMessage(fromUserId: String?, data: ByteArray?) {
-    }
-
-    override fun onTICRecvGroupCustomMessage(fromUserId: String?, data: ByteArray?) {
-    }
-
 
     var mTimerdialog: CommonDialog? = null
-    fun showTimerDialog(
+    override fun showTimerDialog(
         type: String,
         maxRoomTime: Int,
         extendRoomTime: Int,
@@ -480,8 +478,116 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun onDestroy() {
+        if (boardController != null) {
+            val boardview = boardController!!.boardRenderView
+            if (board_view_container != null && boardview != null) {
+                board_view_container!!.removeView(boardview)
+            }
+        }
         super.onDestroy()
-        TICManager.getInstance().removeIMMessageListener(this)
+    }
+
+    override fun startShareSuccess(
+        shareStatus: Boolean,
+        url: String?,
+        images: MutableList<String>?
+    ) {
+        //跳出白板页面
+        finish()
+    }
+
+    override fun startShareFail(shareStatus: Boolean) {
+
+    }
+
+    var displayView: TUIBarrageDisplayView? = null
+    var tuiBarbt: TUIBarrageButton? = null
+    private fun initBarrage(groupId: String, serviceId: String) {
+        //弹幕发送View
+        tuiBarbt = TUIBarrageButton(this, groupId, serviceId)
+        setBarrage(tuiBarbt as View)
+        //弹幕显示View
+        displayView = TUIBarrageDisplayView(this, groupId)
+
+        setBarrageShow(displayView as View)
+        tuiBarbt?.sendView?.setBarrageListener(object : ITUIBarrageListener {
+            override fun onSuccess(code: Int, msg: String, model: TUIBarrageModel) {
+                if (model == null || TextUtils.isEmpty(model.content)) {
+                    TxLogUtils.i(
+                        "message is null"
+                    )
+                    return
+                }
+                //todo 这里是所有弹幕的消息 展示在群聊里面
+                TxLogUtils.i("model" + Gson().toJson(model))
+                displayView?.receiveBarrage(model)
+
+            }
+
+            override fun onFailed(code: Int, msg: String) {}
+        })
+        displayView?.setReceiveBarrageListener(object : ITUIBarrageListener {
+            override fun onSuccess(code: Int, msg: String?, model: TUIBarrageModel?) {
+                //收到消息
+
+                rl_barrage_show_audience.visibility = View.VISIBLE
+                startShowBarrageTimer()
+            }
+
+            override fun onFailed(code: Int, msg: String?) {
+
+            }
+
+        })
+
+    }
+
+    /**
+     * 布局发送弹幕按钮
+     */
+    private fun setBarrage(view: View) {
+        val params: RelativeLayout.LayoutParams =
+            RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        params.addRule(RelativeLayout.CENTER_IN_PARENT)
+        rl_barrage_audience.addView(view, params)
+    }
+
+    /**
+     * 布局弹幕展示布局
+     */
+    private fun setBarrageShow(view: View) {
+        val params = RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        rl_barrage_show_audience.addView(view, params)
+    }
+
+
+    var showBartimer: CountDownTimer? = null
+    private fun startShowBarrageTimer() {
+        stopShowBarrageTimer()
+        showBartimer = object : CountDownTimer(5000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+            }
+
+            override fun onFinish() {
+                TxLogUtils.i("onFinish")
+                rl_barrage_show_audience.visibility = View.GONE
+//                stopShowBarrageTimer()
+            }
+
+        }
+        showBartimer?.start()
+    }
+
+    private fun stopShowBarrageTimer() {
+        showBartimer?.cancel()
+        showBartimer = null
     }
 
 

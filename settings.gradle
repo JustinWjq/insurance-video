@@ -1,5 +1,6 @@
 //include ':demo'
 include ':app'
 include ':video'
+//include ':tuibarrage'
 
 rootProject.name = "zhzysdk"

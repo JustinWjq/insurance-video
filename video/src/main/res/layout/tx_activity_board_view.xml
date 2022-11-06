@@ -18,22 +18,25 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <RelativeLayout
+    <com.txt.video.common.dialog.config.view.TransformersTipRelativeLayout
         android:id="@+id/rl_board_business"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tx_dp_20"
         android:layout_marginBottom="@dimen/tx_dp_20"
-       android:layout_marginEnd="@dimen/tx_dp_20"
-        android:background="@drawable/tx_shape_shadow"
+        android:padding="@dimen/tx_dp_6"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         app:layout_constraintRight_toRightOf="parent"
-       >
+        app:tx_ad_arrowHeight="0dp"
+        app:tx_ad_radius="7dp"
+        app:tx_ad_bgColor="@color/tx_white"
+        app:tx_ad_shadowColor="#26000000"
+        app:tx_ad_shadowSize="10dp">
 
         <LinearLayout
             android:id="@+id/tx_board_view_business"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -46,21 +49,10 @@
                 style="@style/tx_style_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:layout_marginEnd="@dimen/tx_dp_17"
                 android:onClick="onTxClick"
                 android:padding="@dimen/tx_dp_5"
                 android:src="@drawable/tx_pen_status_selector" />
-
-
-            <ImageButton
-                android:id="@+id/tx_eraser"
-                style="@style/tx_style_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:onClick="onTxClick"
-                android:padding="@dimen/tx_dp_5"
-                android:src="@drawable/tx_eraser_status_selector" />
 
 
             <ImageButton
@@ -71,7 +63,8 @@
                 android:layout_marginStart="25dp"
                 android:onClick="onTxClick"
                 android:padding="@dimen/tx_dp_5"
-                android:src="@drawable/tx_textsize_status_selector" />
+                android:src="@drawable/tx_textsize_status_selector"
+                android:visibility="gone" />
 
 
             <ImageButton
@@ -83,7 +76,8 @@
                 android:layout_marginEnd="30dp"
                 android:onClick="onTxClick"
                 android:padding="@dimen/tx_dp_5"
-                android:src="@drawable/tx_zoom_status_selector" />
+                android:src="@drawable/tx_zoom_status_selector"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/tx_laststep"
@@ -96,6 +90,31 @@
                 android:src="@drawable/tx_laststep_status_selector"
                 android:visibility="gone" />
 
+
+            <ImageButton
+                android:id="@+id/tx_arrow"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/tx_dp_17"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_selector_tools_arrow" />
+
+            <ImageButton
+                android:id="@+id/tx_eraser"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/tx_dp_17"
+                android:onClick="onTxClick"
+                android:padding="@dimen/tx_dp_5"
+                android:src="@drawable/tx_eraser_status_selector" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/tx_color_dfdfdf" />
 
         </LinearLayout>
 
@@ -111,20 +130,22 @@
             android:src="@drawable/tx_paint_default"
             android:visibility="visible" />
 
-    </RelativeLayout>
+    </com.txt.video.common.dialog.config.view.TransformersTipRelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_borads"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginEnd="@dimen/tx_dp_20"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintRight_toRightOf="parent">
 
         <ImageButton
             android:id="@+id/tx_rlshow"
+            style="@style/tx_style_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -133,9 +154,7 @@
             android:paddingTop="@dimen/tx_dp_10"
             android:paddingEnd="@dimen/tx_dp_10"
             android:src="@drawable/tx_push_status_selector"
-            android:visibility="visible"
-            style="@style/tx_style_button"
-           />
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/rl_rv"
@@ -143,8 +162,7 @@
             android:layout_height="wrap_content"
             android:background="@color/tx_black_80"
             android:paddingTop="@dimen/tx_dp_10"
-            android:paddingBottom="@dimen/tx_dp_10"
-            >
+            android:paddingBottom="@dimen/tx_dp_10">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tx_rv"
@@ -157,51 +175,74 @@
         </RelativeLayout>
 
 
-
     </LinearLayout>
-
 
 
     <ImageButton
         android:id="@+id/tx_ib_checkscreen1"
+        style="@style/tx_style_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tx_dp_20"
+        android:layout_marginBottom="@dimen/tx_dp_20"
         android:onClick="onTxClick"
         android:src="@drawable/tx_icon_landscape"
-        android:layout_marginBottom="@dimen/tx_dp_20"
-        android:layout_marginEnd="@dimen/tx_dp_20"
-        style="@style/tx_style_button"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
-        app:layout_constraintLeft_toLeftOf="parent"
-         />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 
     <ImageButton
         android:id="@+id/tx_ib_audiomute"
+        style="@style/tx_style_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onTxClick"
         android:layout_marginEnd="@dimen/tx_dp_20"
+        android:onClick="onTxClick"
         android:src="@drawable/tx_audio_notext_status_selector"
-        style="@style/tx_style_button"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tx_ib_checkscreen1"
-         />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
+        android:id="@+id/iv_endshare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/tx_icon_whiteborad_share"
-        android:text="结束共享"
-        android:textSize="@dimen/tx_sp_14"
-        android:textColor="@color/tx_white"
-        android:padding="@dimen/tx_dp_8"
         android:layout_marginTop="@dimen/tx_dp_20"
         android:layout_marginRight="@dimen/tx_dp_20"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:drawablePadding="@dimen/tx_dp_8"
         android:background="@drawable/tx_shape_round_5_color_ff6666"
+        android:drawableLeft="@drawable/tx_icon_whiteborad_share"
+        android:drawablePadding="@dimen/tx_dp_8"
+        android:padding="@dimen/tx_dp_8"
+        android:text="结束共享"
+        android:textColor="@color/tx_white"
+        android:textSize="@dimen/tx_sp_14"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_barrage_show_audience"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="@dimen/tx_dp_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/rl_barrage_audience"
+        app:layout_constraintStart_toStartOf="parent"
         />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_barrage_audience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tx_dp_15"
+        android:layout_marginBottom="@dimen/tx_dp_20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

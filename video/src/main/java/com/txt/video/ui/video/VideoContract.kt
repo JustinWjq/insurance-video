@@ -175,6 +175,10 @@ public class VideoContract {
         fun hideWebDialog()
 
         fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String)
+
+        fun selectAudioBtn(isSelect :Boolean)
+
+        fun allowstartrecord()
     }
 
 

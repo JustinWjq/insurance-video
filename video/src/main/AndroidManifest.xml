@@ -15,13 +15,13 @@
             android:name="com.txt.video.ui.weight.danmu.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"
-            android:label="@string/title_activity_check_resources"
+            android:label="@string/tx_title_activity_check_resources"
             android:theme="@style/tx_NewActivityTheme1" />
         <activity
             android:name=".ui.checkres.CheckResourcesActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            android:label="@string/title_activity_check_resources"
+            android:label="@string/tx_title_activity_check_resources"
             android:theme="@style/tx_NewActivityTheme1" />
         <activity
             android:name=".ui.boardpage.BoardViewActivity"

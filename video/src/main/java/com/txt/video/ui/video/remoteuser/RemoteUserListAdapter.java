@@ -57,7 +57,7 @@ public class RemoteUserListAdapter extends
                          final OnItemClickListener listener) {
 
             if (isSelf) {
-                tv_user_remarks.setText(model.getUserName() + "(主持人、我)");
+                tv_user_remarks.setText(model.getUserName() + " (主持人、我)");
             } else {
                 tv_user_remarks.setText(model.getUserName());
             }
@@ -73,13 +73,13 @@ public class RemoteUserListAdapter extends
             mAudioImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onMuteAudioClick(getLayoutPosition());
+                    listener.onMuteAudioClick(model);
                 }
             });
             mVideoImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onMuteVideoClick(getLayoutPosition());
+                    listener.onMuteVideoClick(model);
                 }
             });
         }
@@ -111,9 +111,9 @@ public class RemoteUserListAdapter extends
     }
 
     public interface OnItemClickListener {
-        void onMuteAudioClick(int position);
+        void onMuteAudioClick(MemberEntity mMemberEntity);
 
-        void onMuteVideoClick(int position);
+        void onMuteVideoClick(MemberEntity mMemberEntity);
     }
 
 }

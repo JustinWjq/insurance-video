@@ -102,10 +102,7 @@ public final class AppUtils {
             }
         }
 
-        ToastUtils.setBgResource(R.drawable.tx_shape_round);
-        ToastUtils.setMsgColor(0xFFFFFFFF);
-        ToastUtils.setGravity(Gravity.CENTER,0,0);
-        ToastUtils.setMsgTextSize(18);
+
     }
 
     /**
