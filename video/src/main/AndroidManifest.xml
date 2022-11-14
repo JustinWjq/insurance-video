@@ -32,6 +32,7 @@
             android:name=".ui.video.VideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/tx_NewActivityTheme"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" />
 
         <!-- 适配华为（huawei）刘海屏 -->

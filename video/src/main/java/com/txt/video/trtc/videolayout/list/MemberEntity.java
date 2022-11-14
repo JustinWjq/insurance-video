@@ -2,6 +2,8 @@ package com.txt.video.trtc.videolayout.list;
 
 import android.text.TextUtils;
 
+import com.txt.video.trtc.videolayout.V2TRTCVideoLayout;
+
 public class MemberEntity {
     public static final int QUALITY_GOOD   = 3;
     public static final int QUALITY_NORMAL = 2;
@@ -12,6 +14,43 @@ public class MemberEntity {
     private String userAvatar;
     private String userRole = "";
     private String userRoleIconPath = "";
+
+    public String getUserHead() {
+        return userHead;
+    }
+
+    public void setUserHead(String userHead) {
+        this.userHead = userHead;
+    }
+
+    private String userHead = ""; //用户头像
+
+    private int index;
+    private int  streamType;
+    public int getStreamType() {
+        return streamType;
+    }
+
+    public void setStreamType(int streamType) {
+        this.streamType = streamType;
+    }
+
+    private V2TRTCVideoLayout layout;
+    public V2TRTCVideoLayout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(V2TRTCVideoLayout layout) {
+        this.layout = layout;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public String getUserRole() {
         return userRole;
@@ -41,6 +80,7 @@ public class MemberEntity {
     private boolean isHost;
     private int              quality;
     private int              audioVolume;
+    //显示音频评估
     private boolean          isShowAudioEvaluation = false;
     private boolean          isShowOutSide = false;
     // 用户是否打开了视频

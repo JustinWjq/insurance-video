@@ -22,4 +22,14 @@ interface IBaseView {
     fun onLoadSuccess(){}
 
     fun showMessage(message:String){}
+
+    enum class MessageType{
+        MESSAGETYPE_NOTIP,//没有icon的消息
+        MESSAGETYPE_SUCCESS,//带成功icon的消息
+        MESSAGETYPE_FAIL//带失败icon的消息
+
+    }
+
+    fun showMessage(type: MessageType,message:String){}
+
 }

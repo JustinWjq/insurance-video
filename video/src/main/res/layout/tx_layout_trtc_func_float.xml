@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="150dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -15,14 +15,13 @@
         android:id="@+id/trtc_tc_cloud_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/tx_black"
-        />
+        android:background="@color/tx_black" />
 
     <FrameLayout
         android:id="@+id/trtc_fl_no_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#444444"
+        android:background="#222222"
         android:visibility="gone">
 
         <LinearLayout
@@ -50,11 +49,10 @@
     </FrameLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/tx_shape_round_5_color_ff6666"
+        android:background="@drawable/tx_shape_08101d"
         >
 
         <ImageView
@@ -63,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/tx_icon_volume_0"
+            android:src="@drawable/tx_icon_volume_small_0"
             />
         <TextView
             android:id="@+id/trtc_tv_content"

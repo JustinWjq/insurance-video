@@ -8,6 +8,7 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
+import com.txt.video.common.utils.ToastUtils;
 import com.txt.video.trtc.feature.AudioConfig;
 import com.txt.video.trtc.feature.MoreConfig;
 import com.txt.video.trtc.feature.PkConfig;
@@ -364,7 +365,7 @@ public class TRTCCloudManager {
      */
     public void startLocalPreview() {
         if (mLocalPreviewView == null) {
-//            ToastUtils.showLong("无法找到一个空闲的 View 进行预览，本地预览失败。");
+            ToastUtils.showLong("无法找到一个空闲的 View 进行预览，本地预览失败。");
         }
         mTRTCCloud.startLocalPreview(mIsFontCamera, mLocalPreviewView);
     }

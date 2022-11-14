@@ -2,6 +2,7 @@ package com.txt.video.ui.video
 
 import android.net.Uri
 import com.tencent.mm.opensdk.modelbase.BaseReq
+import com.tencent.rtmp.ui.TXCloudVideoView
 import com.tencent.trtc.TRTCCloudDef
 import com.txt.video.base.IBaseView
 import com.txt.video.net.bean.RoomParamsBean
@@ -9,6 +10,7 @@ import com.txt.video.trtc.TICManager
 import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserManager
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
+import com.txt.video.trtc.videolayout.V2TRTCVideoLayout
 import com.txt.video.trtc.videolayout.list.MeetingVideoView
 import com.txt.video.trtc.videolayout.list.MemberEntity
 import org.json.JSONArray
@@ -179,6 +181,8 @@ public class VideoContract {
         fun selectAudioBtn(isSelect :Boolean)
 
         fun allowstartrecord()
+
+        fun refuseStartRecord()
     }
 
 
@@ -233,7 +237,7 @@ public class VideoContract {
 
         fun logoutClassRoom()
 
-        fun startLocalPreview(viewVideo : MeetingVideoView)
+        fun startLocalPreview(viewVideo: MeetingVideoView)
 
         fun stopLocalPreview()
 
@@ -313,10 +317,6 @@ public class VideoContract {
 
         fun getSelfUserId(): String
 
-        fun getRoomScreenStatus(): Boolean
-
-        fun setRoomScreenStatus(isScreenStatus :Boolean)
-
         fun getRoomSoundStatus(): Boolean
 
         fun setRoomSoundStatus(isSoundStatus :Boolean)
@@ -328,10 +328,6 @@ public class VideoContract {
         fun endUser()
 
         fun getOwnerUserId():String
-
-        fun getScreenUserId():String
-
-        fun getShareUserId():String
 
         fun startShareWeb(
             webId: String,
@@ -360,5 +356,7 @@ public class VideoContract {
             url: String,
             name: String
         )
+
+        fun setCurrentArrowCount(currentCount :Int)
     }
 }

@@ -17,6 +17,7 @@ import com.txt.video.trtc.videolayout.list.page.PagerGridSmoothScroller;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static android.view.View.MeasureSpec.EXACTLY;
 
+//负责显示横屏四个人的画面
 public class MeetingPageLayoutManager extends RecyclerView.LayoutManager implements RecyclerView.SmoothScroller.ScrollVectorProvider {
     public static final  int    VERTICAL   = 0;           // 垂直滚动
     public static final  int    HORIZONTAL = 1;         // 水平滚动
@@ -85,10 +86,10 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        TxLogUtils.i("Item onLayoutChildren");
-        TxLogUtils.i("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
-        TxLogUtils.i("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
-        TxLogUtils.i("Item onLayoutChildren state = " + state);
+//        TxLogUtils.d("Item onLayoutChildren");
+//        TxLogUtils.d("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
+//        TxLogUtils.d("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
+//        TxLogUtils.d("Item onLayoutChildren state = " + state);
 
         // 如果是 preLayout 则不重新布局
         if (state.isPreLayout() || getUsableWidth() == 0) {
@@ -105,13 +106,25 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         } else if (getItemCount() == 1) {
             detachAndScrapAttachedViews(recycler); // 移除所有View
             View scrap = recycler.getViewForPosition(0);
-            measureChildWithMargins(scrap, 0, 0);
-            addView(scrap);
-            layoutDecorated(scrap,
-                    0,
-                    0,
-                    getWidth(),
-                    getHeight());
+
+            if (mOrientation == VERTICAL){
+                measureChildWithMargins(scrap, 0, 0);
+                addView(scrap);
+                layoutDecorated(scrap,
+                        100,
+                        0,
+                        getWidth()-100,
+                        getHeight());
+            }else{
+                measureChildWithMargins(scrap, 0, 0);
+                addView(scrap);
+                layoutDecorated(scrap,
+                        0,
+                        0,
+                        getWidth(),
+                        getHeight());
+            }
+
             if (mPageListener != null) {
                 mPageListener.onItemVisible(0, 0);
             }
@@ -119,27 +132,105 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         } else if (getItemCount() == 2) {
             detachAndScrapAttachedViews(recycler); // 移除所有View
             View scrap = recycler.getViewForPosition(0);
-            int heightUse = getUsableHeight() / 2;
-            measureChildWithMargins(scrap, 0, heightUse);
+            int heightUse = getUsableHeight() ;
+            int widthUse = getUsableWidth() / 2;
+            measureChildWithMargins(scrap, widthUse, 0);
             addView(scrap);
             layoutDecorated(scrap,
                     0,
+                    0,
+                    getWidth()/2,
+                    heightUse);
+            scrap = recycler.getViewForPosition(1);
+            measureChildWithMargins(scrap, widthUse, 0);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    getWidth()/2,
                     0,
                     getWidth(),
                     heightUse);
-            scrap = recycler.getViewForPosition(1);
-            measureChildWithMargins(scrap, 0, heightUse);
-            addView(scrap);
-            layoutDecorated(scrap,
-                    0,
-                    heightUse,
-                    getWidth(),
-                    getHeight());
             if (mPageListener != null) {
                 mPageListener.onItemVisible(0, 1);
             }
             return;
-        } else {
+        } else if (getItemCount() == 3) {
+            detachAndScrapAttachedViews(recycler); // 移除所有View
+            int heightUse = getUsableHeight()/2 ;
+            int widthUse = getUsableWidth() / 2 ;
+            View scrap = recycler.getViewForPosition(0);
+            measureChildWithMargins(scrap, widthUse, 0);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    0,
+                    0,
+                    getWidth()/2,
+                    getHeight());
+
+            scrap = recycler.getViewForPosition(1);
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    getWidth()/2,
+                    0,
+                    getWidth(),
+                    getHeight()/2);
+
+            scrap = recycler.getViewForPosition(2);
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    getWidth()/2,
+                    getHeight()/2,
+                    getWidth(),
+                    getHeight());
+
+
+            if (mPageListener != null) {
+                mPageListener.onItemVisible(0, 2);
+            }
+            return;
+        }else if (getItemCount() == 4) {
+            detachAndScrapAttachedViews(recycler); // 移除所有View
+            View scrap = recycler.getViewForPosition(0);
+            int heightUse = getUsableHeight()/2 ;
+            int widthUse = getUsableWidth() / 2;
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    0,
+                    0,
+                    getWidth()/2,
+                    getHeight()/2);
+            scrap = recycler.getViewForPosition(1);
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    getWidth()/2,
+                    0,
+                    getWidth(),
+                    getHeight()/2);
+
+            scrap = recycler.getViewForPosition(2);
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    0,
+                    getHeight()/2,
+                    getWidth()/2,
+                    getHeight());
+            scrap = recycler.getViewForPosition(3);
+            measureChildWithMargins(scrap, widthUse, heightUse);
+            addView(scrap);
+            layoutDecorated(scrap,
+                    getWidth()/2,
+                    getHeight()/2,
+                    getWidth(),
+                    getHeight());
+            if (mPageListener != null) {
+                mPageListener.onItemVisible(0, 3);
+            }
+            return;
+        }else {
             setPageCount(getTotalPageCount());
             setPageIndex(getPageIndexByOffset(), false);
         }
@@ -169,7 +260,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         // setPageCount(mPageCount);
         // setPageIndex(mCurrentPageIndex, false);
 
-        TxLogUtils.i("count = " + getItemCount());
+//        TxLogUtils.d("count = " + getItemCount());
 
         if (mItemWidth <= 0) {
             mItemWidth = getUsableWidth() / mColumns;
@@ -227,20 +318,20 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             return;
         }
 
-        TxLogUtils.i("mOffsetX = " + mOffsetX);
-        TxLogUtils.i("mOffsetY = " + mOffsetY);
+//        TxLogUtils.d("mOffsetX = " + mOffsetX);
+//        TxLogUtils.d("mOffsetY = " + mOffsetY);
 
         // 计算显示区域区前后多存储一列或则一行
         Rect displayRect = new Rect(mOffsetX - mItemWidth, mOffsetY - mItemHeight,
                 getUsableWidth() + mOffsetX + mItemWidth, getUsableHeight() + mOffsetY + mItemHeight);
         // 对显显示区域进行修正(计算当前显示区域和最大显示区域对交集)
         displayRect.intersect(0, 0, mMaxScrollX + getUsableWidth(), mMaxScrollY + getUsableHeight());
-        TxLogUtils.i("displayRect = " + displayRect.toString());
+//        TxLogUtils.d("displayRect = " + displayRect.toString());
 
         int startPos  = 0;                  // 获取第一个条目的Pos
         int pageIndex = getPageIndexByOffset();
         startPos = pageIndex * mOnePageSize;
-        TxLogUtils.i("startPos = " + startPos);
+//        TxLogUtils.i("startPos = " + startPos);
         startPos = startPos - mOnePageSize * 2;
         if (startPos < 0) {
             startPos = 0;
@@ -250,8 +341,8 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             stopPos = getItemCount();
         }
 
-        TxLogUtils.i("startPos = " + startPos);
-        TxLogUtils.i("stopPos = " + stopPos);
+//        TxLogUtils.d("startPos = " + startPos);
+//        TxLogUtils.d("stopPos = " + stopPos);
 
         detachAndScrapAttachedViews(recycler); // 移除所有View
 
@@ -264,13 +355,13 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
                 addOrRemove(recycler, displayRect, i);
             }
         }
-        TxLogUtils.i("child count = " + getChildCount());
+//        TxLogUtils.d("child count = " + getChildCount());
         startPos = pageIndex * mOnePageSize;
         stopPos = startPos + mOnePageSize - 1;
         if (stopPos >= getItemCount()) {
             stopPos = getItemCount() - 1;
         }
-        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
+//        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
         if (mPageListener != null) {
             mPageListener.onItemVisible(startPos, stopPos);
         }
@@ -370,7 +461,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public void onScrollStateChanged(int state) {
-        TxLogUtils.i("onScrollStateChanged = " + state);
+//        TxLogUtils.d("onScrollStateChanged = " + state);
         mScrollState = state;
         super.onScrollStateChanged(state);
         if (state == SCROLL_STATE_IDLE) {
@@ -414,12 +505,12 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             offsetY += row * mItemHeight;
 
             // 状态输出，用于调试
-            TxLogUtils.i("pagePos = " + pagePos);
-            TxLogUtils.i("行 = " + row);
-            TxLogUtils.i("列 = " + col);
-
-            TxLogUtils.i("offsetX = " + offsetX);
-            TxLogUtils.i("offsetY = " + offsetY);
+//            TxLogUtils.d("pagePos = " + pagePos);
+//            TxLogUtils.d("行 = " + row);
+//            TxLogUtils.d("列 = " + col);
+//
+//            TxLogUtils.d("offsetX = " + offsetX);
+//            TxLogUtils.d("offsetY = " + offsetY);
 
             rect.left = offsetX;
             rect.top = offsetY;
@@ -503,7 +594,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
                 }
             }
         }
-        TxLogUtils.i("getPageIndexByOffset pageIndex = " + pageIndex);
+//        TxLogUtils.d("getPageIndexByOffset pageIndex = " + pageIndex);
         return pageIndex;
     }
 
@@ -556,7 +647,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public boolean canScrollHorizontally() {
-        return mOrientation == HORIZONTAL;
+        return false;
     }
 
     /**
@@ -566,7 +657,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public boolean canScrollVertically() {
-        return mOrientation == VERTICAL;
+        return false;
     }
 
     /**
@@ -580,7 +671,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         if (page >= getTotalPageCount()) {
             page = getTotalPageCount() - 1;
         }
-        TxLogUtils.i("computeScrollVectorForPosition next = " + page);
+//        TxLogUtils.d("computeScrollVectorForPosition next = " + page);
         return page * mOnePageSize;
     }
 
@@ -593,11 +684,11 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         // 在获取时由于前一页的View预加载出来了，所以获取到的直接就是前一页
         int page = mLastPageIndex;
         page--;
-        TxLogUtils.i("computeScrollVectorForPosition pre = " + page);
+//        TxLogUtils.d("computeScrollVectorForPosition pre = " + page);
         if (page < 0) {
             page = 0;
         }
-        TxLogUtils.i("computeScrollVectorForPosition pre = " + page);
+//        TxLogUtils.d("computeScrollVectorForPosition pre = " + page);
         return page * mOnePageSize;
     }
 
@@ -720,7 +811,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      * @param isScrolling 是否处于滚动状态
      */
     private void setPageIndex(int pageIndex, boolean isScrolling) {
-        TxLogUtils.i("setPageIndex = " + pageIndex + ":" + isScrolling);
+//        TxLogUtils.d("setPageIndex = " + pageIndex + ":" + isScrolling);
         if (pageIndex == mLastPageIndex) return;
         // 如果允许连续滚动，那么在滚动过程中就会更新页码记录
         if (isAllowContinuousScroll()) {
@@ -872,8 +963,8 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             mTargetOffsetXBy = pageIndex * getUsableWidth() - mOffsetX;
             mTargetOffsetYBy = 0;
         }
-        TxLogUtils.e("mTargetOffsetXBy = " + mTargetOffsetXBy);
-        TxLogUtils.e("mTargetOffsetYBy = " + mTargetOffsetYBy);
+//        TxLogUtils.e("mTargetOffsetXBy = " + mTargetOffsetXBy);
+//        TxLogUtils.e("mTargetOffsetYBy = " + mTargetOffsetYBy);
         mRecyclerView.scrollBy(mTargetOffsetXBy, mTargetOffsetYBy);
         setPageIndex(pageIndex, false);
     }

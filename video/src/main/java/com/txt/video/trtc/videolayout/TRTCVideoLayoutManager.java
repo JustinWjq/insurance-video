@@ -93,8 +93,8 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements IVideoLayo
         this.post(new Runnable() {
             @Override
             public void run() {
-                makeFloatLayout(true);
-//                makeGirdLayout(true);
+//                makeFloatLayout(true);
+                makeGirdLayout(true);
             }
         });
     }
@@ -456,6 +456,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout implements IVideoLayo
                 } else if (layoutIndex < paramList.size()) {
                     entity.layout.setLayoutParams(paramList.get(layoutIndex++));
                 }
+                addView(entity.layout);
             }
         }
     }

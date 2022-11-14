@@ -1,5 +1,7 @@
 package com.txt.video.ui.boardpage
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
@@ -31,6 +33,7 @@ import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.ticimpl.TICMessageListener
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
+import com.txt.video.ui.video.barrage.BarrageManager
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
@@ -40,6 +43,7 @@ import com.txt.video.ui.weight.dialog.CommonDialog
 import com.txt.video.ui.weight.dialog.PaintThickPopup
 import com.txt.video.ui.weight.dialog.TxMessageDialog
 import kotlinx.android.synthetic.main.tx_activity_board_view.*
+import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_audience
 import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_show_audience
 import kotlinx.android.synthetic.main.tx_activity_board_view.rl_rv
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_board_view_business
@@ -48,7 +52,6 @@ import kotlinx.android.synthetic.main.tx_activity_board_view.tx_eraser
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_pen
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_rv
 import kotlinx.android.synthetic.main.tx_activity_board_view.tx_textstyle
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_zoom
 import org.json.JSONObject
 
 /**
@@ -97,13 +100,11 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             )
 
         board_view_container.addView(boardController?.boardRenderView, layoutParams)
-
         showAudioStatus()
         videoBoradBusiness = arrayListOf(
             tx_pen,
-            tx_eraser,
-            tx_textstyle,
-            tx_zoom
+            tx_arrow,
+            tx_eraser
         )
         boardController?.boardContentFitMode =
             TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
@@ -111,29 +112,33 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         initPicAdapter()
         iv_endshare.setOnClickListener {
             //结束共享
-            TxMessageDialog.Builder(this)
-                .setTitle("确定结束")
-                .setMessage("您确定要结束共享吗?")
-                .setConfirm("结束")
-                .setCancel("取消")
-                .setListener(object : TxMessageDialog.OnListener {
-                    override fun onConfirm(dialog: TxBaseDialog?) {
-                        mPresenter?.sendGroupMessage(
-                            mPresenter?.setIMTextData(IMkey.ENDWHITEBOARD)
-                                ?.put(IMkey.SHAREUSERID, mPresenter?.getAgentId()).toString(),
-                            "1"
-                        )
-                        mPresenter?.setShareStatus(false, "", null)
-//            mPresenter?.setRoomShareStatus(false)
-                    }
-
-                    override fun onCancel(dialog: TxBaseDialog?) {
-
-                    }
-
-                }).show()
+            endShare()
 
         }
+    }
+
+    fun endShare(){
+        TxMessageDialog.Builder(this)
+            .setTitle("确定结束")
+            .setMessage("您确定要结束共享吗?")
+            .setConfirm("结束")
+            .setCancel("取消")
+            .setListener(object : TxMessageDialog.OnListener {
+                override fun onConfirm(dialog: TxBaseDialog?) {
+                    mPresenter?.sendGroupMessage(
+                        mPresenter?.setIMTextData(IMkey.ENDWHITEBOARD)
+                            ?.put(IMkey.SHAREUSERID, mPresenter?.getAgentId()).toString(),
+                        "1"
+                    )
+                    mPresenter?.setShareStatus(false, "", null)
+//            mPresenter?.setRoomShareStatus(false)
+                }
+
+                override fun onCancel(dialog: TxBaseDialog?) {
+
+                }
+
+            }).show()
     }
 
     fun showAudioStatus() {
@@ -264,16 +269,16 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
             selectIb(tx_pen)
         } else if (id == R.id.tx_eraser) {
-            //画圆
+            //橡皮擦
             boardController!!.toolType =
                 TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_ERASER
             selectIb(tx_eraser)
-        } else if (id == R.id.tx_zoom) {
+        } else if (id == R.id.tx_arrow) {
             //移动
             boardController!!.toolType =
-                TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_ZOOM_DRAG
+                TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_OVAL
 
-            selectIb(tx_zoom)
+            selectIb(tx_arrow)
         } else if (id == R.id.tx_textstyle) {
             //字体大小
             val color = PaintThickPopup.mColorMap[VideoActivity.textColorIntPostion].color
@@ -310,16 +315,63 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             audioConfig.isEnableAudio = !audioConfig.isEnableAudio
             TRTCCloudManager.sharedInstance().muteLocalAudio(!audioConfig.isEnableAudio)
             tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
+        }else if (id == R.id.iv_switchscreen){
+            switchScreen()
         }
     }
 
+    /**
+     * 切换屏幕。对应的视图也要切换
+     */
+    private fun switchScreen() {
+        //判断当前是横屏还是竖屏
+        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            TxLogUtils.i("switchScreen----SCREEN_ORIENTATION_LANDSCAPE")
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        } else if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            TxLogUtils.i("switchScreen----SCREEN_ORIENTATION_PORTRAIT")
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        }
+
+    }
+    //横竖屏切换逻辑
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        TxLogUtils.i("onConfigurationChanged")
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            TxLogUtils.i("Configuration.ORIENTATION_LANDSCAPE")
+            val layoutParams1 = boardController?.boardRenderView?.layoutParams
+            layoutParams1?.height = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParams1?.width = Utils.getWindowHeight(this) / 9 * 16
+
+            val bvlayoutParams = board_view_container.layoutParams
+            bvlayoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+            bvlayoutParams?.width = Utils.getWindowHeight(this) / 9 * 16
+
+            iv_switchscreen.isSelected = true
+        } else {
+            TxLogUtils.i("Configuration.ORIENTATION_PORTRAIT")
+            val layoutParams1 = boardController?.boardRenderView?.layoutParams
+            layoutParams1?.width = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParams1?.height = Utils.getWindowWidth(this) / 16 * 9
+
+            val bvlayoutParams = board_view_container.layoutParams
+            bvlayoutParams?.width = ViewGroup.LayoutParams.MATCH_PARENT
+            bvlayoutParams?.height = Utils.getWindowWidth(this) / 16 * 9
+
+            iv_switchscreen.isSelected = false
+        }
+    }
 
     var paintThickPopup: PaintThickPopup? = null
 
 
     private fun showPopupWindow(type: String, paintColorPostion: Int, paintSizeIntPostion: Int) {
         paintThickPopup = PaintThickPopup(
-            tx_pen,
+            rl_board_business,
             R.layout.tx_layout_paintstyle
         )
         val xDp = if (type == "1") {
@@ -443,7 +495,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun onBackPressed() {
-        finishPage()
+        endShare()
     }
 
 
@@ -464,12 +516,12 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     fun restoreBoardTool(index: Int, isShowToolPop: Boolean) {
-        tx_board_view_business.visibility = View.VISIBLE
-        boardController?.isDrawEnable = true
-        tx_boardtools.setImageResource(R.drawable.tx_paint_check)
-        isShowPaint = true
-        val selectIB = videoBoradBusiness?.get(index)
-        selectIb(selectIB!!)
+//        tx_board_view_business.visibility = View.VISIBLE
+//        boardController?.isDrawEnable = true
+//        tx_boardtools.setImageResource(R.drawable.tx_paint_default)
+//        isShowPaint = true
+//        val selectIB = videoBoradBusiness?.get(index)
+//        selectIb(selectIB!!)
 
         if (isShowToolPop) {
 
@@ -479,6 +531,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     override fun onDestroy() {
         if (boardController != null) {
+            boardController!!.reset()
             val boardview = boardController!!.boardRenderView
             if (board_view_container != null && boardview != null) {
                 board_view_container!!.removeView(boardview)
@@ -505,10 +558,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     private fun initBarrage(groupId: String, serviceId: String) {
         //弹幕发送View
         tuiBarbt = TUIBarrageButton(this, groupId, serviceId)
-        setBarrage(tuiBarbt as View)
         //弹幕显示View
         displayView = TUIBarrageDisplayView(this, groupId)
-
+        setBarrage(tuiBarbt as View)
         setBarrageShow(displayView as View)
         tuiBarbt?.sendView?.setBarrageListener(object : ITUIBarrageListener {
             override fun onSuccess(code: Int, msg: String, model: TUIBarrageModel) {

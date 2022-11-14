@@ -12,13 +12,17 @@ import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.base.constants.IMkey;
 import com.txt.video.net.utils.TxLogUtils;
+import com.txt.video.trtc.ticimpl.TICEventListener;
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel;
 import com.txt.video.ui.video.barrage.presenter.ITUIBarragePresenter;
 import com.txt.video.ui.video.barrage.presenter.TUIBarragePresenter;
 import com.txt.video.ui.video.barrage.view.adapter.TUIBarrageMsgEntity;
 import com.txt.video.ui.video.barrage.view.adapter.TUIBarrageMsgListAdapter;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * 弹幕显示界面
@@ -55,11 +59,13 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
 
     private ITUIBarrageListener mBarrageListener;
     public void setReceiveBarrageListener(ITUIBarrageListener barrageListener) {
+        TUIBarragePresenter.sharedInstance().addObserver(barrageListener);
         mBarrageListener = barrageListener;
     }
 
     private void initPresenter() {
-        mPresenter = new TUIBarragePresenter(mContext,""+123, mGroupId);
+//        mPresenter = new TUIBarragePresenter(mContext,""+123, mGroupId);
+        mPresenter =  TUIBarragePresenter.sharedInstance();
         mPresenter.initDisplayView(this);
     }
 
@@ -85,6 +91,8 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
         }
         super.onDetachedFromWindow();
     }
+
+
 
     @Override
     public void receiveBarrage(TUIBarrageModel model) {
@@ -116,6 +124,8 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
         if (null != mBarrageListener) {
             mBarrageListener.onSuccess(200,"123",model);
         }
-
+        TUIBarragePresenter.sharedInstance().sedMsg(200,"123",model);
     }
+
+
 }

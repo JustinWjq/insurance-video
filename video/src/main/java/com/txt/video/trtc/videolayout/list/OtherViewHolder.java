@@ -3,17 +3,20 @@ package com.txt.video.trtc.videolayout.list;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.txt.video.R;
 import com.txt.video.TXSdk;
+import com.txt.video.common.CircleImageView;
 import com.txt.video.common.glide.TxGlide;
 import com.txt.video.net.utils.TxLogUtils;
 
@@ -48,15 +51,14 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             return true;
         }
     });
-    private TextView mUserNameTv;
-    //    private       CircleImageView mUserHeadImg;
+    private TextView mUserNameTv,mUserNameTv1;
+    private CircleImageView mUserHeadImg;
     private MemberEntity mMemberEntity;
     private FrameLayout mVideoContainer;
-    private FrameLayout mNoVideoContainer;
-    private ImageView mUserSignal;
-    private ImageView mPbAudioVolume;
+    private LinearLayout mNoVideoContainer;
+    private ImageView mPbAudioVolume,mPbAudioVolume1;
     private TextView mIvVideClose;
-    private ImageView mIvIconHost;
+    private ImageView mIvIconHost,mIvIconHost1;
     private ConstraintLayout item_view;
     private boolean isPlaying = false;
 
@@ -65,24 +67,11 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         initView(itemView);
     }
 
-    public void setQuality(int quality) {
-        if (quality == MemberEntity.QUALITY_GOOD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal6);
-        } else if (quality == MemberEntity.QUALITY_NORMAL) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal3);
-        } else if (quality == MemberEntity.QUALITY_BAD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal1);
-        } else {
-            mUserSignal.setVisibility(View.GONE);
-        }
-    }
 
     public void setVolume(int progress) {
         if (!mMemberEntity.isShowAudioEvaluation()) {
             mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
+            mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_mute);
             return;
         }
         if (mPbAudioVolume != null) {
@@ -93,18 +82,25 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             //80-100
             if (progress == -1) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_mute);
             } else if (progress == 0) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_1);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_1);
             } else if (progress >= 1 && progress <= 19) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_1);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_1);
             } else if (progress >= 20 && progress <= 39) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_2);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_2);
             } else if (progress >= 40 && progress <= 59) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_3);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_3);
             } else if (progress >= 60 && progress <= 79) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_5);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_5);
             } else if (progress >= 80 && progress <= 100) {
                 mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_6);
+                mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_6);
             }
 
 
@@ -114,76 +110,93 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     public void showVolume(boolean isShow) {
 
         mPbAudioVolume.setVisibility(View.VISIBLE);
+        mPbAudioVolume1.setVisibility(View.VISIBLE);
         if (isShow) {
 
         } else {
             mPbAudioVolume.setImageResource(R.drawable.tx_icon_volume_small_mute);
+            mPbAudioVolume1.setImageResource(R.drawable.tx_icon_volume_small_mute);
         }
 
     }
 
-    public void showHost(boolean isShow){
+    public void showHost(boolean isShow) {
 
         if (isShow) {
             mIvIconHost.setVisibility(View.VISIBLE);
-        }else{
+            mIvIconHost1.setVisibility(View.VISIBLE);
+        } else {
             mIvIconHost.setVisibility(View.GONE);
+            mIvIconHost1.setVisibility(View.GONE);
         }
 
     }
-    public void showHost(boolean isShow,String iconPath){
+
+    public void showHost(boolean isShow, String iconPath) {
 
         if (isShow) {
             mIvIconHost.setVisibility(View.VISIBLE);
+            mIvIconHost1.setVisibility(View.VISIBLE);
             TxGlide.with(TXSdk.getInstance().application).load(iconPath).into(mIvIconHost);
-        }else{
+            TxGlide.with(TXSdk.getInstance().application).load(iconPath).into(mIvIconHost1);
+        } else {
             mIvIconHost.setVisibility(View.GONE);
+            mIvIconHost1.setVisibility(View.GONE);
         }
 
     }
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
-        String userName = mMemberEntity.getUserName();
-        if (mMemberEntity.getUserName().length()>2) {
-            userName = userName.substring(userName.length()-2, userName.length());
+        if (mMemberEntity.getUserHead().isEmpty()) {
+            String userName = mMemberEntity.getUserName();
+            if (mMemberEntity.getUserName().length()>2) {
+                userName = userName.substring(userName.length()-2, userName.length());
+            }
+            mIvVideClose.setVisibility(View.VISIBLE);
+            mIvVideClose.setText(userName);
+            TxGlide.with(TXSdk.getInstance().application).load("")
+                    .into(mUserHeadImg);
+            mUserHeadImg.setCircleBackgroundColor(ContextCompat.getColor(TXSdk.getInstance().application,R.color.tx_color_e6b980));
+        }else{
+            mIvVideClose.setVisibility(View.GONE);
+            TxGlide.with(TXSdk.getInstance().application).load(mMemberEntity.getUserHead())
+                    .into(mUserHeadImg);
         }
-        mIvVideClose.setText(userName);
-
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
-    public void addVideoView(MeetingVideoView meetingVideoView){
+    public void addVideoView(MeetingVideoView meetingVideoView) {
         meetingVideoView.addViewToViewGroup(mVideoContainer);
     }
 
-    public void changeUserName(MemberEntity model){
+    public void changeUserName(MemberEntity model) {
         mUserNameTv.setText(model.getUserName());
+        mUserNameTv1.setText(model.getUserName());
         if (!model.getUserRoleIconPath().isEmpty()) {
-            showHost(true,model.getUserRoleIconPath());
+            showHost(true, model.getUserRoleIconPath());
+        } else {
+            showHost(false, model.getUserRoleIconPath());
+        }
+        if (mMemberEntity.getUserHead().isEmpty()) {
+            String userName = mMemberEntity.getUserName();
+            if (mMemberEntity.getUserName().length()>2) {
+                userName = userName.substring(userName.length()-2, userName.length());
+            }
+            mIvVideClose.setText(userName);
+            mUserHeadImg.setCircleBackgroundColor(ContextCompat.getColor(TXSdk.getInstance().application,R.color.tx_color_e6b980));
         }else{
-            showHost(false,model.getUserRoleIconPath());
+            TxGlide.with(TXSdk.getInstance().application).load(mMemberEntity.getUserHead())
+                    .into(mUserHeadImg);
         }
     }
 
-    public void bind(final MemberEntity model){
+    public void bind(final MemberEntity model) {
         mMemberEntity = model;
         changeUserName(model);
-        if (model.getQuality() == MemberEntity.QUALITY_GOOD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal6);
-        } else if (model.getQuality() == MemberEntity.QUALITY_NORMAL) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal3);
-        } else if (model.getQuality() == MemberEntity.QUALITY_BAD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal1);
-        } else {
-            mUserSignal.setVisibility(View.GONE);
-        }
         showVolume(model.isShowAudioEvaluation());
         showNoVideo(!model.isVideoAvailable(), true);
-//        showHost(model.isHost());
     }
+
     private MemberListAdapter.ListCallback mListCallback;
 
     public void bind(final MemberEntity model,
@@ -204,28 +217,8 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
 //                mUserHeadImg.setImageResource(R.drawable.meeting_head);
         }
         mUserNameTv.setText(model.getUserName());
-        if (model.getQuality() == MemberEntity.QUALITY_GOOD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal6);
-        } else if (model.getQuality() == MemberEntity.QUALITY_NORMAL) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal3);
-        } else if (model.getQuality() == MemberEntity.QUALITY_BAD) {
-            mUserSignal.setVisibility(View.VISIBLE);
-            mUserSignal.setImageResource(R.drawable.tx_signal1);
-        } else {
-            mUserSignal.setVisibility(View.GONE);
-        }
         showVolume(model.isShowAudioEvaluation());
         showNoVideo(!model.isVideoAvailable(), true);
-
-//        item_view.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return mSimpleOnGestureListener.onTouchEvent(event);
-//            }
-//        });
-
         mVideoContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,12 +240,14 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
 
     private void initView(final View itemView) {
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
+        mUserNameTv1 = (TextView) itemView.findViewById(R.id.trtc_tv_content1);
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
-        mNoVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_fl_no_video);
+        mNoVideoContainer = (LinearLayout) itemView.findViewById(R.id.trtc_fl_no_video);
         mIvVideClose = (TextView) itemView.findViewById(R.id.iv_video_close);
-//            mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.img_user_head);
-        mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
+        mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.iv_video_head);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
+        mPbAudioVolume1 = (ImageView) itemView.findViewById(R.id.trtc_pb_audio1);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
+        mIvIconHost1 = (ImageView) itemView.findViewById(R.id.trtc_icon_host1);
     }
 }

@@ -5,17 +5,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:padding="@dimen/tx_dp_4"
     android:layout_margin="@dimen/tx_dp_5"
     >
 
-    <com.txt.video.common.CircleImageView
+    <TextView
         android:id="@+id/rl_colors"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/tx_dp_15"
+        android:layout_height="@dimen/tx_dp_15"
+        android:background="@drawable/tx_shape_round_2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/tv_gou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_icon_white_gou"
+        android:visibility="gone"
         />
 
 </RelativeLayout>

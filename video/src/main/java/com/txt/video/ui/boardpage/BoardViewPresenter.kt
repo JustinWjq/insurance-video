@@ -77,23 +77,23 @@ public class BoardViewPresenter(val context: Context, val activity: BoardViewAct
             val hasData = jsonObject.has("data")
 
             when (type) {
-                "notifyExtend" -> {
-                    if (hasData) {
-                        val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
-                        val notifyExtendTime = dataJO.getInt("notifyExtendTime")
-                        view.showTimerDialog("2", 0, extendRoomTime, notifyExtendTime, 0)
-                    }
-
-                }
-                "notifyEnd" -> {
-                    if (hasData) {
-                        val dataJO = jsonObject.getJSONObject("data")
-                        val extendRoomTime = dataJO.getInt("extendRoomTime")
-                        val notifyEndTime = dataJO.getInt("notifyEndTime")
-                        view.showTimerDialog("3", 0, extendRoomTime, 0, notifyEndTime)
-                    }
-                }
+//                "notifyExtend" -> {
+//                    if (hasData) {
+//                        val dataJO = jsonObject.getJSONObject("data")
+//                        val extendRoomTime = dataJO.getInt("extendRoomTime")
+//                        val notifyExtendTime = dataJO.getInt("notifyExtendTime")
+//                        view.showTimerDialog("2", 0, extendRoomTime, notifyExtendTime, 0)
+//                    }
+//
+//                }
+//                "notifyEnd" -> {
+//                    if (hasData) {
+//                        val dataJO = jsonObject.getJSONObject("data")
+//                        val extendRoomTime = dataJO.getInt("extendRoomTime")
+//                        val notifyEndTime = dataJO.getInt("notifyEndTime")
+//                        view.showTimerDialog("3", 0, extendRoomTime, 0, notifyEndTime)
+//                    }
+//                }
                 //去除白板
                 IMkey.ENDWHITEBOARD -> {
 //                    intent.putExtra(IntentKey.ENDWHITEBROAD, true)

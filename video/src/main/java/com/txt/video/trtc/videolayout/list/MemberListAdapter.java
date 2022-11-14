@@ -52,6 +52,10 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mListCallback = listCallback;
     }
 
+    public void setData( List<MemberEntity> list){
+        this.list = list;
+    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -86,10 +90,10 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (QUALITY.equals(payloads.get(0))) {
                 if (holder instanceof OtherViewHolder) {
                     MemberEntity item = list.get(position);
-                    ((OtherViewHolder) holder).setQuality(item.getQuality());
+//                    ((OtherViewHolder) holder).setQuality(item.getQuality());
                 } else if (holder instanceof SelfViewHolder) {
                     MemberEntity item = list.get(position);
-                    ((SelfViewHolder) holder).setQuality(item.getQuality());
+//                    ((SelfViewHolder) holder).setQuality(item.getQuality());
                 }
             } else if (VOLUME.equals(payloads.get(0))) {
                 if (holder instanceof OtherViewHolder) {

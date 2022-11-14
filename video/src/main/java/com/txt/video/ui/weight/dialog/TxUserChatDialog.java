@@ -60,10 +60,13 @@ public final class TxUserChatDialog {
             findViewById(R.id.tv_sendmsg).setOnClickListener(this);
             mInputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             et_sendmsg = (EditText) findViewById(R.id.et_sendmsg);
-            et_sendmsg.setInputType(InputType.TYPE_CLASS_TEXT);
+//            et_sendmsg.setInputType(InputType.TYPE_CLASS_TEXT);
+            et_sendmsg.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            et_sendmsg.setSingleLine(false);
             //修改下划线颜色为透明
             et_sendmsg.getBackground().setColorFilter(context.getResources().getColor(R.color.tuichorus_transparent),
                     PorterDuff.Mode.CLEAR);
+
             chatAdapter = new ChatAdapter(mList);
             mRemoteUserListView.setAdapter(chatAdapter);
         }

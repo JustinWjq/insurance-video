@@ -55,7 +55,7 @@ public class RemoteUserListAdapter extends
         public void bind(final MemberEntity model,
                          final boolean isSelf,
                          final OnItemClickListener listener) {
-
+            //todo 高亮展示
             if (isSelf) {
                 tv_user_remarks.setText(model.getUserName() + " (主持人、我)");
             } else {

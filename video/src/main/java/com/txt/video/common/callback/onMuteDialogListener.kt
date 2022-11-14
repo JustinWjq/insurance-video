@@ -10,4 +10,5 @@ import com.txt.video.trtc.videolayout.list.MemberEntity
 open interface onMuteDialogListener {
     fun onMuteVideo( memberEntity: MemberEntity)
     fun onMuteAudio( memberEntity: MemberEntity)
+    fun onMoveOutRomm(memberEntity: MemberEntity)
 }

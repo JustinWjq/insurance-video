@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -61,7 +62,7 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
             @Override
             public void run() {
                 ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 +50;
                 layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
                 setLayoutParams(layoutParams);
             }
@@ -110,7 +111,7 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
                         @Override
                         public void run() {
                             ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                            layoutParams.height =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
+                            layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 ;
                             layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
                             setLayoutParams(layoutParams);
                         }
@@ -125,8 +126,8 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
                         @Override
                         public void run() {
                             ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                            layoutParams.height = tx_switch_word.getHeight()+20;
-                            layoutParams.width = layoutParams.width/2 ;
+                            layoutParams.height = tx_switch_word.getHeight()+100;
+                            layoutParams.width = layoutParams.width/3*2 ;
                             setLayoutParams(layoutParams);
                         }
                     });

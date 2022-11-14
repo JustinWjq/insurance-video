@@ -64,7 +64,8 @@ public class TUIBarrageSendView extends Dialog implements ITUIBarrageSendView {
     }
 
     private void initPresenter() {
-        mPresenter = new TUIBarragePresenter(mContext,"mAppId", mGroupId);
+        mPresenter = TUIBarragePresenter.sharedInstance();
+        TUIBarragePresenter.sharedInstance().init(mContext,"mAppId", mGroupId);
     }
 
     private void initListener() {

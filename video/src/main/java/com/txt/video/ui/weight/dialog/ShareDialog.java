@@ -44,8 +44,15 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.tx_dialog_share);
         Window window = getWindow();
         WindowManager.LayoutParams attributes = window.getAttributes();
-        attributes.width = Utils.getWindowWidth(mContext)/3*2;
+        int width = attributes.width;
+        int height = attributes.height;
+        if(width > height){
+            attributes.width = Utils.getWindowWidth(mContext)/4;
+        }else{
+            attributes.width = Utils.getWindowWidth(mContext)/3*2;
+        }
         window.setGravity(Gravity.CENTER);
+        window.setAttributes(attributes);
 
         setCanceledOnTouchOutside(true);
         initView();

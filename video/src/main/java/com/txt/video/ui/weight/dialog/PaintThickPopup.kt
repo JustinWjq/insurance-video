@@ -23,13 +23,12 @@ import com.txt.video.common.dialog.config.gravity.TipGravity
 open class PaintThickPopup : TransformersTip {
     companion object {
         val mColorMap = arrayListOf<ToolType>(
-            ToolType("白", "#d1372f", true),
-            ToolType("红", "#dc7942", false),
-            ToolType("橙", "#6daf66", false),
-            ToolType("黄", "#8ad1b9", false),
-            ToolType("绿", "#3b71ee", false),
-            ToolType("青", "#5445ec", false),
-            ToolType("蓝", "#000000", false)
+            ToolType("", "#333333", true),
+            ToolType("", "#FF4848", false),
+            ToolType("", "#1AD27C", false),
+            ToolType("", "#FDC126", false),
+            ToolType("", "#9F2DFF", false),
+            ToolType("", "#4085FF", false)
         )
 
 
@@ -53,20 +52,6 @@ open class PaintThickPopup : TransformersTip {
                 R.drawable.tx_icon_thick_default_3,
                 R.drawable.tx_icon_thick_check_3,
                 130,
-                false
-            ),
-            ThickType(
-                "白",
-                R.drawable.tx_icon_thick_default_4,
-                R.drawable.tx_icon_thick_check_4,
-                160,
-                false
-            ),
-            ThickType(
-                "白",
-                R.drawable.tx_icon_thick_default_5,
-                R.drawable.tx_icon_thick_check_5,
-                190,
                 false
             )
         )
@@ -238,7 +223,7 @@ open class PaintThickPopup : TransformersTip {
 
         setArrowOffsetYDp(0) // 设置箭头在 y 轴的偏移量
         setShadowSizeDp(6) // 设置阴影宽度
-        setTipGravity(TipGravity.TO_TOP_CENTER) // 设置浮窗相对于锚点控件展示的位置
+        setTipGravity(TipGravity.TO_TOP_TO_START) // 设置浮窗相对于锚点控件展示的位置
         setTipOffsetXDp(0) // 设置浮窗在 x 轴的偏移量
         setTipOffsetYDp(-10) // 设置浮窗在 y 轴的偏移量
         setBackgroundDimEnabled(false) // 设置是否允许浮窗的背景变暗

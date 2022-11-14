@@ -12,7 +12,7 @@ import com.txt.video.common.adapter.base.TxBaseViewHolder
  * description：白板工具选择的adapter
  */
 public class PaintThickAdapter  :
-    TxBaseQuickAdapter<ThickType, TxBaseViewHolder>(R.layout.tx_layout_paint){
+    TxBaseQuickAdapter<ThickType, TxBaseViewHolder>(R.layout.tx_layout_paint1){
     override fun convert(helper: TxBaseViewHolder, item: ThickType?) {
         val iv = helper.getView<ImageView>(R.id.rl_colors)
         iv.setImageResource(

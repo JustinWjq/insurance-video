@@ -62,6 +62,8 @@ public class IMkey {
 
     public static String refuseStartRecord = "refuseStartRecord";
 
+    public static String moveOutRoom = "moveOutRoom";
+
     public static String wxIM = "wxIM";
 
     public static String userName = "userName";

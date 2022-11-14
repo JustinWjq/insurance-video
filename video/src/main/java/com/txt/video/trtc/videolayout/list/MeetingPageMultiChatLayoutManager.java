@@ -20,6 +20,9 @@ import com.txt.video.trtc.videolayout.list.page.PagerGridSmoothScroller;
 import static android.view.View.MeasureSpec.EXACTLY;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
+/**
+ * 九宫格展示
+ */
 public class MeetingPageMultiChatLayoutManager extends RecyclerView.LayoutManager implements RecyclerView.SmoothScroller.ScrollVectorProvider {
     public static final int VERTICAL = 0;           // 垂直滚动
     public static final int HORIZONTAL = 1;         // 水平滚动

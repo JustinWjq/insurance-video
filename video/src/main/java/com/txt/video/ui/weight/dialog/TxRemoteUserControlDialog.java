@@ -73,7 +73,7 @@ public final class TxRemoteUserControlDialog {
         @Override
         public void onClick(View view) {
             int viewId = view.getId();
-            if (viewId == R.id.tv_ui_confirm) {
+            if (viewId == R.id.iv_close) {
                 dismiss();
                 if (mListener == null) {
                     return;
@@ -95,6 +95,12 @@ public final class TxRemoteUserControlDialog {
                     return;
                 }
                 mListener.onMuteAudio(mMemberEntity);
+            } else if (viewId == R.id.tv_moveoutroom) {
+                dismiss();
+                if (mListener == null) {
+                    return;
+                }
+                mListener.onMoveOutRomm(mMemberEntity);
             }
         }
 
@@ -114,6 +120,7 @@ public final class TxRemoteUserControlDialog {
 
             mAtvMuteVideo = findViewById(R.id.atv_mutevideo);
             TextView tv_cancel = findViewById(R.id.tv_cancel);
+            TextView tv_moveoutroom = findViewById(R.id.tv_moveoutroom);
 
             TextView iv_close = findViewById(R.id.iv_close);
 
@@ -121,6 +128,7 @@ public final class TxRemoteUserControlDialog {
             mAtvMuteAudio.setOnClickListener(this);
             mAtvMuteVideo.setOnClickListener(this);
             tv_cancel.setOnClickListener(this);
+            tv_moveoutroom.setOnClickListener(this);
 
             iv_close.setOnClickListener(this);
         }

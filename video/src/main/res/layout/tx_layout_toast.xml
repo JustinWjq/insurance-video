@@ -16,8 +16,9 @@
         android:id="@+id/iv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/tx_icon"
+        android:visibility="gone"
         android:paddingEnd="@dimen/tx_dp_10"
+        tools:src="@drawable/tx_icon"
         />
 
     <TextView

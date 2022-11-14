@@ -13,6 +13,8 @@ public class VideoCode {
 
     public static int FINISHPAGE_CODE = 11201;
 
+    public static int FINSHBOARDVIEW_CODE = 11202;
+
     public static int SKIPBOARDPAGE_CODE = 12200;
 
 

@@ -6,5 +6,5 @@ package com.txt.myapplication;
  * des ：
  */
 public class RoomConfig {
-    static boolean showVideo = true;
+    static boolean showVideo = false;
 }

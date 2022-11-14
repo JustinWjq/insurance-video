@@ -6,12 +6,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -135,18 +137,21 @@ public class RemoteUserListView extends ConstraintLayout {
         iv_delete.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                et_search.setText("");
+                et_search.getText().clear();
                 ivNoRemoteuser.setVisibility(View.GONE);
                 mUserListRv.setVisibility(View.VISIBLE);
             }
         });
+
         tv_search.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击取消
                 tv_search.setVisibility(GONE);
                 iv_delete.setVisibility(GONE);
-                et_search.setText("");
+                et_search.getText().clear();
+                et_search.clearFocus();
+                mUserListRv.setFocusable(true);
                 ivNoRemoteuser.setVisibility(View.GONE);
                 mUserListRv.setVisibility(View.VISIBLE);
             }
@@ -259,6 +264,8 @@ public class RemoteUserListView extends ConstraintLayout {
             }
         }
     }
+
+
 
     public interface RemoteUserListCallback {
         void onFinishClick();
