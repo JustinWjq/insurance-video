@@ -14,6 +14,7 @@ import com.txt.video.common.dialog.common.TxBaseDialog;
 import com.txt.video.common.dialog.common.TxCommonDialog;
 import com.txt.video.trtc.videolayout.list.MemberEntity;
 import com.txt.video.ui.video.remoteuser.RemoteUserListView;
+import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils;
 
 import java.util.List;
 
@@ -32,12 +33,15 @@ public final class TxRemoteUserDialog {
         private RemoteUserListView.RemoteUserListCallback mListener;
 
         private RemoteUserListView mRemoteUserListView;
+        private Context mContext;
         public Builder(Context context) {
             super(context);
+            mContext = context;
             setContentView(R.layout.tx_viewstub_remote_user_list);
 
             mRemoteUserListView = findViewById(R.id.view_remote_user);
             mRemoteUserListView.findViewById(R.id.iv_close).setOnClickListener(this);
+            mRemoteUserListView.findViewById(R.id.iv_close1).setOnClickListener(this);
         }
 
 
@@ -65,12 +69,17 @@ public final class TxRemoteUserDialog {
 
         public Builder showLand( Boolean showLand){
             if (showLand) {
+                mRemoteUserListView.findViewById(R.id.iv_close).setVisibility(View.GONE);
+                mRemoteUserListView.findViewById(R.id.iv_close1).setVisibility(View.VISIBLE);
                 setGravity(Gravity.RIGHT);
                 setAnimStyle(AnimAction.ANIM_RIGHT);
-                setWidth(getResources().getDisplayMetrics().widthPixels/2+100);
+
+                setWidth( DisplayUtils.INSTANCE.dp2px(mContext,330f));
 //                setHeight(getResources().getDisplayMetrics().heightPixels);
                 mRemoteUserListView.setBackgroundResource(R.drawable.tx_shape_round_topleft_15);
             }else {
+                mRemoteUserListView.findViewById(R.id.iv_close).setVisibility(View.VISIBLE);
+                mRemoteUserListView.findViewById(R.id.iv_close1).setVisibility(View.GONE);
                 setGravity(Gravity.BOTTOM);
                 setAnimStyle(AnimAction.ANIM_BOTTOM);
                 setWidth(getResources().getDisplayMetrics().widthPixels);
@@ -106,7 +115,7 @@ public final class TxRemoteUserDialog {
                     return;
                 }
 //                mListener.onCancel(getDialog());
-            } else if (viewId == R.id.iv_close) {
+            } else if (viewId == R.id.iv_close||viewId == R.id.iv_close1) {
                 dismiss();
                 if (mListener == null) {
                     return;

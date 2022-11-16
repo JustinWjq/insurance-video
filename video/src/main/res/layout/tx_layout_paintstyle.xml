@@ -9,7 +9,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rl_thick"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/tx_dp_12"
+        />
 
     <View
         android:layout_width="wrap_content"
@@ -22,6 +24,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rl_paintcolors"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/tx_dp_12"
+        android:layout_marginTop="@dimen/tx_dp_12"
+        android:layout_marginBottom="@dimen/tx_dp_20"
+        />
 
 </LinearLayout>

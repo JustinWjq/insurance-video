@@ -10,8 +10,8 @@
 
     <FrameLayout
         android:id="@+id/board_view_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="visible"
         android:background="@color/tx_white"
         app:layout_constraintBottom_toBottomOf="parent"

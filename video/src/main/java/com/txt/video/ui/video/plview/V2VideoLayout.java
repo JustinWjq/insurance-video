@@ -3,6 +3,7 @@ package com.txt.video.ui.video.plview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * 用来展示横屏和竖屏的视频布局切换
@@ -71,7 +73,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
     ViewGroup mVgFuc;
     RecyclerView trtc_video_view_layout;
     FrameLayout bigscreen;
-    LinearLayout trtc_fl_no_video;
+    RelativeLayout trtc_fl_no_video;
     LinearLayout ll_videolayouttwo;
     RelativeLayout rl_left;
     TextView bigscreen_trtc_tv_content;
@@ -80,6 +82,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
     ImageView trtc_icon_host1;
     ImageView bigscreen_trtc_pb_audio;
     ImageView bigscreen_trtc_pb_audio1;
+    ImageView iv_self;
     private CircleImageView mUserHeadImg;
     private TextView mIvVideClose;
     private void initFuncLayout() {
@@ -99,6 +102,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
         mIvVideClose = (TextView) mVgFuc.findViewById(R.id.iv_video_close);
         bigscreen_trtc_pb_audio = (ImageView) mVgFuc.findViewById(R.id.trtc_pb_audio);
         bigscreen_trtc_pb_audio1 = (ImageView) mVgFuc.findViewById(R.id.trtc_pb_audio1);
+        iv_self = (ImageView) mVgFuc.findViewById(R.id.iv_self);
 
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -212,9 +216,10 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                 break;
             case PRO_BIG_RV_HASBIGVIDEO://如果竖屏幕有大画面，那么有可能为两个人，也有可能为两个人以上
                 //判断人数
-                if (mMemberEntityList.size() >= 3) {
+                if (mMemberEntityList.size() > 3) {
+
                     changeHasVideoUi();
-                    checkSmallVideoToBigVideo(mMemberEntityList.get(0));
+//                    checkSmallVideoToBigVideo(mMemberEntityList.get(0));
                     mCurrentUitype = UITYPE.LAND_BIG_RV_HASBIGVIDEO;
                 } else {
                     checkNoVideoLanUi();
@@ -267,9 +272,10 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
     private void changProHasBigVideo() {
         TxLogUtils.i(TAG, "changProHasBigVideo");
         ll_videolayouttwo.setOrientation(LinearLayout.VERTICAL);
+        ll_videolayouttwo.setGravity(Gravity.CENTER);
         ViewGroup.LayoutParams rl_leftlayoutParams = rl_left.getLayoutParams();
         rl_leftlayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        rl_leftlayoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext()) / 2;
+        rl_leftlayoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext()) / 3;
         rl_left.setLayoutParams(rl_leftlayoutParams);
         rl_left.setVisibility(VISIBLE);
 
@@ -348,6 +354,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
         }
         TxLogUtils.i(TAG,"notifyItemChanged"+"island" +isLand);
         TxLogUtils.i(TAG,"notifyItemChanged"+"mCurrentUitype" +mCurrentUitype.name());
+        TxLogUtils.i(TAG,"notifyItemChanged"+"bigMeetingEntity" +mCurrentUitype.name());
         TxLogUtils.i(TAG,"notifyItemChanged"+"mMemberEntityList.size()" +mMemberEntityList.size());
         if (isLand) {
             switch (mCurrentUitype) {
@@ -388,7 +395,8 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                         if (bigMeetingEntity != null && !bigMeetingEntity.isMuteVideo()) {
                             isMute = false;
                         }
-                        if (isMute) {
+
+                        if (isMute&&mMemberEntityList.size() == 1) {
                             TxLogUtils.i(TAG, "switchScreen--isLand---isMute" + isMute);
                             mCurrentUitype = UITYPE.PRO_BIG_RV_NOBIGVIDEO;
                             changeProNoBigVideo();
@@ -399,7 +407,6 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                                 muteBigVideo();
                             } else {
                                 if (null != mMemberListAdapter) {
-                                    //如果大屏幕
                                     mMemberListAdapter.notifyItemChanged(position, payload);
                                 }
                             }
@@ -449,14 +456,15 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
 
                         }
                     } else {
-                        if (bigMeetingEntity != null
-                                && userId == bigMeetingEntity.getUserId()) {
-                            muteBigVideo();
-                        } else {
-                            if (null != mMemberListAdapter) {
-                                //如果大屏幕
-                                mMemberListAdapter.notifyItemChanged(position, payload);
-                            }
+//                        if (bigMeetingEntity != null
+//                                && userId == bigMeetingEntity.getUserId()) {
+//                            muteBigVideo();
+//                        } else {
+//
+//                        }
+                        if (null != mMemberListAdapter) {
+                            //如果大屏幕
+                            mMemberListAdapter.notifyItemChanged(position, payload);
                         }
                     }
                     break;
@@ -488,6 +496,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                     mCurrentUitype = UITYPE.LAND_BIG_RV_HASBIGVIDEO;
                     changeHasVideoUi();
                     checkSmallVideoToBigVideo(mMemberEntityList.get(0));
+                    return;
                 }
                 if (mCurrentUitype == UITYPE.LAND_BIG_RV_HASBIGVIDEO) {
                     mCurrentUitype = UITYPE.LAND_BIG_RV_HASBIGVIDEO;
@@ -496,7 +505,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                     mCurrentUitype = UITYPE.LAND_BIG_RV_NOBIGVIDEO;
                     mMemberListAdapter.notifyItemInserted(position);
                 }
-
+                mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.HIDE_BG);
             } else {
                 //这里存在第二个人进来的时候，开着视频就需要切换视图了
                 if (mCurrentUitype == UITYPE.PRO_BIG_RV_HASBIGVIDEO) {
@@ -524,7 +533,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                             mMemberListAdapter.notifyItemInserted(position);
                             mCurrentUitype = UITYPE.PRO_BIG_RV_NOBIGVIDEO;
                         }
-
+                        mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.HIDE_BG);
                     }
                     if (mMemberEntityList.size() == 3 && mCurrentUitype == UITYPE.PRO_BIG_RV_NOBIGVIDEO) {
                         //需要展示一个大屏幕。一个小屏幕
@@ -558,22 +567,53 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                     //todo
                     checkBigVideoToList();
                     checkNoVideoLanUi();
+                    mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.HIDE_BG);
                 } else {
-                    mMemberListAdapter.notifyItemRemoved(position);
+                    if (null != mMemberListAdapter) {
+                        mMemberListAdapter.notifyItemRemoved(position);
+                        if (mMemberListAdapter.getItemCount()==1){
+                            mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.SHOW_BG);
+                        }
+                    }
+
                 }
             } else {
                 //todo
                 if (mCurrentUitype == UITYPE.PRO_BIG_RV_HASBIGVIDEO) {
                     //判断 两个人和三个人
-                    if (mMemberEntityList.size()==0){
-                        checkBigVideoToList();
-                        changeProNoBigVideo();
-                    }else{
+                    if (mMemberEntityList.size()==1){
+                        //判断是否有视频
+                        boolean isMute = true;
+                        for (MemberEntity memberEntity : mMemberEntityList) {
+                            if (!memberEntity.isMuteVideo()) {
+                                isMute = false;
+                            }
+                        }
+                        if (bigMeetingEntity != null && !bigMeetingEntity.isMuteVideo()) {
+                            isMute = false;
+                        }
+                        if (isMute) {
+                            if (null != mMemberListAdapter) {
+                                mMemberListAdapter.notifyItemRemoved(position);
+                            }
+                        }else{
+                            checkBigVideoToList();
+                            changeProNoBigVideo();
+                        }
 
+                    }else{
+                        if (null != mMemberListAdapter) {
+                            mMemberListAdapter.notifyItemRemoved(position);
+                        }
                     }
 
                 }else{
-                    mMemberListAdapter.notifyItemRemoved(position);
+                    if (null != mMemberListAdapter) {
+                        mMemberListAdapter.notifyItemRemoved(position);
+                        if (mMemberListAdapter.getItemCount()==1){
+                            mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.SHOW_BG);
+                        }
+                    }
                 }
 
             }
@@ -746,19 +786,15 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
             meetingVideoView.refreshParent();
             changeBigVideo(bigMeetingEntity);
             bigscreen.setVisibility(View.VISIBLE);
-//            if (null != mTRTCRemoteUserManager) {
-//                mTRTCRemoteUserManager.setRemoteFillMode(
-//                        bigMeetingEntity.getUserId(),
-//                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                        false
-//                );
-//            }
-//            val index = .removeMemberEntity(userId!!)
-//            if (index >= 0) {
-//            }
             removeMemberEntity(memberEntity.getUserId());
             mMemberListAdapter.notifyItemRemoved(0);
-
+            if (null != mTRTCRemoteUserManager) {
+                mTRTCRemoteUserManager.setRemoteFillMode(
+                        bigMeetingEntity.getUserId(),
+                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
+                        false
+                );
+            }
 
         }
 
@@ -766,9 +802,11 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
 
     void muteBigVideo() {
         if (!bigMeetingEntity.isMuteVideo()) {
+            iv_self.setVisibility(GONE);
             trtc_fl_no_video.setVisibility(View.GONE);
             bigscreen.setVisibility(View.VISIBLE);
         } else {
+            iv_self.setVisibility(VISIBLE);
             trtc_fl_no_video.setVisibility(View.VISIBLE);
             bigscreen.setVisibility(View.GONE);
         }
@@ -797,7 +835,9 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
         bigscreen_trtc_tv_content.setText(text);
         bigscreen_trtc_tv_content1.setText(text);
         int visible;
-        if (userRole == "owner" || userRole == "assistant") {
+        TxLogUtils.i(TAG,"changeBigScreenViewName"+userRole);
+        if (Objects.equals(userRole, "owner") || Objects.equals(userRole, "assistant")) {
+
             TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath)
                     .into(trtc_icon_host);
             TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath)

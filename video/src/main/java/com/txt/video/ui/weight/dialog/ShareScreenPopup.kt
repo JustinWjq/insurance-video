@@ -51,6 +51,7 @@ open class ShareScreenPopup : TransformersTip {
             //点击文件
             if (null != mListener) {
                 mListener?.onCheckFileWhiteBroad()
+                dismissTip()
             }
         }
         contentView.findViewById<TextView>(R.id.tv_whitebroad).setOnClickListener {

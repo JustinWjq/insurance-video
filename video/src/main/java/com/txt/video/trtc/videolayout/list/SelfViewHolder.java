@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -16,6 +17,7 @@ import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.common.CircleImageView;
 import com.txt.video.common.glide.TxGlide;
+import com.txt.video.net.utils.TxLogUtils;
 
 /**
  * Created by JustinWjq
@@ -24,15 +26,16 @@ import com.txt.video.common.glide.TxGlide;
  * description：
  */
 public class SelfViewHolder extends RecyclerView.ViewHolder {
-    private TextView mUserNameTv,mUserNameTv1;
+    private TextView mUserNameTv, mUserNameTv1;
     private MeetingVideoView mViewVideo;
-    private CircleImageView  mUserHeadImg;
+    private CircleImageView mUserHeadImg;
     private MemberEntity mMemberEntity;
     private FrameLayout mVideoContainer;
-    private LinearLayout mNoVideoContainer;
-    private ImageView mPbAudioVolume,mPbAudioVolume1;
+    private RelativeLayout mNoVideoContainer;
+    private ImageView mPbAudioVolume, mPbAudioVolume1;
     private TextView mIvVideClose;
-    private ImageView mIvIconHost,mIvIconHost1;
+    private ImageView mIvIconHost, mIvIconHost1;
+    private ImageView ivSelf;
 
     public SelfViewHolder(View itemView) {
         super(itemView);
@@ -133,22 +136,36 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
         if (mMemberEntity.getUserHead().isEmpty()) {
             String userName = mMemberEntity.getUserName();
-            if (mMemberEntity.getUserName().length()>2) {
-                userName = userName.substring(userName.length()-2, userName.length());
+            if (mMemberEntity.getUserName().length() > 2) {
+                userName = userName.substring(userName.length() - 2, userName.length());
             }
             mIvVideClose.setText(userName);
             mIvVideClose.setVisibility(View.VISIBLE);
             TxGlide.with(TXSdk.getInstance().application).load("")
                     .into(mUserHeadImg);
-            mUserHeadImg.setCircleBackgroundColor(ContextCompat.getColor(TXSdk.getInstance().application,R.color.tx_color_e6b980));
-        }else{
+            mUserHeadImg.setCircleBackgroundColor(ContextCompat.getColor(TXSdk.getInstance().application, R.color.tx_color_e6b980));
+        } else {
             mIvVideClose.setVisibility(View.GONE);
             TxGlide.with(TXSdk.getInstance().application).load(mMemberEntity.getUserHead())
                     .into(mUserHeadImg);
         }
+        //判断当前list数量只有一个的时候就显示背景图
+        hideBg(false);
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    public void hideBg(boolean isHide){
+        if (!isHide) {
+            TxLogUtils.i("SelfViewHolder","");
+            if (mMemberEntity.isHost() && 1 == mMemberEntity.getItemCount()) {
+                ivSelf.setVisibility(View.VISIBLE);
+            }else{
+                ivSelf.setVisibility(View.GONE);
+            }
+        } else {
+            ivSelf.setVisibility(View.GONE);
+        }
+    }
     public void addVideoView() {
         if (mMemberEntity == null) {
             return;
@@ -213,11 +230,12 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         });
 //        showHost(model.isHost());
     }
-//iv_video_head
+
+    //iv_video_head
     private void initView(final View itemView) {
 
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
-        mNoVideoContainer = (LinearLayout) itemView.findViewById(R.id.trtc_fl_no_video);
+        mNoVideoContainer = (RelativeLayout) itemView.findViewById(R.id.trtc_fl_no_video);
         mIvVideClose = (TextView) itemView.findViewById(R.id.iv_video_close);
         mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.iv_video_head);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
@@ -226,5 +244,6 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mIvIconHost1 = (ImageView) itemView.findViewById(R.id.trtc_icon_host1);
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
         mUserNameTv1 = (TextView) itemView.findViewById(R.id.trtc_tv_content1);
+        ivSelf = (ImageView) itemView.findViewById(R.id.iv_self);
     }
 }

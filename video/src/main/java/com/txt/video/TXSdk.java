@@ -47,6 +47,8 @@ public class TXSdk extends TXSDKApi {
 
     private String agent;
 
+    private String agentName;
+
     private boolean isShare;
 
     private FriendBtObservable mFriendBtObservable;
@@ -70,6 +72,16 @@ public class TXSdk extends TXSDKApi {
     @Override
     public void setAgent(String agent) {
         this.agent = agent;
+    }
+
+    @Override
+    public String getAgentName() {
+        return agentName;
+    }
+
+    @Override
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 
     @Override

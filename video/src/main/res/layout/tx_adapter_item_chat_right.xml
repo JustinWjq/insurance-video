@@ -46,13 +46,13 @@
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/tx_color_333333"
+        android:textColor="@color/tx_white"
         android:layout_gravity="end"
         android:textSize="@dimen/tx_sp_15"
         android:padding="@dimen/tx_dp_12"
         android:layout_marginTop="@dimen/tx_dp_5"
         android:layout_marginLeft="@dimen/tx_dp_20"
-        android:background="@drawable/tx_shape_round_right5_color_ffffff"
+        android:background="@drawable/tx_shape_round_right5_color_e6b980"
         tools:text = "张文山张文山张文山张文山张文山张文山张文山张文山张文山张文山张文山"
         />
 

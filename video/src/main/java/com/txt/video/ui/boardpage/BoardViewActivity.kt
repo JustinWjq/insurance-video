@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,8 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import com.google.gson.Gson
-import com.tencent.imsdk.TIMMessage
 import com.tencent.teduboard.TEduBoardController
 import com.txt.video.R
-import com.txt.video.TXSdk
 import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
@@ -30,10 +29,8 @@ import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.ConfigHelper
 import com.txt.video.trtc.TICManager
 import com.txt.video.trtc.TRTCCloudManager
-import com.txt.video.trtc.ticimpl.TICMessageListener
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
-import com.txt.video.ui.video.barrage.BarrageManager
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
@@ -86,28 +83,40 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         return BoardViewPresenter(this, this)
     }
 
+    fun initBoardView(){
+        Handler().postDelayed({
+            val instance = TICManager.getInstance()
+            boardController = instance.boardController
+
+
+            val windowWidth = Utils.getWindowHeight(this) / 9 * 16
+            val layoutParams =
+                FrameLayout.LayoutParams(
+                    windowWidth,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+
+            board_view_container.addView(boardController?.boardRenderView, layoutParams)
+            val layoutParams1 = board_view_container.layoutParams
+            layoutParams1.width =windowWidth
+            layoutParams1.height =  ViewGroup.LayoutParams.MATCH_PARENT
+            boardController?.boardContentFitMode =
+                TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
+
+        },50)
+
+    }
     var boardController: TEduBoardController? = null
     var videoBoradBusiness: ArrayList<ImageButton>? = null
     fun initView() {
-        val instance = TICManager.getInstance()
-        boardController = instance.boardController
-
-        val windowWidth = Utils.getWindowHeight(this) / 9 * 16
-        val layoutParams =
-            FrameLayout.LayoutParams(
-                windowWidth,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-        board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        initBoardView()
         showAudioStatus()
         videoBoradBusiness = arrayListOf(
             tx_pen,
             tx_arrow,
             tx_eraser
         )
-        boardController?.boardContentFitMode =
-            TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
+
         initBoardTools()
         initPicAdapter()
         iv_endshare.setOnClickListener {
@@ -274,9 +283,24 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_ERASER
             selectIb(tx_eraser)
         } else if (id == R.id.tx_arrow) {
+
+            val color = PaintThickPopup.mColorMap[VideoActivity.paintColorPostion].color
+            val size = PaintThickPopup.mColorMap1[VideoActivity.paintSizeIntPostion].size
+            boardController!!.brushColor = TEduBoardController.TEduBoardColor(color!!)
+            boardController!!.brushThin = size
             //移动
             boardController!!.toolType =
                 TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_OVAL
+
+            if (tx_arrow.isSelected) {
+                showPopupWindow(
+                    "1",
+                    VideoActivity.paintColorPostion,
+                    VideoActivity.paintSizeIntPostion
+                )
+            } else {
+                tx_arrow.isSelected = true
+            }
 
             selectIb(tx_arrow)
         } else if (id == R.id.tx_textstyle) {

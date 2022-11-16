@@ -10,8 +10,10 @@ import java.io.Serializable;
  * @author guanyifeng
  */
 public class RemoteUserConfig implements Serializable {
-    // 远程的用户名，其实就是userId
+    // 远程的用户名
     private String mUserName;
+    //userId
+    private String mUserId;
     // 远程用户是主流还是辅流
     private int     mStreamType;
     // 是否打开远程用户的视频
@@ -25,6 +27,14 @@ public class RemoteUserConfig implements Serializable {
     // 远程用户音量大小
     private int     mVolume;
 
+    public String getmUserId() {
+        return mUserId;
+    }
+
+    public void setmUserId(String mUserId) {
+        this.mUserId = mUserId;
+    }
+
     public RemoteUserConfig(String userName) {
         reset();
         mUserName = userName;
@@ -34,6 +44,12 @@ public class RemoteUserConfig implements Serializable {
         reset();
         mUserName = userName;
         mStreamType = streamType;
+    }
+
+    public RemoteUserConfig(String mUserName, String mUserId, int mStreamType) {
+        this.mUserName = mUserName;
+        this.mUserId = mUserId;
+        this.mStreamType = mStreamType;
     }
 
     public void reset() {

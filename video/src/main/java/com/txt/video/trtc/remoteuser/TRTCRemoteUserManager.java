@@ -200,10 +200,19 @@ public class TRTCRemoteUserManager {
         removeVideoStream(userId, streamType);
     }
 
+    public void addRemoteUser(String userId, String userName, int streamType){
+        // 增加成员
+        RemoteUserConfig remoteUserConfig = RemoteUserConfigHelper.getInstance().getRemoteUser(userId);
+        if (remoteUserConfig == null) {
+            remoteUserConfig = new RemoteUserConfig(userName,userId, streamType);
+            RemoteUserConfigHelper.getInstance().addRemoteUser(remoteUserConfig);
+        }
+
+    }
     /**
      * 远程用户打开了视频流，开始界面的渲染，并添加一条视频流
      */
-    public void remoteUserVideoAvailable(String userId, int streamType, TXCloudVideoView renderView,boolean isFill) {
+    public void remoteUserVideoAvailable(String userId, String userName, int streamType, TXCloudVideoView renderView,boolean isFill) {
         TRTCVideoStream stream = new TRTCVideoStream();
         stream.userId = userId;
         stream.streamType = streamType;
@@ -211,7 +220,7 @@ public class TRTCRemoteUserManager {
         // 增加成员
         RemoteUserConfig remoteUserConfig = RemoteUserConfigHelper.getInstance().getRemoteUser(userId);
         if (remoteUserConfig == null) {
-            remoteUserConfig = new RemoteUserConfig(userId, streamType);
+            remoteUserConfig = new RemoteUserConfig(userName,userId, streamType);
             RemoteUserConfigHelper.getInstance().addRemoteUser(remoteUserConfig);
         }
 
@@ -251,9 +260,6 @@ public class TRTCRemoteUserManager {
         }
     }
 
-    public int getRemoteAllUser() {
-        return RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size();
-    }
 
     /**
      * 启动渲染

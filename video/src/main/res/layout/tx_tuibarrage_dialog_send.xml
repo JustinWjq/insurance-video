@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/tuibarrage_bg_send_view"
+        android:background="#bf000000"
         android:orientation="horizontal"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
@@ -33,7 +33,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/tuibarrage_color_half_black" />
+            android:background="#44777777" />
 
         <LinearLayout
             android:id="@+id/ll_confirm_area"
@@ -48,7 +48,7 @@
                 android:background="@color/tx_color_333333"
                 android:gravity="center"
                 android:text="发送"
-                android:textColor="@color/tuibarrage_color_white"
+                android:textColor="@color/tx_white"
                 android:textSize="14sp" />
 
         </LinearLayout>

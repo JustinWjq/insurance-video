@@ -29,6 +29,8 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public static final String VIDEO_SCREEN_CLOSE = "video_screen_close";
     public static final String VIDEOVIEW_CHANGE = "videoview_change";
     public static final String NAME_CHANGE = "name_change";
+    public static final String HIDE_BG = "hide_bg";
+    public static final String SHOW_BG = "show_bg";
 
     private Context context;
     private List<MemberEntity> list;
@@ -75,9 +77,11 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TxLogUtils.i(TAG, "onBindViewHolder: " + position);
         if (holder instanceof OtherViewHolder) {
             MemberEntity item = list.get(position);
+            item.setItemCount(getItemCount());
             ((OtherViewHolder) holder).bind(item, mListCallback);
         } else if (holder instanceof SelfViewHolder) {
             MemberEntity item = list.get(position);
+            item.setItemCount(getItemCount());
             ((SelfViewHolder) holder).bind(item, mListCallback);
         }
     }
@@ -159,7 +163,24 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     MemberEntity item = list.get(position);
                     ((SelfViewHolder) holder).showHost(item.isHost());
                 }
+            }else if (HIDE_BG.equals(payloads.get(0))){
+                if (holder instanceof OtherViewHolder) {
+//                    MemberEntity item = list.get(position);
+//                    ((OtherViewHolder) holder).showHost(item.isHost());
+                } else if (holder instanceof SelfViewHolder) {
+                    MemberEntity item = list.get(position);
+                    ((SelfViewHolder) holder).hideBg(true);
+                }
+            }else if (SHOW_BG.equals(payloads.get(0))){
+                if (holder instanceof OtherViewHolder) {
+//                    MemberEntity item = list.get(position);
+//                    ((OtherViewHolder) holder).showHost(item.isHost());
+                } else if (holder instanceof SelfViewHolder) {
+                    MemberEntity item = list.get(position);
+                    ((SelfViewHolder) holder).hideBg(false);
+                }
             }
+
 
         }
     }

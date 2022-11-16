@@ -183,6 +183,12 @@ public class VideoContract {
         fun allowstartrecord()
 
         fun refuseStartRecord()
+
+        fun autoCheckAudioHand()
+
+        fun skipToBoardPage()
+
+        fun showiOSLoading(show: Boolean)
     }
 
 

@@ -34,7 +34,7 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
     private RecyclerView                   mRecyclerMsg;
     private TUIBarrageMsgListAdapter mAdapter;
     private ITUIBarragePresenter mPresenter;
-    private ArrayList<TUIBarrageMsgEntity> mMsgList  = new ArrayList<>();
+    private ArrayList<TUIBarrageMsgEntity> mMsgList  ;
     private String                         mGroupId;
 
     public ArrayList<TUIBarrageMsgEntity> getmMsgList() {
@@ -59,17 +59,17 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
 
     private ITUIBarrageListener mBarrageListener;
     public void setReceiveBarrageListener(ITUIBarrageListener barrageListener) {
-        TUIBarragePresenter.sharedInstance().addObserver(barrageListener);
         mBarrageListener = barrageListener;
     }
 
     private void initPresenter() {
-//        mPresenter = new TUIBarragePresenter(mContext,""+123, mGroupId);
         mPresenter =  TUIBarragePresenter.sharedInstance();
         mPresenter.initDisplayView(this);
+
     }
 
     private void initView(Context context) {
+        mMsgList = TUIBarragePresenter.sharedInstance().getmMsgList();
         View baseView = LayoutInflater.from(context).inflate(R.layout.tx_tuibarrage_view_display, this);
         mRecyclerMsg = findViewById(R.id.rv_msg);
 
@@ -122,9 +122,9 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
         mAdapter.notifyDataSetChanged();
         mRecyclerMsg.smoothScrollToPosition(mAdapter.getItemCount());
         if (null != mBarrageListener) {
-            mBarrageListener.onSuccess(200,"123",model);
+            mBarrageListener.onSuccess(200,"",model);
         }
-        TUIBarragePresenter.sharedInstance().sedMsg(200,"123",model);
+
     }
 
 

@@ -106,9 +106,8 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         } else if (getItemCount() == 1) {
             detachAndScrapAttachedViews(recycler); // 移除所有View
             View scrap = recycler.getViewForPosition(0);
-
-            if (mOrientation == VERTICAL){
-                measureChildWithMargins(scrap, 0, 0);
+            if (getWidth()>getHeight()){
+                measureChildWithMargins(scrap, 200, 0);
                 addView(scrap);
                 layoutDecorated(scrap,
                         100,
@@ -116,13 +115,13 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
                         getWidth()-100,
                         getHeight());
             }else{
-                measureChildWithMargins(scrap, 0, 0);
+                measureChildWithMargins(scrap, 0, getHeight()/3*2);
                 addView(scrap);
                 layoutDecorated(scrap,
                         0,
-                        0,
+                        getHeight()/3,
                         getWidth(),
-                        getHeight());
+                        getHeight()/3*2);
             }
 
             if (mPageListener != null) {

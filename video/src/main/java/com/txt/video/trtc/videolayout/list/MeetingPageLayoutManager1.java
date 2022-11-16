@@ -105,53 +105,40 @@ public class MeetingPageLayoutManager1 extends RecyclerView.LayoutManager implem
             setPageCount(0);
             setPageIndex(0, false);
             return;
-        } else if (getItemCount() == 1) {
-            detachAndScrapAttachedViews(recycler); // 移除所有View
-            View scrap = recycler.getViewForPosition(0);
-            measureChildWithMargins(scrap, 0, 0);
-            addView(scrap);
-            int i;
-            if (mOrientation == HORIZONTAL){
-               i = getWidth() / 3 - 50;
-            }else{
-                i = getWidth() ;
-            }
-            layoutDecorated(scrap,
-                    0,
-                    0,
-                    i ,
-                    getHeight());
-            if (mPageListener != null) {
-                mPageListener.onItemVisible(0, 0);
-            }
-            return;
-        } else if (getItemCount() == 2) {
-            detachAndScrapAttachedViews(recycler); // 移除所有View
-            View scrap = recycler.getViewForPosition(0);
-            int heightUse = getUsableHeight() / 2;
-            measureChildWithMargins(scrap, 0, heightUse);
-            addView(scrap);
-            layoutDecorated(scrap,
-                    0,
-                    0,
-                    getWidth(),
-                    heightUse);
-            scrap = recycler.getViewForPosition(1);
-            measureChildWithMargins(scrap, 0, heightUse);
-            addView(scrap);
-            layoutDecorated(scrap,
-                    0,
-                    heightUse,
-                    getWidth(),
-                    getHeight());
-            if (mPageListener != null) {
-                mPageListener.onItemVisible(0, 1);
-            }
-            return;
         } else {
             setPageCount(getTotalPageCount());
             setPageIndex(getPageIndexByOffset(), false);
         }
+        //else if (getItemCount() == 2) {
+        //            detachAndScrapAttachedViews(recycler); // 移除所有View
+        //            View scrap = recycler.getViewForPosition(0);
+        //            int heightUse;
+        //            if (mOrientation == HORIZONTAL){
+        //                 heightUse = getUsableHeight() ;
+        //            }else{
+        //                heightUse = getUsableHeight() / 2;
+        //            }
+        //
+        //            measureChildWithMargins(scrap, 0, heightUse);
+        //            addView(scrap);
+        //            layoutDecorated(scrap,
+        //                    0,
+        //                    0,
+        //                    getWidth(),
+        //                    heightUse);
+        //            scrap = recycler.getViewForPosition(1);
+        //            measureChildWithMargins(scrap, 0, heightUse);
+        //            addView(scrap);
+        //            layoutDecorated(scrap,
+        //                    0,
+        //                    heightUse,
+        //                    getWidth(),
+        //                    getHeight());
+        //            if (mPageListener != null) {
+        //                mPageListener.onItemVisible(0, 1);
+        //            }
+        //            return;
+        //        }
 
         // 计算页面数量
         int mPageCount = getItemCount() / mOnePageSize;
@@ -161,7 +148,12 @@ public class MeetingPageLayoutManager1 extends RecyclerView.LayoutManager implem
 
         // 计算可以滚动的最大数值，并对滚动距离进行修正
         if (canScrollHorizontally()) {
-            mMaxScrollX = (getItemCount()-4) * getUsableWidth()/4;
+            if (getItemCount()<4) {
+                mMaxScrollX = 0;
+            }else{
+                mMaxScrollX = (getItemCount()-4) * getUsableWidth()/4;
+            }
+
             mMaxScrollY = 0;
             if (mOffsetX > mMaxScrollX) {
                 mOffsetX = mMaxScrollX;

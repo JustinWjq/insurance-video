@@ -9,6 +9,15 @@ public class MemberEntity {
     public static final int QUALITY_NORMAL = 2;
     public static final int QUALITY_BAD    = 1;
 
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
+    private int itemCount;
     private String userId;
     private String userName;
     private String userAvatar;

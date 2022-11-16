@@ -8,16 +8,6 @@ public class TUIBarrageConstants {
     public static final String KEY_USER_NAME   = "userName";
     public static final String KEY_USER_AVATAR = "userAvatar";
 
-    //消息的颜色
-    public static final int[] MESSAGE_USERNAME_COLOR = {
-            R.color.tuibarrage_color_msg_1,
-            R.color.tuibarrage_color_msg_2,
-            R.color.tuibarrage_color_msg_3,
-            R.color.tuibarrage_color_msg_4,
-            R.color.tuibarrage_color_msg_5,
-            R.color.tuibarrage_color_msg_6,
-            R.color.tuibarrage_color_msg_7,
-    };
 
     //IM消息,KEY值设置见 TUIBarrageJson
     public static final String KEY_VERSION     = "version";

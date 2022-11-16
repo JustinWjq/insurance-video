@@ -42,7 +42,7 @@ public class RemoteUserConfigHelper {
         Iterator<RemoteUserConfig> iterator = mRemoteUserConfigList.iterator();
         while (iterator.hasNext()) {
             RemoteUserConfig userInfo = iterator.next();
-            if (username.equals(userInfo.getUserName())) {
+            if (username.equals(userInfo.getmUserId())) {
                 iterator.remove();
                 break;
             }
@@ -62,7 +62,7 @@ public class RemoteUserConfigHelper {
         Iterator<RemoteUserConfig> iterator = mRemoteUserConfigList.iterator();
         while (iterator.hasNext()) {
             RemoteUserConfig userInfo = iterator.next();
-            if (userId.equals(userInfo.getUserName())) {
+            if (userId.equals(userInfo.getmUserId())) {
                 return userInfo;
             }
         }
@@ -79,7 +79,7 @@ public class RemoteUserConfigHelper {
         Iterator<RemoteUserConfig> iterator = mRemoteUserConfigList.iterator();
         while (iterator.hasNext()) {
             RemoteUserConfig userInfo = iterator.next();
-            if (userId.equals(userInfo.getUserName()) || steamType == userInfo.getStreamType()) {
+            if (userId.equals(userInfo.getmUserId()) || steamType == userInfo.getStreamType()) {
                 return userInfo;
             }
         }

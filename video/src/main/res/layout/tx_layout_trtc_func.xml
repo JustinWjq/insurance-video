@@ -25,7 +25,7 @@
         <ImageView
             android:id="@+id/trtc_icon_host"
             android:layout_width="15dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:visibility="gone"
             />
@@ -53,7 +53,7 @@
 
 
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/trtc_fl_no_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,68 +61,84 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="@dimen/tx_dp_52"
-            android:layout_height="@dimen/tx_dp_52"
-          >
-
-            <com.txt.video.common.CircleImageView
-                android:id="@+id/iv_video_head"
-                android:layout_width="@dimen/tx_dp_52"
-                android:layout_height="@dimen/tx_dp_52"
-                android:layout_gravity="center"
-                android:layout_marginTop="2dp" />
-            <TextView
-                android:id="@+id/iv_video_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/tx_white"
-                android:textSize="@dimen/tx_sp_15"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                />
-
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_self"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tx_bg"
+            android:visibility="gone"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:background="@drawable/tx_shape_08101d"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true"
             >
-            <ImageView
-                android:id="@+id/trtc_icon_host1"
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:visibility="gone"
-                />
+            <RelativeLayout
+                android:layout_width="@dimen/tx_dp_52"
+                android:layout_height="@dimen/tx_dp_52"
+                >
 
-            <ImageView
-                android:id="@+id/trtc_pb_audio1"
+                <com.txt.video.common.CircleImageView
+                    android:id="@+id/iv_video_head"
+                    android:layout_width="@dimen/tx_dp_52"
+                    android:layout_height="@dimen/tx_dp_52"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp" />
+                <TextView
+                    android:id="@+id/iv_video_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/tx_white"
+                    android:textSize="@dimen/tx_sp_15"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/tx_dp_10"
-                android:src="@drawable/tx_icon_volume_small_0"
-                />
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:background="@drawable/tx_shape_08101d"
+                >
+                <ImageView
+                    android:id="@+id/trtc_icon_host1"
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    />
 
-            <TextView
-                android:id="@+id/trtc_tv_content1"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:singleLine="true"
-                android:layout_marginLeft="@dimen/tx_dp_2"
-                android:textColor="@color/tx_color_d7d7d7"
-                android:textSize="@dimen/tx_sp_12"
-                tools:text="XXXX" />
+                <ImageView
+                    android:id="@+id/trtc_pb_audio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/tx_dp_10"
+                    android:src="@drawable/tx_icon_volume_small_0"
+                    />
+
+                <TextView
+                    android:id="@+id/trtc_tv_content1"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_marginLeft="@dimen/tx_dp_2"
+                    android:textColor="@color/tx_color_d7d7d7"
+                    android:textSize="@dimen/tx_sp_12"
+                    tools:text="XXXX" />
 
 
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </RelativeLayout>
 
 
 

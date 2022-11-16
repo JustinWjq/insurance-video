@@ -2,6 +2,7 @@ package com.txt.video.ui.video.barrage.presenter;
 
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel;
 import com.txt.video.ui.video.barrage.view.ITUIBarrageDisplayView;
+import com.txt.video.ui.video.barrage.view.ITUIBarrageListener;
 
 public interface ITUIBarragePresenter {
     /**
@@ -31,5 +32,7 @@ public interface ITUIBarragePresenter {
      * @param model 弹幕内容
      */
     void receiveBarrage(TUIBarrageModel model);
+
+    void removeOb(ITUIBarrageListener mITUIBarrageListener);
 
 }

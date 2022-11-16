@@ -10,22 +10,24 @@ import com.txt.video.ui.video.barrage.model.TUIBarrageIMService;
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel;
 import com.txt.video.ui.video.barrage.view.ITUIBarrageDisplayView;
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener;
-import com.txt.video.ui.video.barrage.view.TUIBarrageSendView;
+import com.txt.video.ui.video.barrage.view.adapter.TUIBarrageMsgEntity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class TUIBarragePresenter implements ITUIBarragePresenter {
     private static final String TAG = "TUIBarragePresenter";
 
-    protected Context                mContext;
-    public    String                 mGroupId;
-    public    String                 mAppId;
+    protected Context mContext;
+    public String mGroupId;
+    public String mAppId;
     private ITUIBarrageDisplayView mDisplayView;
     private TUIBarrageIMService mImService;
     private final static byte[] SYNC = new byte[1];
     private static volatile TUIBarragePresenter instance;
+
     public static TUIBarragePresenter sharedInstance() {
         if (instance == null) {
             synchronized (SYNC) {
@@ -36,8 +38,16 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
         }
         return instance;
     }
-    public TUIBarragePresenter(){}
-    public void init(Context context,String appId, String groupId) {
+
+    public  ArrayList<TUIBarrageMsgEntity> mMsgList  = new ArrayList<>();
+    public ArrayList<TUIBarrageMsgEntity> getmMsgList() {
+        return mMsgList;
+    }
+
+    public TUIBarragePresenter() {
+    }
+
+    public void init(Context context, String appId, String groupId) {
         mContext = context;
         mGroupId = groupId;
         mAppId = appId;
@@ -46,7 +56,7 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
 
     private void initIMService() {
         if (mImService == null) {
-            mImService = new TUIBarrageIMService(this,mAppId);
+            mImService = new TUIBarrageIMService(this, mAppId);
         }
         mImService.setGroupId(mGroupId);
     }
@@ -59,11 +69,17 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
     @Override
     public void destroyPresenter() {
         mDisplayView = null;
-//        removeObserver();
-        mImService.unInitImListener();
+        if (null != mImService) {
+            mImService.unInitImListener();
+        }
     }
-
-    public void addObserver(ITUIBarrageListener mITUIBarrageListener){
+    public void clearList(){
+      if (null!= mMsgList){
+          mMsgList.clear();
+        }
+    }
+    protected LinkedList<WeakReference<ITUIBarrageListener>> listObservers = new LinkedList<WeakReference<ITUIBarrageListener>>();
+    public void addObserver(ITUIBarrageListener mITUIBarrageListener) {
 
         for (WeakReference<ITUIBarrageListener> listener : listObservers) {
             ITUIBarrageListener t = listener.get();
@@ -76,12 +92,11 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
         listObservers.add(weaklistener);
     }
 
-    public void sedMsg(int code, String msg, TUIBarrageModel model){
+    public void sedMsg(int code, String msg, TUIBarrageModel model) {
         LinkedList<WeakReference<ITUIBarrageListener>> tmpList = new LinkedList<WeakReference<ITUIBarrageListener>>(listObservers);
         Iterator<WeakReference<ITUIBarrageListener>> it = tmpList.iterator();
 
-        while(it.hasNext())
-        {
+        while (it.hasNext()) {
             ITUIBarrageListener t = it.next().get();
             if (t != null) {
                 t.onSuccess(code, msg, model);
@@ -89,10 +104,24 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
         }
 
     }
+
+
+    public void sedMsgFail(int code, String msg) {
+        LinkedList<WeakReference<ITUIBarrageListener>> tmpList = new LinkedList<WeakReference<ITUIBarrageListener>>(listObservers);
+        Iterator<WeakReference<ITUIBarrageListener>> it = tmpList.iterator();
+
+        while (it.hasNext()) {
+            ITUIBarrageListener t = it.next().get();
+            if (t != null) {
+                t.onFailed(code, msg);
+            }
+        }
+
+    }
+
     public void removeObserver() {
         Iterator<WeakReference<ITUIBarrageListener>> it = listObservers.iterator();
-        while(it.hasNext())
-        {
+        while (it.hasNext()) {
             ITUIBarrageListener t = it.next().get();
             if (t != null) {
                 it.remove();
@@ -100,7 +129,7 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
             }
         }
     }
-    protected LinkedList<WeakReference<ITUIBarrageListener>> listObservers = new LinkedList<WeakReference<ITUIBarrageListener>>();
+
     @Override
     public void sendBarrage(final TUIBarrageModel model, final TUIBarrageCallBack.BarrageSendCallBack callback) {
         if (mImService == null) {
@@ -129,6 +158,18 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
         }
         if (mDisplayView != null) {
             mDisplayView.receiveBarrage(model);
+        }
+    }
+
+    @Override
+    public void removeOb(ITUIBarrageListener mITUIBarrageListener) {
+        Iterator<WeakReference<ITUIBarrageListener>> it = listObservers.iterator();
+        while (it.hasNext()) {
+            ITUIBarrageListener t = it.next().get();
+            if (t != null && t == mITUIBarrageListener) {
+                it.remove();
+                break;
+            }
         }
     }
 }

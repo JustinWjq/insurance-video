@@ -40,6 +40,15 @@ public abstract class TXSDKApi {
      */
     public abstract void setAgent(String agent);
 
+    /**
+     * @note
+     */
+    public abstract String getAgentName();
+
+    /**
+     * @note
+     */
+    public abstract void setAgentName(String agentName);
 
     /**
      * @note

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -55,7 +56,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     private CircleImageView mUserHeadImg;
     private MemberEntity mMemberEntity;
     private FrameLayout mVideoContainer;
-    private LinearLayout mNoVideoContainer;
+    private RelativeLayout mNoVideoContainer;
     private ImageView mPbAudioVolume,mPbAudioVolume1;
     private TextView mIvVideClose;
     private ImageView mIvIconHost,mIvIconHost1;
@@ -242,7 +243,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
         mUserNameTv1 = (TextView) itemView.findViewById(R.id.trtc_tv_content1);
         mVideoContainer = (FrameLayout) itemView.findViewById(R.id.trtc_tc_cloud_view);
-        mNoVideoContainer = (LinearLayout) itemView.findViewById(R.id.trtc_fl_no_video);
+        mNoVideoContainer = (RelativeLayout) itemView.findViewById(R.id.trtc_fl_no_video);
         mIvVideClose = (TextView) itemView.findViewById(R.id.iv_video_close);
         mUserHeadImg = (CircleImageView) itemView.findViewById(R.id.iv_video_head);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);

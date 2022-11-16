@@ -147,6 +147,7 @@ public class TUIBarrageIMService {
         public void onTICRecvGroupTextMessage(String fromUserId, String text) {
             if (mPresenter != null) {
                 try {
+                    TxLogUtils.i(TAG,"onTICRecvGroupTextMessage"+text);
                     JSONObject jsonObject = new JSONObject(text);
                     String type = jsonObject.optString("type");
                     if (IMkey.wxIM.equals(type)) {

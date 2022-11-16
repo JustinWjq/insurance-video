@@ -23,6 +23,7 @@ import com.txt.video.trtc.videolayout.list.MemberEntity;
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel;
 import com.txt.video.ui.video.remoteuser.RemoteUserListView;
 import com.txt.video.ui.weight.adapter.ChatAdapter;
+import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,24 +48,21 @@ public final class TxUserChatDialog {
         private ConstraintLayout tx_chat ;
         private  EditText et_sendmsg;
         private final InputMethodManager   mInputMethodManager;
+        private  Context   mContext;
         public Builder(Context context) {
             super(context);
+            this.mContext = context;
             setContentView(R.layout.tx_dialog_chat);
-//            setGravity(Gravity.BOTTOM);
-//            setAnimStyle(AnimAction.ANIM_BOTTOM);
-//            setWidth(getResources().getDisplayMetrics().widthPixels);
-//            setHeight(getResources().getDisplayMetrics().heightPixels-100);
             mRemoteUserListView = findViewById(R.id.rv_chat_list);
             tx_chat = (ConstraintLayout)findViewById(R.id.tx_chat);
             findViewById(R.id.iv_close).setOnClickListener(this);
             findViewById(R.id.tv_sendmsg).setOnClickListener(this);
             mInputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             et_sendmsg = (EditText) findViewById(R.id.et_sendmsg);
-//            et_sendmsg.setInputType(InputType.TYPE_CLASS_TEXT);
             et_sendmsg.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             et_sendmsg.setSingleLine(false);
             //修改下划线颜色为透明
-            et_sendmsg.getBackground().setColorFilter(context.getResources().getColor(R.color.tuichorus_transparent),
+            et_sendmsg.getBackground().setColorFilter(context.getResources().getColor(R.color.tx_color_tuichorus_transparent),
                     PorterDuff.Mode.CLEAR);
 
             chatAdapter = new ChatAdapter(mList);
@@ -95,7 +93,7 @@ public final class TxUserChatDialog {
             if (showLand) {
                 setGravity(Gravity.RIGHT);
                 setAnimStyle(AnimAction.ANIM_RIGHT);
-                setWidth(getResources().getDisplayMetrics().widthPixels/2+100);
+                setWidth( DisplayUtils.INSTANCE.dp2px(mContext,330f));
 //                setHeight(getResources().getDisplayMetrics().heightPixels);
                 tx_chat.setBackgroundResource(R.drawable.tx_shape_round_topleft_15);
             }else {

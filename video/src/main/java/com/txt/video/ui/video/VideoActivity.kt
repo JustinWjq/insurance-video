@@ -1,5 +1,8 @@
 package com.txt.video.ui.video
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.PendingIntent
 import android.bluetooth.BluetoothAdapter
@@ -18,10 +21,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.tencent.mm.opensdk.constants.ConstantsAPI
@@ -43,7 +43,6 @@ import com.txt.video.common.adapter.base.entity.MultiItemEntity
 import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.common.TxBaseDialog
 import com.txt.video.common.floatview.FloatingView
-import com.txt.video.common.glide.TxGlide
 import com.txt.video.common.utils.CheckHeadSetSUtils
 import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
@@ -55,29 +54,30 @@ import com.txt.video.trtc.TRTCCloudManagerListener
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserIView
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
-import com.txt.video.ui.video.plview.V2VideoLayout
 import com.txt.video.trtc.videolayout.list.*
 import com.txt.video.trtc.videolayout.list.MemberListAdapter.*
 import com.txt.video.ui.TXManagerImpl
 import com.txt.video.ui.boardpage.BoardViewActivity
-import com.txt.video.ui.video.barrage.BarrageManager
+import com.txt.video.ui.checkres.CheckResWebActivity
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel
+import com.txt.video.ui.video.barrage.presenter.TUIBarragePresenter
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
 import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
+import com.txt.video.ui.video.plview.V2VideoLayout
 import com.txt.video.ui.video.remoteuser.RemoteUserListView
 import com.txt.video.ui.video.word.view.TxWordDisplayView
 import com.txt.video.ui.weight.PicQuickAdapter
 import com.txt.video.ui.weight.dialog.*
 import com.txt.video.ui.weight.easyfloat.EasyFloat
 import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils
+import com.txt.video.ui.weight.view.IOSLoadingView
 import com.txt.video.ui.weight.view.ScreenView
 import kotlinx.android.synthetic.main.tx_activity_video.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.absoluteValue
 
 /**
@@ -134,6 +134,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     changeDialogLandscape(true)
                 }
             }
+
             iv_switchscreen.isSelected = true
         } else {
             TxLogUtils.i("Configuration.ORIENTATION_PORTRAIT")
@@ -165,7 +166,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun initViews() {
-//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         iv_switchscreen.isSelected = true
         regeistHeadsetReceiver()
         showInviteBt(isShow = true, noRemoterUser = true)
@@ -181,9 +181,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         trtc_video_view_layout.setData(mPresenter?.getStringMemberEntityMap())
         trtc_video_view_layout.setPageListener(object : V2VideoLayout.IBusListener {
             override fun onItemVisible(fromItem: Int, toItem: Int) {
+                TxLogUtils.i("onItemVisible:fromItem" + fromItem + "------toItem" + toItem)
                 if (fromItem == 0) {
                     processSelfVideoPlay()
-                    mPresenter?.processVideoPlay(1, toItem)
+                    mPresenter?.processVideoPlay(0, toItem)
                 } else {
                     mPresenter?.processVideoPlay(fromItem, toItem)
                 }
@@ -205,7 +206,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         TxLogUtils.i("isEnableVideo---$isEnableVideo")
         mPresenter?.muteLocalVideo(!isEnableVideo)
         mPresenter?.isCloseVideo = !isEnableVideo
-
     }
 
 
@@ -340,46 +340,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 entity,
                 false
             )
-
-//            if (mPresenter?.isBroad!!) {
-//
-//                mPresenter?.addMemberEntity(entity)
-//                mMemberListAdapter!!.notifyItemInserted(insertIndex)
-//                mPresenter?.getRoomInfo(
-//                    remoteUserId,
-//                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                    false,
-//                    entity,
-//                    false
-//                )
-//            } else {
-//                if (mPresenter?.getAllMemberEntityList()!!.size == 1) {
-//                    //显示大画面
-//                    bigMeetingEntity = entity
-//                    mPresenter?.getRoomInfo(
-//                        remoteUserId,
-//                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                        false,
-//                        bigMeetingEntity,
-//                        true
-//                    )
-//                    trtc_fl_no_video.visibility = View.VISIBLE
-//                } else {
-//                    mPresenter?.addMemberEntity(entity)
-//                    mMemberListAdapter!!.notifyItemInserted(insertIndex)
-//                    mPresenter?.getRoomInfo(
-//                        remoteUserId,
-//                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                        false,
-//                        entity,
-//                        false
-//                    )
-//                }
-//
-//
-//            }
-
-
         }
 
     }
@@ -468,33 +428,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     entity
                 ), VIDEO_CLOSE
             )
-        }
-        if (available) {
-            if (!mPresenter?.getTRTCParams()!!.userId?.equals(userId)!!) { //开启定时器
-                showInviteBt(isShow = true, noRemoterUser = false)
-            }
-
-
-        } else {
-//            if (entity != null) {
-//                trtc_video_view_layout!!.notifyItemChanged(
-//                    entity?.userId!!,
-//                    mPresenter?.getMemberEntityList()!!.indexOf(
-//                        entity
-//                    ), VIDEO_CLOSE
-//                )
-//            } else {
-////                if (bigMeetingEntity != null && bigMeetingEntity?.userId!! == userId && !mPresenter?.isBroad!!) {
-////                    trtc_fl_no_video.visibility = View.VISIBLE
-////                    val meetingVideoView = bigMeetingEntity?.meetingVideoView
-////                    meetingVideoView?.detach()
-////                    mPresenter?.getTRTCRemoteUserManager()
-////                        ?.remoteUserVideoUnavailable(
-////                            userId,
-////                            streamType
-////                        )
-////                }
-//            }
         }
 
     }
@@ -841,7 +774,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         )
         paintThickPopup.setOnCheckDialogListener(object : onShareWhiteBroadDialogListener {
             override fun onCheckFileWhiteBroad() {
-
+                val intent = Intent(this@VideoActivity, CheckResWebActivity::class.java)
+                startActivity(intent)
             }
 
             override fun onCheckBroad() {
@@ -958,6 +892,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         bigScreen: Boolean
     ) {
         runOnUiThread {
+            mPresenter?.getTRTCRemoteUserManager()
+                ?.addRemoteUser(userId, entity?.userName, streamType)
             mTxRemoteUserDialogBuilder?.notifyDataSetChanged()
             if (bigScreen) {
 //                changeBigScreenViewName(
@@ -1188,7 +1124,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun onDestroy() {
-        BarrageManager.getInstance().destroy();
+        TUIBarragePresenter.sharedInstance().destroyPresenter()
+        TUIBarragePresenter.sharedInstance().clearList()
         EasyFloat.hide(this)
         paintColorPostion = 0
         paintSizeIntPostion = 1
@@ -1369,7 +1306,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     var currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
 
-    fun autoCheckAudioHand() {
+    override fun autoCheckAudioHand() {
 
 
         //进入房间后，判断需要切换成外放还是耳机类型，判断当前是外放还是耳机模式
@@ -1384,29 +1321,32 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             CheckHeadSetSUtils.HeadType.Only_WiredHeadset -> {
                 //有线耳机连接
                 switchAudioHand(false)
-                TxLogUtils.i("进入房间---有线耳机连接")
                 currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_WiredHeadset
+                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
             }
             CheckHeadSetSUtils.HeadType.Only_bluetooth -> {
                 //蓝牙耳机连接
                 switchAudioHand(false)
-                TxLogUtils.i("进入房间---无线耳机连接")
                 currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_bluetooth
+                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
             }
             CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth -> {
+                switchAudioHand(false)
                 currentHeadsetType = CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth
+                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
             }
 
             else -> {
+                switchAudioHand(true)
                 currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
+                TxLogUtils.i("autoCheckAudioHand---NONE")
             }
         }
 
     }
 
     fun switchAudioHand(mIsAudioEarpieceMode: Boolean) {
-
-
+        //有蓝牙设备在的时候，不让切换
         if (mIsAudioEarpieceMode) {
             //切换扬声器
             TRTCCloudManager.sharedInstance().enableAudioHandFree(true)
@@ -1424,15 +1364,25 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     //3秒无操作
     //点击画面或者音频块区域
     var isHide = false
-    fun hideBar() {
 
+    /**
+     * 隐藏上下栏
+     */
+    //记录ll_bottomY的位置
+    var ll_bottomY = 0
+    fun hideBar() {
+        //高度 llbottomy+height
         if (!isHide) {
             val y = ll_title.y.absoluteValue + ll_title.height
             var moveY = -(y)
-            val ll_bottomY = ll_bottom.y - DisplayUtils.getScreenHeight(this) - ll_bottom.height
-            TxLogUtils.i("VideoActivity", "isHide" + ll_bottomY)
+            var height = DisplayUtils.rejectedNavHeight(this)
+            val ll_bottomY = if (ll_bottom.y <= height) {
+                height - ll_bottom.y
+            } else {
+                ll_bottom.y - height
+            }
             ll_title.animate().translationYBy(moveY).setDuration(500).start()
-            ll_bottom.animate().translationYBy(-ll_bottomY).setDuration(500).start()
+            ll_bottom.animate().translationYBy(ll_bottomY).setDuration(500).start()
             iv_switchscreen.animate().translationYBy(100f).setDuration(500).start()
             hideStatusBar()
             rl_barrage_audience.visibility = View.GONE
@@ -1440,16 +1390,17 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
             val y = ll_title.y.absoluteValue
             var moveY = y
-            var ll_bottomY = if (ll_bottom.y >= DisplayUtils.getScreenHeight(this)) {
-                ll_bottom.y - DisplayUtils.getScreenHeight(this) + ll_bottom.height
+            var height = DisplayUtils.rejectedNavHeight(this)
+            var ll_bottomY = if (ll_bottom.y >= height) {
+                ll_bottom.y -height + ll_bottom.height
             } else {
-                ll_bottom.height - (DisplayUtils.getScreenHeight(this) - ll_bottom.y)
+                val fl = height - ll_bottom.y
+                val fl1 = ll_bottom.height - fl
+                fl1
             }
 
-
-            TxLogUtils.i("VideoActivity", "isHide" + ll_bottomY)
             ll_title.animate().translationYBy(moveY).setDuration(500).start()
-            ll_bottom.animate().translationYBy(-ll_bottomY).setDuration(500).start()
+            ll_bottom.animate().translationYBy((-ll_bottomY).toFloat()).setDuration(500).start()
             iv_switchscreen.animate().translationYBy(-100f).setDuration(500).start()
             showStatusBar()
             startHideBartimer()
@@ -1517,7 +1468,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else if (id == R.id.tx_business_switchmic) {
             //true 扬声器
             TxLogUtils.i("TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode")
-            if (CheckHeadSetSUtils.HeadType.Only_WiredHeadset.equals(currentHeadsetType)) {
+            if (CheckHeadSetSUtils.HeadType.Only_bluetooth == currentHeadsetType || CheckHeadSetSUtils.HeadType.Only_WiredHeadset == currentHeadsetType) {
                 showMessage(IBaseView.MessageType.MESSAGETYPE_FAIL, "无法切换外放设备")
             } else {
                 switchAudioHand(TRTCCloudManager.sharedInstance().mIsAudioEarpieceMode)
@@ -1556,14 +1507,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 showChangeBroadModeDialog(mPresenter?.isBroad!!)
             } else {
                 //判断共享
-//                if (mPresenter?.getRoomShareStatus()!!) {
-//                    showMessage("他人正在共享，此时无法发起共享")
-//                    return
-//                }
-//                if (mPresenter?.getRoomScreenStatus()!!) {
-//                    showMessage("他人正在投屏，此时无法发起共享")
-//                    return
-//                }
                 showChangeBroadModeDialog(mPresenter?.isBroad!!)
             }
 
@@ -1653,7 +1596,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
-    private fun skipToBoardPage() {
+    override fun skipToBoardPage() {
 
         val intent = Intent(this, BoardViewActivity::class.java)
         val data = picQuickAdapter?.data
@@ -1754,10 +1697,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun resetBoardLayout() {
-//        if (mPresenter?.isOwner()!!){
-//            mBoard?.reset()
-//        }
-//        board_view_container?.visibility = View.GONE
         removeBoardView()
     }
 
@@ -1794,27 +1733,16 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
+
+    //显示白板页面
     override fun addBoardView() {
         TxLogUtils.i("txsdk---addBoardView")
         mBoard?.isDrawEnable = false
-//        restoreBoardView()
         mBoard?.boardContentFitMode =
             TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
         if (mPresenter!!.getRoomShareStatus()) {
-            // 需要显示白板出来
-            // boardIdList.clear()
-            hideBoardTools()
-//            showWhiteBroad(true)
-            showWBroad(true)
-            showBroadFileRv(false)
-            // tx_business_share.isSelected = true
+            skipToBoardPage()
         }
-
-
-//        if (mPresenter!!.getRoomScreenStatus() && !mPresenter!!.isOwner()) {
-//            checkOwenrToBigShareScreen(mPresenter!!.getScreenUserId())
-//        }
-
     }
 
 
@@ -1827,6 +1755,22 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
     }
 
+
+    override fun showiOSLoading(show: Boolean) {
+        val iOSLoadingView: IOSLoadingView =
+            findViewById<View>(R.id.iOSLoadingView) as IOSLoadingView
+        val ll_loading: LinearLayout =
+            findViewById<View>(R.id.ll_loading) as LinearLayout
+        if (null != iOSLoadingView) {
+            if (show) {
+                ll_loading.setVisibility(View.VISIBLE)
+                iOSLoadingView.setVisibility(View.VISIBLE)
+            } else {
+                ll_loading.setVisibility(View.GONE)
+                iOSLoadingView.setVisibility(View.GONE)
+            }
+        }
+    }
 
     override fun sendSystemMSG() {
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")).apply {
@@ -2071,92 +2015,17 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun checkSmallVideoToBigVideo(isShowToBig: Boolean) {
-//        //用户第一个视频切换成大屏幕
-//        if (mPresenter!!.getMemberEntityList().size == 1) return
-//        val memberEntity = mPresenter!!.getMemberEntityList()[1]
-//        if (memberEntity != null && isShowToBig) {
-//            val meetingVideoView = memberEntity.meetingVideoView
-//            val userId = memberEntity.userId
-//            val userName = memberEntity.userName
-//            val isVideoAvailable = memberEntity.isVideoAvailable
-//
-//            val isShowAudioEvaluation = memberEntity.isShowAudioEvaluation
-//            val memberIsHost = memberEntity.isHost
-//            val mUserRole = memberEntity.userRole
-//            val mUserRoleIconPath = memberEntity.userRoleIconPath
-//            if (bigMeetingEntity == null) {
-//                bigMeetingEntity = MemberEntity()
-//            }
-//            bigMeetingEntity?.userId = userId
-//            bigMeetingEntity?.userName = userName
-//            bigMeetingEntity?.meetingVideoView = meetingVideoView
-//            bigMeetingEntity?.isVideoAvailable = isVideoAvailable
-//            bigMeetingEntity?.isShowAudioEvaluation = isShowAudioEvaluation
-//            bigMeetingEntity?.isHost = memberIsHost
-//            bigMeetingEntity?.userRole = mUserRole
-//            bigMeetingEntity?.userRoleIconPath = mUserRoleIconPath
-//            changeBigVideo(bigMeetingEntity!!)
-//            meetingVideoView.detach()
-//            meetingVideoView.addViewToViewGroup(bigscreen)
-//            mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
-//                bigMeetingEntity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                false
-//            )
-//            val index = mPresenter!!.removeMemberEntity(userId!!)
-//            if (index >= 0) {
-//                //todo
-//                trtc_video_view_layout!!.notifyItemRemoved(index!!)
-//            }
-//            TxLogUtils.i("onSingleClick", "checkSmallVideoToBigVideo${isVideoAvailable}")
-//            rl_bigscreen_name.visibility = View.VISIBLE
-//        }
-//
     }
 
     override fun changeBigVideo(bigMeetingEntity: MemberEntity) {
-//        if (bigMeetingEntity.isVideoAvailable) {
-//            trtc_fl_no_video.visibility = View.GONE
-//            bigscreen?.visibility = View.VISIBLE
-//        } else {
-//            trtc_fl_no_video.visibility = View.VISIBLE
-//            bigscreen?.visibility = View.GONE
-//        }
-//        changeBigScreenViewName(
-//            bigMeetingEntity.userName,
-//            bigMeetingEntity.userRole,
-//            bigMeetingEntity.userRoleIconPath
-//        )
-//        changeBigScreenViewVoice(50)
     }
 
     override fun checkBigVideoToFirstSmallVideo(isShowToSmall: Boolean) {
-//        if (bigMeetingEntity != null && isShowToSmall) {
-//            hideBigNoVideo(false)
-//            bigMeetingEntity?.apply {
-//                isNeedFresh = true
-//                meetingVideoView.isNeedAttach = true
-//                isShowOutSide = false
-//            }
-//            val bigmeetingVideoView = bigMeetingEntity?.meetingVideoView
-//            bigscreen?.removeView(bigmeetingVideoView)
-//            mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
-//                bigMeetingEntity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                true
-//            )
-//
-//            mPresenter?.addMemberEntity(1, bigMeetingEntity!!)
-//            //todo
-//            trtc_video_view_layout!!.notifyItemInserted(1)
-//
-//        }
+
     }
 
     override fun hideBigNoVideo(isHiden: Boolean) {
-//        rl_bigscreen_name.visibility = View.GONE
-//        trtc_fl_no_video.visibility = View.GONE
-//        bigscreen.visibility = View.GONE
+
     }
 
     override fun showBroadFileRv(isShow: Boolean) {
@@ -2164,51 +2033,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String) {
-//        rl_bigscreen_name.visibility = View.VISIBLE
-//        bigscreen_trtc_tv_content.text = text
-//        trtc_icon_host.visibility = if (userRole == "owner" || userRole == "assistant") {
-//            TxGlide.with(TXSdk.getInstance().application).load(userRoleIconPath)
-//                .into(trtc_icon_host)
-//            View.VISIBLE
-//        } else {
-//            View.GONE
-//        }
-//
-//        changeBigScreenViewVoice(10)
+
     }
 
     override fun changeBigScreenViewVoice(volume: Int) {
-//        if (!bigMeetingEntity?.isShowAudioEvaluation!!) {
-//            bigscreen_trtc_pb_audio.setImageResource(R.drawable.tx_icon_volume_mute)
-//            return
-//        }
-//        bigscreen_trtc_pb_audio.setImageResource(
-//            when (volume) {
-//                -1 -> {
-//                    R.drawable.tx_icon_volume_mute
-//                }
-//                0 -> {
-//                    R.drawable.tx_icon_volume_0
-//                }
-//                in 1..19 -> {
-//                    R.drawable.tx_icon_volume_1
-//                }
-//                in 20..39 -> {
-//                    R.drawable.tx_icon_volume_2
-//                }
-//                in 40..59 -> {
-//                    R.drawable.tx_icon_volume_4
-//                }
-//                in 60..79 -> {
-//                    R.drawable.tx_icon_volume_5
-//                }
-//                in 80..100 -> {
-//                    R.drawable.tx_icon_volume_6
-//                }
-//                else -> R.drawable.tx_icon_volume_4
-//            }
-//        )
-//
     }
 
 
