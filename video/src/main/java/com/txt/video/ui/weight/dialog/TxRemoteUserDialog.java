@@ -75,6 +75,16 @@ public final class TxRemoteUserDialog {
                 setAnimStyle(AnimAction.ANIM_RIGHT);
 
                 setWidth( DisplayUtils.INSTANCE.dp2px(mContext,330f));
+                //  android:paddingStart="@dimen/tx_dp_35"
+                //        android:paddingTop="@dimen/tx_dp_7"
+                //        android:paddingEnd="@dimen/tx_dp_35"
+                //        android:paddingBottom="@dimen/tx_dp_7"
+//                TextView btn_mute_video_all = mRemoteUserListView.findViewById(R.id.btn_mute_video_all);
+//
+//                btn_mute_video_all.setPadding(DisplayUtils.INSTANCE.dp2px(getContext(),15f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),7f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),15f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),7f));
 //                setHeight(getResources().getDisplayMetrics().heightPixels);
                 mRemoteUserListView.setBackgroundResource(R.drawable.tx_shape_round_topleft_15);
             }else {
@@ -84,6 +94,12 @@ public final class TxRemoteUserDialog {
                 setAnimStyle(AnimAction.ANIM_BOTTOM);
                 setWidth(getResources().getDisplayMetrics().widthPixels);
                 setHeight(getResources().getDisplayMetrics().heightPixels-100);
+//                TextView btn_mute_video_all = mRemoteUserListView.findViewById(R.id.btn_mute_video_all);
+//                btn_mute_video_all.setPadding(
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),35f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),7f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),35f),
+//                        DisplayUtils.INSTANCE.dp2px(getContext(),7f));
                 mRemoteUserListView.setBackgroundResource(R.drawable.tx_shape_round_topright_15);
             }
 

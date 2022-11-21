@@ -281,6 +281,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             //橡皮擦
             boardController!!.toolType =
                 TEduBoardController.TEduBoardToolType.TEDU_BOARD_TOOL_TYPE_ERASER
+            //setPiecewiseErasureEnable
+
             selectIb(tx_eraser)
         } else if (id == R.id.tx_arrow) {
 
@@ -294,7 +296,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
             if (tx_arrow.isSelected) {
                 showPopupWindow(
-                    "1",
+                    "2",
                     VideoActivity.paintColorPostion,
                     VideoActivity.paintSizeIntPostion
                 )
@@ -399,9 +401,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             R.layout.tx_layout_paintstyle
         )
         val xDp = if (type == "1") {
-            80
+            10
         } else {
-            180
+            70
         }
 
         paintThickPopup?.setArrowOffsetXDp(xDp)

@@ -39,7 +39,7 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isDemo = false;
 
-    private String SDKVersion = "v1.2.6.1";
+    private String SDKVersion = "v1.0.0";
 
     private String terminal = "android";
 
@@ -198,6 +198,11 @@ public class TXSdk extends TXSDKApi {
     }
 
     @Override
+    public void startTXVideo(Activity context, String agent, String orgAccount, String sign, StartVideoResultOnListener listener) {
+        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, null, listener, true);
+    }
+
+    @Override
     public void createRoom(final String agent, String orgAccount, String sign, final onCreateRoomListener listener) {
         TXManagerImpl.getInstance().createRoom(agent, orgAccount, sign, null, null, listener);
     }
@@ -229,7 +234,7 @@ public class TXSdk extends TXSDKApi {
         if (null != mRoomControlConfig) {
             return mRoomControlConfig;
         } else {
-            RoomControlConfig builder = new RoomControlConfig.Builder().enableVideo(true).build();
+            RoomControlConfig builder = new RoomControlConfig.Builder().enableVideo(false).build();
             return builder;
         }
 

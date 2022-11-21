@@ -123,6 +123,23 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+
+    <style name="tx_style_click_top_15">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_top_corner_15</item>
+    </style>
+
+    <style name="tx_style_click_bottom_15">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_bottom_corner_15</item>
+    </style>
+
+
+    <style name="tx_style_click_all_15">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/tx_selector_white_stoke_all_corner_15</item>
+    </style>
+
     <!-- 缩放动画 -->
     <style name="tx_ScaleAnimStyle" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/tx_scale_in_window</item>

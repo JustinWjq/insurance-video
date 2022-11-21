@@ -138,7 +138,7 @@ public class TUIBarrageSendView extends Dialog implements ITUIBarrageSendView {
     @Override
     public void onDetachedFromWindow() {
         if (mPresenter != null) {
-            mPresenter.destroyPresenter();
+//            mPresenter.destroyPresenter();
 //            mPresenter.removeOb(this);
         }
         super.onDetachedFromWindow();

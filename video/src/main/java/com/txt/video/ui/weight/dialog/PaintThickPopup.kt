@@ -134,7 +134,7 @@ open class PaintThickPopup : TransformersTip {
                 false
             )
         recyclerview.adapter = mPaintThickAdapter
-        mPaintThickAdapter?.bindToRecyclerView(recyclerview)
+//        mPaintThickAdapter?.bindToRecyclerView(recyclerview)
 
 
 
@@ -147,11 +147,11 @@ open class PaintThickPopup : TransformersTip {
                 false
             )
         recyclerview1.adapter =mPaintColorAdapter
-        mPaintColorAdapter?.bindToRecyclerView(recyclerview1)
+//        mPaintColorAdapter?.bindToRecyclerView(recyclerview1)
 
         mPaintThickAdapter?.setOnItemClickListener { adapter, view, position ->
 
-            val toolType = if (type == "1") {
+            val toolType = if (true) {
                 mColorMap1[position]
             } else {
                 mTextMap[position]
@@ -177,15 +177,16 @@ open class PaintThickPopup : TransformersTip {
 
         checkColor(paintColorPostion)
         checkThick(paintSizeIntPostion)
-        if (type == "1") {
-            //画笔
-            mPaintColorAdapter?.setNewData(mColorMap)
-            mPaintThickAdapter?.setNewData(mColorMap1)
-        } else {
-            //字体
-            mPaintColorAdapter?.setNewData(mColorMap)
-            mPaintThickAdapter?.setNewData(mTextMap)
-        }
+        //画笔
+        mPaintColorAdapter?.setNewData(mColorMap)
+        mPaintThickAdapter?.setNewData(mColorMap1)
+//        if (type == "1") {
+//
+//        } else {
+//            //字体
+//            mPaintColorAdapter?.setNewData(mColorMap)
+//            mPaintThickAdapter?.setNewData(mTextMap)
+//        }
 
     }
 
@@ -199,7 +200,7 @@ open class PaintThickPopup : TransformersTip {
     }
 
     public fun checkThick(postion:Int) {
-        if (type == "1") {
+        if (true) {
             mColorMap1.forEach {
                 it.isSelect = false
             }
@@ -220,7 +221,7 @@ open class PaintThickPopup : TransformersTip {
         setShadowColor(Color.parseColor("#33000000")) // 设置阴影色
         setArrowHeightDp(6) // 设置箭头高度
         setRadiusDp(4) // 设置浮窗圆角半径
-
+        width = 600
         setArrowOffsetYDp(0) // 设置箭头在 y 轴的偏移量
         setShadowSizeDp(6) // 设置阴影宽度
         setTipGravity(TipGravity.TO_TOP_TO_START) // 设置浮窗相对于锚点控件展示的位置

@@ -69,6 +69,7 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
     @Override
     public void destroyPresenter() {
         mDisplayView = null;
+        mContext = null ;
         if (null != mImService) {
             mImService.unInitImListener();
         }
@@ -152,11 +153,13 @@ public class TUIBarragePresenter implements ITUIBarragePresenter {
 
     @Override
     public void receiveBarrage(TUIBarrageModel model) {
+        Log.d(TAG, "receiveBarrage--TUIBarrageModel"+model);
         if (model == null || model.content == null) {
             Log.d(TAG, "receiveBarrage groupId or barrage is empty");
             return;
         }
         if (mDisplayView != null) {
+            Log.d(TAG, "receiveBarrage--mDisplayView"+model);
             mDisplayView.receiveBarrage(model);
         }
     }

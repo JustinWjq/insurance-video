@@ -26,6 +26,7 @@
             android:drawableEnd="@drawable/tx_icon_close_gray"
             android:gravity="center"
             android:padding="@dimen/tx_dp_15"
+            style="@style/tx_style_click"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,6 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="发送"
+                style="@style/tx_style_click"
                 android:layout_marginStart="@dimen/tx_dp_15"
                 android:layout_marginEnd="@dimen/tx_dp_17"
                 android:textColor="@color/tx_color_e6b980"

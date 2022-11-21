@@ -150,14 +150,15 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                     .into(mUserHeadImg);
         }
         //判断当前list数量只有一个的时候就显示背景图
-        hideBg(false);
+
+        TxLogUtils.i("SelfViewHolder","showNoVideo" );
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     public void hideBg(boolean isHide){
+        TxLogUtils.i("SelfViewHolder","" + isHide);
         if (!isHide) {
-            TxLogUtils.i("SelfViewHolder","");
-            if (mMemberEntity.isHost() && 1 == mMemberEntity.getItemCount()) {
+            if (mMemberEntity.isHost()) {
                 ivSelf.setVisibility(View.VISIBLE);
             }else{
                 ivSelf.setVisibility(View.GONE);
@@ -228,7 +229,14 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                 listener.onItemClick(getLayoutPosition());
             }
         });
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(getLayoutPosition());
+            }
+        });
 //        showHost(model.isHost());
+        hideBg(false);
     }
 
     //iv_video_head

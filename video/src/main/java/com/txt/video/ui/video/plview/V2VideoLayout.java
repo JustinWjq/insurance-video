@@ -1,6 +1,7 @@
 package com.txt.video.ui.video.plview;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -144,12 +145,12 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                 return true;
             }
         });
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mSimpleOnGestureListener.onTouchEvent(event);
-            }
-        });
+//        this.setOnTouchListener(new OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return mSimpleOnGestureListener.onTouchEvent(event);
+//            }
+//        });
     }
 
     @Override
@@ -362,6 +363,14 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                     if (null != mMemberListAdapter) {
                         //如果大屏幕
                         mMemberListAdapter.notifyItemChanged(position, payload);
+                        if (mMemberEntityList.size() == 1) {
+                            TxLogUtils.i(TAG,"notifyItemChanged"+"mMemberEntityList.size()-----SHOW_BG" );
+                            mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.SHOW_BG);
+                        }else{
+                            TxLogUtils.i(TAG,"notifyItemChanged"+"mMemberEntityList.size()-----HIDE_BG" );
+                            mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.HIDE_BG);
+                        }
+
                     }
                     break;
                 case LAND_BIG_RV_HASBIGVIDEO:
@@ -401,6 +410,15 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
                             mCurrentUitype = UITYPE.PRO_BIG_RV_NOBIGVIDEO;
                             changeProNoBigVideo();
                             checkBigVideoToList();
+                            TxLogUtils.i(TAG, "switchScreen--isLand---MemberListAdapter.HIDE_BG" + isMute);
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mMemberListAdapter.notifyItemChanged(0,MemberListAdapter.HIDE_BG);
+                                }
+                            },100);
+
                         } else {
                             if (bigMeetingEntity != null
                                     && userId == bigMeetingEntity.getUserId()) {
@@ -781,20 +799,23 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
             bigMeetingEntity = memberEntity;
             MeetingVideoView meetingVideoView = memberEntity.getMeetingVideoView();
             TxLogUtils.i(TAG, "bigMeetingEntity.isMuteVideo()" + bigMeetingEntity.isMuteVideo());
+            changeBigVideo(bigMeetingEntity);
             meetingVideoView.detach();
             meetingVideoView.setWaitBindGroup(bigscreen);
             meetingVideoView.refreshParent();
-            changeBigVideo(bigMeetingEntity);
-            bigscreen.setVisibility(View.VISIBLE);
+//            ViewGroup waitBindGroup = meetingVideoView.getWaitBindGroup();
+//            ViewGroup.LayoutParams layoutParams = waitBindGroup.getLayoutParams();
+//            layoutParams.width = DisplayUtils.INSTANCE.getScreenWidth(getContext());
+//            layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/3;
             removeMemberEntity(memberEntity.getUserId());
             mMemberListAdapter.notifyItemRemoved(0);
-            if (null != mTRTCRemoteUserManager) {
-                mTRTCRemoteUserManager.setRemoteFillMode(
-                        bigMeetingEntity.getUserId(),
-                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                        false
-                );
-            }
+//            if (null != mTRTCRemoteUserManager) {
+//                mTRTCRemoteUserManager.setRemoteFillMode(
+//                        bigMeetingEntity.getUserId(),
+//                        TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
+//                        true
+//                );
+//            }
 
         }
 

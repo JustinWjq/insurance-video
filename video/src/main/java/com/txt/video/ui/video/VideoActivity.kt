@@ -165,6 +165,13 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
     }
 
+//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        if (ev.action == MotionEvent.ACTION_DOWN) {
+//            hideBar()
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
+
     override fun initViews() {
         iv_switchscreen.isSelected = true
         regeistHeadsetReceiver()
@@ -173,6 +180,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         trtc_video_view_layout.setOnClickListener {
             hideBar()
         }
+//        rl_view_layout.setOnClickListener {  hideBar()  }
         val statusBarHeight = DisplayUtils.getStatusBarHeight(this)
         ll_title.setPadding(0, statusBarHeight, 0, 0)
         startHideBartimer()
@@ -1124,6 +1132,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun onDestroy() {
+        TRTCCloudManager.sharedInstance().destroy()
         TUIBarragePresenter.sharedInstance().destroyPresenter()
         TUIBarragePresenter.sharedInstance().clearList()
         EasyFloat.hide(this)
@@ -1368,10 +1377,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     /**
      * 隐藏上下栏
      */
-    //记录ll_bottomY的位置
-    var ll_bottomY = 0
     fun hideBar() {
-        //高度 llbottomy+height
         if (!isHide) {
             val y = ll_title.y.absoluteValue + ll_title.height
             var moveY = -(y)
@@ -1381,6 +1387,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             } else {
                 ll_bottom.y - height
             }
+            //todo 悬浮窗的bottom问题
             ll_title.animate().translationYBy(moveY).setDuration(500).start()
             ll_bottom.animate().translationYBy(ll_bottomY).setDuration(500).start()
             iv_switchscreen.animate().translationYBy(100f).setDuration(500).start()
@@ -1439,29 +1446,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     fun onTxClick(v: View?) {
         val id = v?.id
         if (id == R.id.trtc_ib_back) {
-//            showExitInfoDialog()
-            val s = "1231" + Math.random()
-            val mMeetingVideoView = MeetingVideoView(this@VideoActivity).apply {
-                meetingUserId = s
-                isNeedAttach = false
-                isPlaying = true
-            }
-            val insertIndex = mPresenter?.getMemberEntityList()!!.size
-            val entity = MemberEntity().apply {
-                userId = s
-                userName = s
-                meetingVideoView = mMeetingVideoView
-                isMuteAudio = true
-                isMuteVideo = true
-                isVideoAvailable = false
-                isAudioAvailable = false
-                isNeedFresh = true
-                isShowAudioEvaluation = false
-            }
-
-            mPresenter?.addToAllMemberEntity(entity)
-            mPresenter?.addMemberEntity(entity)
-            trtc_video_view_layout!!.notifyItemInsertedPld(insertIndex)
+            showExitInfoDialog()
         } else if (id == R.id.iv_switchscreen) {
             //切换屏幕方向
             switchScreen()

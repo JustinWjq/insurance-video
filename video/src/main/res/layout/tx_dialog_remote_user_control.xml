@@ -13,7 +13,8 @@
         android:id="@+id/ll_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/tx_shape_round_5"
+        android:padding="@dimen/tx_dp_5"
+        android:background="@drawable/tx_shape_round_15_top_white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -63,7 +64,6 @@
         android:id="@+id/ll_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/tx_shape_round_10"
         android:layout_margin="@dimen/tx_dp_15"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -79,7 +79,9 @@
             android:textColor="@color/tx_color_333333"
             android:paddingTop="@dimen/tx_dp_16"
             android:paddingBottom="@dimen/tx_dp_16"
-            android:textSize="@dimen/tx_sp_15" />
+            android:textSize="@dimen/tx_sp_15"
+            style="@style/tx_style_click_top_15"
+            />
         <View
             android:layout_width="match_parent"
             android:id="@+id/xpopup_divider"
@@ -95,7 +97,9 @@
             android:textColor="@color/tx_color_333333"
             android:paddingTop="@dimen/tx_dp_16"
             android:paddingBottom="@dimen/tx_dp_16"
-            android:textSize="@dimen/tx_sp_15" />
+            android:textSize="@dimen/tx_sp_15"
+            style="@style/tx_style_click"
+            />
         <View
             android:layout_width="match_parent"
             android:background="@color/tx_divider"
@@ -109,7 +113,9 @@
             android:textColor="@color/tx_color_333333"
             android:paddingTop="@dimen/tx_dp_16"
             android:paddingBottom="@dimen/tx_dp_16"
-            android:textSize="@dimen/tx_sp_15" />
+            android:textSize="@dimen/tx_sp_15"
+            style="@style/tx_style_click_bottom_15"
+            />
 
     </LinearLayout>
 
@@ -124,11 +130,11 @@
         android:paddingTop="@dimen/tx_dp_16"
         android:paddingBottom="@dimen/tx_dp_16"
         android:textSize="@dimen/tx_sp_15"
-        android:background="@drawable/tx_shape_round_10"
         android:layout_marginTop="@dimen/tx_dp_10"
         android:layout_marginStart="@dimen/tx_dp_15"
         android:layout_marginEnd="@dimen/tx_dp_15"
         android:layout_marginBottom="@dimen/tx_dp_15"
+        style="@style/tx_style_click_all_15"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_control"

@@ -168,6 +168,22 @@ public abstract class TXSDKApi {
                                       final StartVideoResultOnListener listener);
 
 
+
+
+    /**
+     * 快速会议
+     *
+     * @param context
+     * @param agent
+     * @param orgAccount
+     * @param sign
+     * @param listener          操作回调
+     * @note
+     */
+    public abstract void startTXVideo(final Activity context, final String agent,
+                                      String orgAccount, String sign,
+                                      final StartVideoResultOnListener listener);
+
     /**
      * 预约会议
      *

@@ -224,8 +224,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                 loginName,
                 orgAccount,
                 encrypt,
-                businessData,
-                RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
                 object :
                     StartVideoResultOnListener {
                     override fun onResultSuccess() {

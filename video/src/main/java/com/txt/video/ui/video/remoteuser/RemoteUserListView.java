@@ -99,7 +99,7 @@ public class RemoteUserListView extends ConstraintLayout {
                 TxLogUtils.i("当前搜索的"+s);
                 memberEntities.clear();
                 if (et_search.getText().toString().isEmpty()) {
-                    tv_search.setVisibility(GONE);
+//                    tv_search.setVisibility(GONE);
                     iv_delete.setVisibility(GONE);
                 }else{
                     tv_search.setVisibility(VISIBLE);
@@ -108,8 +108,8 @@ public class RemoteUserListView extends ConstraintLayout {
 
                 for (int i = 0; i < mMemberEntityList.size(); i++) {
                     MemberEntity memberEntity = mMemberEntityList.get(i);
-                    String userName = memberEntity.getUserName();
-                    boolean contains = userName.contains(s);
+                    String userName = memberEntity.getUserName().toLowerCase().trim();
+                    boolean contains = userName.toLowerCase().trim().contains(s);
                     TxLogUtils.i("当前是否包含"+contains);
                     if (contains) { //如果输入的文字包含在list中列表中的名字中
                         memberEntities.add(memberEntity);

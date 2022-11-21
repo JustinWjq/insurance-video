@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="@dimen/tx_dp_25"
+    android:layout_marginTop="@dimen/tx_dp_20"
    android:layout_marginStart="@dimen/tx_dp_20"
     android:layout_marginEnd="@dimen/tx_dp_15"
     android:paddingTop="@dimen/tx_dp_10"
