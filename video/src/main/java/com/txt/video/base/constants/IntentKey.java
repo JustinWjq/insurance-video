@@ -28,6 +28,8 @@ public  class IntentKey {
 
     public static String BOARDLISTS ="boardLists";
     public static String BOARDIDLISTS ="boardIdLists";
+    public static String PICSWORDLISTS ="picsWordLists";
+    public static String VIDEOURL ="videoUrl";
 
 
     public static String CHECKPOSTIONS ="checkPostion";

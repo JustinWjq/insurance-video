@@ -60,6 +60,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     private ImageView mPbAudioVolume,mPbAudioVolume1;
     private TextView mIvVideClose;
     private ImageView mIvIconHost,mIvIconHost1;
+    private LinearLayout ll_bottom;
     private ConstraintLayout item_view;
     private boolean isPlaying = false;
 
@@ -164,6 +165,8 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
                     .into(mUserHeadImg);
         }
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        mVideoContainer.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
     }
 
     public void addVideoView(MeetingVideoView meetingVideoView) {
@@ -250,5 +253,6 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mPbAudioVolume1 = (ImageView) itemView.findViewById(R.id.trtc_pb_audio1);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
         mIvIconHost1 = (ImageView) itemView.findViewById(R.id.trtc_icon_host1);
+        ll_bottom = (LinearLayout) itemView.findViewById(R.id.ll_bottom1);
     }
 }

@@ -116,14 +116,14 @@ public class BoardViewPresenter(val context: Context, val activity: BoardViewAct
             override fun onSuccess(data: Any) {
                 TxLogUtils.i("txsdk---sendGroupTextMessage:onSuccess------$data")
                 if (type == "1") {
-                    view.sendIMSuccess()
+//                    view.sendIMSuccess()
                 }
             }
 
             override fun onError(module: String?, errCode: Int, errMsg: String?) {
                 TxLogUtils.i("txsdk---sendGroupTextMessage:onError------$errCode---$errMsg")
                 if (type == "1") {
-                    view.sendIMSuccess()
+//                    view.sendIMSuccess()
                 }
             }
 

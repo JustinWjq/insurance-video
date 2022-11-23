@@ -23,6 +23,15 @@ public class MemberEntity {
     private String userAvatar;
     private String userRole = "";
     private String userRoleIconPath = "";
+    private String bgUrl = "";
+
+    public String getBgUrl() {
+        return bgUrl;
+    }
+
+    public void setBgUrl(String bgUrl) {
+        this.bgUrl = bgUrl;
+    }
 
     public String getUserHead() {
         return userHead;

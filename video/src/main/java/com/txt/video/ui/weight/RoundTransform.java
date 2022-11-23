@@ -1,4 +1,4 @@
-package com.txt.video.ui.weight.danmu;
+package com.txt.video.ui.weight;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -10,7 +10,11 @@ static def releaseTime() {
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
@@ -19,6 +23,8 @@ android {
         multiDexEnabled true
         consumerProguardFiles 'proguard-rules.pro'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // 仅支持 中文
+        resConfigs "zh"
         ndk {
             abiFilters "armeabi-v7a"//, "arm64-v8a"
         }
@@ -30,7 +36,7 @@ android {
     resourcePrefix "tx_"
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -55,14 +61,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-    }
-
     android.libraryVariants.all { variant ->
         variant.outputs.all {
             //输出apk名称为：渠道名_app_版本名_时间戳.apk
-            outputFileName = "androidsdk_v${defaultConfig.versionName}_${releaseTime()}.aar"
+            outputFileName = "ygzs_sdk_v${defaultConfig.versionName}_${releaseTime()}.aar"
         }
     }
 }
@@ -78,7 +80,8 @@ fataar {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.aar"])
+//    implementation fileTree(dir: "libs", include: ["*.aar"])
+    embed(name: 'libqcloudtts-release',ext:'aar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0-rc02'

@@ -167,11 +167,7 @@ public class V2TRTCVideoLayout extends RelativeLayout implements View.OnClickLis
 
     private void initFuncLayout() {
 
-        if (isSelf) {
-            mVgFuc = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.tx_layout_trtc_func_big, this, true);
-        }else{
-            mVgFuc = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.tx_layout_trtc_func_float, this, true);
-        }
+        mVgFuc = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.tx_layout_trtc_func_float, this, true);
         mVideoView = (TXCloudVideoView) mVgFuc.findViewById(R.id.trtc_tc_cloud_view);
         mPbAudioVolume = (ImageView) mVgFuc.findViewById(R.id.trtc_pb_audio);
         mLlController = (LinearLayout) mVgFuc.findViewById(R.id.trtc_ll_controller);

@@ -84,6 +84,7 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
     ImageView bigscreen_trtc_pb_audio;
     ImageView bigscreen_trtc_pb_audio1;
     ImageView iv_self;
+    LinearLayout ll_bottom1;
     private CircleImageView mUserHeadImg;
     private TextView mIvVideClose;
     private void initFuncLayout() {
@@ -104,11 +105,28 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
         bigscreen_trtc_pb_audio = (ImageView) mVgFuc.findViewById(R.id.trtc_pb_audio);
         bigscreen_trtc_pb_audio1 = (ImageView) mVgFuc.findViewById(R.id.trtc_pb_audio1);
         iv_self = (ImageView) mVgFuc.findViewById(R.id.iv_self);
+        ll_bottom1 = (LinearLayout) mVgFuc.findViewById(R.id.ll_bottom1);
 
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         trtc_video_view_layout.setLayoutParams(layoutParams);
+        trtc_fl_no_video.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null!= mOnVideoLayout) {
+                    mOnVideoLayout.onClick();
+                }
+            }
+        });
+        bigscreen.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mOnVideoLayout) {
+                    mOnVideoLayout.onClick();
+                }
+            }
+        });
     }
 
 
@@ -823,14 +841,16 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
 
     void muteBigVideo() {
         if (!bigMeetingEntity.isMuteVideo()) {
-            iv_self.setVisibility(GONE);
+
+
             trtc_fl_no_video.setVisibility(View.GONE);
             bigscreen.setVisibility(View.VISIBLE);
         } else {
-            iv_self.setVisibility(VISIBLE);
+
             trtc_fl_no_video.setVisibility(View.VISIBLE);
             bigscreen.setVisibility(View.GONE);
         }
+        ll_bottom1.setVisibility(!bigMeetingEntity.isMuteVideo() ? View.VISIBLE : View.GONE);
     }
 
 
@@ -933,5 +953,25 @@ public class V2VideoLayout extends RelativeLayout implements View.OnClickListene
     void addMemberEntity(int positon ,  MemberEntity entity) {
         mMemberEntityList.add(positon, entity);
         mStringMemberEntityMap.put(entity.getUserId(), entity);
+    }
+
+
+    public void showBg(String bgUrl){
+        if (bgUrl.isEmpty()){
+            //   android:src="@drawable/tx_bg"
+            iv_self.setImageResource(R.drawable.tx_bg);
+        }else{
+            TxGlide.with(TXSdk.getInstance().application).load(bgUrl)
+                    .into(iv_self);
+        }
+        iv_self.setVisibility(VISIBLE);
+    }
+    private onVideoLayout mOnVideoLayout;
+    public void setOnClickListener(onVideoLayout monVideoLayout){
+        this.mOnVideoLayout = monVideoLayout;
+    }
+
+   public interface onVideoLayout{
+        void onClick();
     }
 }

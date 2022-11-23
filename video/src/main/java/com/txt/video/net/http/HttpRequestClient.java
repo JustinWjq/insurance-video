@@ -370,7 +370,7 @@ public class HttpRequestClient {
     }
 
     //post请求
-    public void post(String url, String json, String aecsssToken, final RequestHttpCallBack callBack) {
+    public void post(String url, String json, String accessToken, final RequestHttpCallBack callBack) {
         TxLogUtils.i("post: url" + url);
         TxLogUtils.i( "post: json" + json);
         try {
@@ -379,8 +379,8 @@ public class HttpRequestClient {
                     .url(url)
                     .post(body);
             Request request;
-            if (!aecsssToken.equals("")) {
-                request = requestBuilder.addHeader("access-token", aecsssToken)
+            if (!accessToken.equals("")) {
+                request = requestBuilder.addHeader("access-token", accessToken)
                         .build();
             } else {
                 request = requestBuilder.post(body)

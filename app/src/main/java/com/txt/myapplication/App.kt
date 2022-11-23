@@ -6,7 +6,6 @@ import android.content.Context
 import com.tencent.bugly.crashreport.CrashReport
 import com.txt.video.TXSdk
 import com.txt.video.net.bean.TxConfig
-import com.umeng.commonsdk.UMConfigure
 
 /**
  * Created by JustinWjq
@@ -32,8 +31,6 @@ class App : Application() {
         //设置演示demo 为true 为了一个手机装两个app，一个是客户的，一个是演示的app，区分隐式跳转
         TXSdk.getInstance().isDemo = true
         CrashReport.initCrashReport(this, "8351c98a70", true)
-
-        UMConfigure.init(this, "6221de8a2b8de26e11e1ad81", "Universal-sdk", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     override fun attachBaseContext(base: Context?) {

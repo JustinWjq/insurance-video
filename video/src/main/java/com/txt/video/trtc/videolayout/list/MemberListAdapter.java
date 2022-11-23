@@ -176,8 +176,8 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //                    MemberEntity item = list.get(position);
 //                    ((OtherViewHolder) holder).showHost(item.isHost());
                 } else if (holder instanceof SelfViewHolder) {
-                    MemberEntity item = list.get(position);
-                    ((SelfViewHolder) holder).hideBg(false);
+//                    MemberEntity item = list.get(position);
+//                    ((SelfViewHolder) holder).hideBg(false);
                 }
             }
 

@@ -16,6 +16,7 @@
         android:background="@color/tx_black"
         android:layout_height="match_parent" />
     <LinearLayout
+        android:id="@+id/ll_bottom1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +58,7 @@
         android:id="@+id/trtc_fl_no_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#222222"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
@@ -66,7 +67,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/tx_bg"
             android:visibility="gone"
             />
         <LinearLayout

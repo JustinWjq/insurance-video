@@ -6,19 +6,21 @@ import android.os.Handler
 import android.os.Looper
 import com.txt.video.TXSdk
 import com.txt.video.base.constants.IntentKey
-import com.txt.video.net.bean.RoomParamsBean
-import com.txt.video.net.http.HttpRequestClient.RequestHttpCallBack
-import com.txt.video.net.http.SystemHttpRequest
-import com.txt.video.net.utils.TxLogUtils.i
-import com.txt.video.ui.video.VideoActivity
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onSDKListener
 import com.txt.video.common.utils.PermissionConstants
 import com.txt.video.common.utils.TxPermissionUtils
+import com.txt.video.net.bean.FileSdkBean
+import com.txt.video.net.bean.RoomParamsBean
+import com.txt.video.net.http.HttpRequestClient.RequestHttpCallBack
+import com.txt.video.net.http.SystemHttpRequest
+import com.txt.video.net.utils.TxLogUtils.i
 import com.txt.video.ui.video.RoomControlConfig
+import com.txt.video.ui.video.VideoActivity
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.ref.WeakReference
 
 /**
  * Created by JustinWjq
@@ -370,6 +372,15 @@ class TXManagerImpl : TXManager {
 
     override fun getRoomControlConfig(): RoomControlConfig {
         return TXSdk.getInstance().roomControlConfig
+    }
+
+    override fun addFileToSdk(mFileSdkBean: FileSdkBean) {
+        val mVideoActivity = mActivityRef?.get()
+        mVideoActivity?.showSharePage(mFileSdkBean)
+    }
+    var mActivityRef: WeakReference<VideoActivity>? = null
+    override fun setAc(activityEx: VideoActivity) {
+        mActivityRef = WeakReference(activityEx)
     }
 
     companion object {

@@ -5,6 +5,7 @@ import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.rtmp.ui.TXCloudVideoView
 import com.tencent.trtc.TRTCCloudDef
 import com.txt.video.base.IBaseView
+import com.txt.video.net.bean.FileSdkBean
 import com.txt.video.net.bean.RoomParamsBean
 import com.txt.video.trtc.TICManager
 import com.txt.video.trtc.TRTCCloudManager
@@ -35,25 +36,25 @@ public class VideoContract {
 
         fun initBoard()
 
-        fun updateAdapter(json :String)
+        fun updateAdapter(json: String)
 
         fun uploadFileSuccess()
 
-        fun uploadFileFail(msg : String)
+        fun uploadFileFail(msg: String)
 
-        fun sendReq(req : BaseReq)
+        fun sendReq(req: BaseReq)
 
-        fun  startSoundSuccess()
+        fun startSoundSuccess()
 
-        fun  startShareSuccess(
+        fun startShareSuccess(
             shareStatus: Boolean,
             url: String?,
             images: MutableList<String>?
         )
 
-        fun  startShareFail(shareStatus: Boolean)
+        fun startShareFail(shareStatus: Boolean)
 
-        fun  startSoundFail()
+        fun startSoundFail()
 
         fun getRoomInfoSuccess(
             json: String?,
@@ -68,15 +69,15 @@ public class VideoContract {
 
         fun showFail()
 
-        fun showWhiteBroad(isShow:Boolean)
+        fun showWhiteBroad(isShow: Boolean)
 
-        fun showPersonWhiteBroad(isShow:Boolean)
+        fun showPersonWhiteBroad(isShow: Boolean)
 
-        fun showBroadFileRv(isShow:Boolean)
+        fun showBroadFileRv(isShow: Boolean)
 
         fun changeBigScreenViewName(text: String, userRole: String, userRoleIconPath: String)
 
-        fun changeBigScreenViewVoice(volume :Int)
+        fun changeBigScreenViewVoice(volume: Int)
 
         fun checkBigVideoToFirstSmallVideo(isShowToSmall: Boolean)
 
@@ -94,7 +95,7 @@ public class VideoContract {
 
         fun sendSystemMSG()
 
-        fun showInviteBt(isShow: Boolean,noRemoterUser:Boolean)
+        fun showInviteBt(isShow: Boolean, noRemoterUser: Boolean)
 
         fun hideRemoteUserListView(isHiden: Boolean)
 
@@ -129,7 +130,7 @@ public class VideoContract {
 
         fun modifyExitBt()
 
-        fun checkOwenrToBigShareScreen(screenUserId:String)
+        fun checkOwenrToBigShareScreen(screenUserId: String)
 
         fun detachBigShareScreen(screenUserId: String)
 
@@ -147,7 +148,8 @@ public class VideoContract {
             name: String,
             isSameScreen: Boolean,
             list: JSONArray,
-            fileName: String
+            fileName: String,
+            cookie: String
         )
 
         fun showSelectChannelDialog(
@@ -155,7 +157,8 @@ public class VideoContract {
             webId: String,
             url: String,
             name: String,
-            fileName:String
+            fileName: String,
+            cookie: String
         )
 
         fun showWebDialog(
@@ -165,20 +168,21 @@ public class VideoContract {
             fromAgent: Boolean = true,
             fileName: String,
             toUserId: String,
-            fromUserId: String
+            fromUserId: String,
+            cookie: String
         )
 
-        fun updateWebUrlAdapter(json :String)
+        fun updateWebUrlAdapter(json: String)
 
-        fun uploadWebUrlSuccess()
+        fun uploadWebUrlSuccess(webId: String, url: String, name: String, cookie: String)
 
-        fun uploadWebUrlFail(msg : String)
+        fun uploadWebUrlFail(msg: String)
 
         fun hideWebDialog()
 
-        fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String)
+        fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String, cookie: String)
 
-        fun selectAudioBtn(isSelect :Boolean)
+        fun selectAudioBtn(isSelect: Boolean)
 
         fun allowstartrecord()
 
@@ -186,9 +190,15 @@ public class VideoContract {
 
         fun autoCheckAudioHand()
 
-        fun skipToBoardPage()
+        fun skipToBoardPage(type:String)
+
+        fun skipToBoardPage(type:String,mFileSdkBean: FileSdkBean?)
 
         fun showiOSLoading(show: Boolean)
+
+        fun showBg(bgUrl: String)
+
+        fun showSharePage(mFileSdkBean: FileSdkBean)
     }
 
 
@@ -199,7 +209,7 @@ public class VideoContract {
 
         fun addToAllMemberEntity(entity: MemberEntity)
 
-        fun addMemberEntity(positon:Int,entity: MemberEntity)
+        fun addMemberEntity(positon: Int, entity: MemberEntity)
 
         fun removeMemberEntity(userId: String): Int
 
@@ -261,19 +271,19 @@ public class VideoContract {
 
         fun initTICManager()
 
-        fun joinClassroom(mBoardCallback: MyBoardCallback)
+        fun joinClassroom(mBoardCallback: MyBoardCallback?)
 
-        fun sendGroupMessage(msg: String,type: String="")
+        fun sendGroupMessage(msg: String, type: String = "")
 
         fun update()
 
-        fun  uploadFile(data1: Uri?)
+        fun uploadFile(data1: Uri?)
 
-        fun  requestWX()
+        fun requestWX()
 
         fun startShare()
 
-        fun setScreenStatus(screenStatus : Boolean)
+        fun setScreenStatus(screenStatus: Boolean)
 
         fun setShareStatus(
             screenStatus: Boolean,
@@ -281,7 +291,7 @@ public class VideoContract {
             images: MutableList<String>?
         )
 
-        fun  deleteFile(id: String?)
+        fun deleteFile(id: String?)
 
         fun getRoomInfo(
             userId: String,
@@ -293,7 +303,7 @@ public class VideoContract {
 
         fun processVideoPlay(fromItem: Int, toItem: Int)
 
-        fun setIMTextData(type :String) :JSONObject
+        fun setIMTextData(type: String): JSONObject
 
         fun extendTime()
 
@@ -309,11 +319,11 @@ public class VideoContract {
 
         fun muteLocalAudio(enableAudio: Boolean)
 
-        fun chooseFile(isChooseFile:Boolean)
+        fun chooseFile(isChooseFile: Boolean)
 
-        fun setMuteVideoMemberToJSON(isVideoType:Boolean,usedId:String) : JSONArray
+        fun setMuteVideoMemberToJSON(isVideoType: Boolean, usedId: String): JSONArray
 
-        fun setAllVideoStatusMemberToJSON(isVideoType:Boolean, isMute:Boolean) : JSONArray
+        fun setAllVideoStatusMemberToJSON(isVideoType: Boolean, isMute: Boolean): JSONArray
 
         fun unitConfig()
 
@@ -325,44 +335,46 @@ public class VideoContract {
 
         fun getRoomSoundStatus(): Boolean
 
-        fun setRoomSoundStatus(isSoundStatus :Boolean)
+        fun setRoomSoundStatus(isSoundStatus: Boolean)
 
         fun getRoomShareStatus(): Boolean
 
-        fun setRoomShareStatus(isShareStatus :Boolean)
+        fun setRoomShareStatus(isShareStatus: Boolean)
 
         fun endUser()
 
-        fun getOwnerUserId():String
+        fun getOwnerUserId(): String
 
         fun startShareWeb(
             webId: String,
             serviceId: String,
             fromUserId: String,
             toUserId: String,
-            fileName: String
+            fileName: String,
+            cookie: String
         )
 
-        fun stopShareWeb(userId:String,webId:String,serviceId:String,isSelf:Boolean=true)
+        fun stopShareWeb(userId: String, webId: String, serviceId: String, isSelf: Boolean = true)
 
-        fun getRoomInfo(id: String?, url: String, name: String,fileName:String)
+        fun getRoomInfo(id: String?, url: String, name: String, fileName: String)
 
-        fun addShareUrl(id: String?, name: String, url: String)
+        fun addShareUrl(id: String?, name: String, url: String, cookie:String)
 
         fun deleteScreenFile(webId: String?)
 
         fun setShareWebId(webId: String?)
 
-        fun getShareWebId() :String
+        fun getShareWebId(): String
 
         fun getPushWebUrl(
             userId: String,
             webId: String,
             serviceId: String,
             url: String,
-            name: String
+            name: String,
+            cookie: String
         )
 
-        fun setCurrentArrowCount(currentCount :Int)
+        fun setCurrentArrowCount(currentCount: Int)
     }
 }

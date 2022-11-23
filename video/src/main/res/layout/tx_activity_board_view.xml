@@ -239,7 +239,7 @@
         android:layout_marginStart="@dimen/tx_dp_15"
         android:layout_marginBottom="@dimen/tx_dp_20"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
     <ImageButton
@@ -253,6 +253,15 @@
         style="@style/tx_style_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_word_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rl_board_business"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

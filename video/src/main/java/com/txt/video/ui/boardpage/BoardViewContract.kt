@@ -41,6 +41,10 @@ public class BoardViewContract {
         )
 
         fun  startShareFail(shareStatus: Boolean)
+
+        fun initBoard()
+
+        fun joinClassroom()
     }
 
 

@@ -1,6 +1,5 @@
 package com.txt.myapplication
 
-//import com.txt.video.widget.utils.ToastUtils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
@@ -12,16 +11,13 @@ import android.widget.Toast
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.txt.video.TXSdk
-//import com.txt.video.net.utils.TxLogUtils
-//import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
-import com.txt.video.common.callback.onFriendBtListener
+import com.txt.video.common.callback.onFileClickListener
+import com.txt.video.common.utils.ToastUtils
+import com.txt.video.net.bean.FileSdkBean
+import com.txt.video.net.bean.FileType
 import com.txt.video.ui.video.RoomControlConfig
-//import com.txt.video.common.utils.ToastUtils
-//import com.txt.video.net.utils.TxLogUtils
-//import com.txt.video.widget.dialog.ShareWhiteBroadDialog
-//import com.txt.video.widget.utils.AndroidSystemUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
@@ -98,14 +94,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         check_bt.setOnClickListener(this)
 
         changeUI()
-        tv_gototxmeet.setOnClickListener {
-//            WemeetSdkUtil.intoHome(this,object : WemeetSdkUtil.instance.OnInitCallBackListener{
-//                override fun initResult(boolean: Boolean, string: String) {
-//                    TxLogUtils.i("initResult ----$boolean ---- $string")
-//                }
-//
-//            })
-        }
     }
 
 
@@ -150,21 +138,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
 
     private fun startSDK(isCreateRoom: Boolean) {
-        val businessData = JSONObject().apply {
-            put("latitude", 123.1231231)
-            put("longitude", 21.123123)
-            put("accuracy", 1000)
-            put("province", "上海市")
-            put("city", "上海市")
-            put("adr", "上海市")
-        }
         val loginName = et.text.toString()
-        val roomid = et_roomid.text.toString()
-
-
-
         val orgAccount = et_account.text.toString()
-//        val orgAccount = "gscjg"
         if (loginName.isEmpty()) {
             Toast.makeText(this@MainActivity, "请填入账号！", Toast.LENGTH_SHORT).show()
             return
@@ -173,53 +148,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             Toast.makeText(this@MainActivity, "请填入组织代码！", Toast.LENGTH_SHORT).show()
             return
         }
+        //加密方式
         val l = System.currentTimeMillis() / 1000
         Log.i("currentTimeMillis", "" + l)
         val encrypt: String = SignUtils.Encrypt(orgAccount + "" + l)
         if (type == "2") {
-            TXSdk.getInstance()
-                .joinRoom(
-                    this,
-                    roomid,
-                    loginName,
-                    "测试$loginName",
-                    orgAccount,
-                    encrypt,
-                    businessData,
-                    RoomControlConfig.Builder().enableVideo(RoomConfig.showVideo).build(),
-                    object : StartVideoResultOnListener {
-                        override fun onResultSuccess() {
-
-                        }
-
-                        override fun onResultFail(errCode: Int, errMsg: String) {
-                            Toast.makeText(this@MainActivity, errMsg, Toast.LENGTH_SHORT).show()
-                        }
-                    })
             return
         }
         if (isCreateRoom) {
-            TXSdk.getInstance().createRoom(
-                loginName,
-                orgAccount,
-                encrypt,
-                object :
-                    onCreateRoomListener {
-                    override fun onResultSuccess(roomId: String) {
-                        Log.i("roomId", roomId)
-                        Toast.makeText(this@MainActivity, "预约成功", Toast.LENGTH_SHORT).show()
-                        intent.putExtra("roomId", roomId)
-                        setResult(12301, intent)
-                        finish()
-                    }
-
-                    override fun onResultFail(errCode: Int, errMsg: String) {
-                    }
-
-
-                })
         } else {
-            TXSdk.getInstance().startTXVideo(
+            TXSdk.getInstance().startVideo(
                 this,
                 loginName,
                 orgAccount,
@@ -237,11 +175,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                 })
         }
 
-        TXSdk.getInstance().addOnFriendBtListener(object :onFriendBtListener{
-            override fun onSuccess(roomId: String, serviceId: String, inviteAccount: String) {
-//                ToastUtils.showShort("$roomId\n${serviceId}\n${inviteAccount}")
-                tx_roomid.text ="$roomId"
-//                startActivity(Intent(this@MainActivity,DemoActivity::class.java))
+        TXSdk.getInstance().addOnFileClickListener(object :onFileClickListener{
+            override fun onSuccess() {
+             //点击文件按钮跳转
+//                val mFileSdkBeanh5 =  FileSdkBean (FileType.h5,"https://www.baidu.com/?tn=64075107_1_dg","");
+//                mFileSdkBeanh5.h5Name ="长链测试地址"
+
+                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,"https://cos.ap-shenzhen-fsi.myqcloud.com/wisdom-exhibition-1301905869/oNFPK5ahJut2-Acwe8wS3xBb_VAk/1667801806842.mp4")
+                mFileSdkBeanVideo.h5Name ="长链测试地址"
+
+//                val arrayList = ArrayList<String>()
+//                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%88%B1%E5%BF%83%E4%BA%BA%E5%AF%BF%E5%AE%88%E6%8A%A4%E7%A5%9E2.0%E7%BB%88%E8%BA%AB%E5%AF%BF%E9%99%A9%E6%9D%A1%E6%AC%BE.jpg")
+//                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%88%B1%E5%BF%83%E4%BA%BA%E5%AF%BF%E5%AE%88%E6%8A%A4%E7%A5%9E2.0%E7%BB%88%E8%BA%AB%E5%AF%BF%E9%99%A9%E6%9D%A1%E6%AC%BE.jpg")
+//                val arrayListWord = ArrayList<String>()
+//                arrayListWord.add("13123123")
+//                arrayListWord.add("131231231231")
+//                var mFileSdkBeanVideo =  FileSdkBean(FileType.pics,arrayList)
+//                mFileSdkBeanVideo.picsWord = arrayListWord
+                TXSdk.getInstance().addFileToSdk(mFileSdkBeanVideo)
             }
 
             override fun onFail(errCode: Int, errMsg: String) {

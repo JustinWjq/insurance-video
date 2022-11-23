@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.app.Application;
 
 
-import com.txt.video.common.callback.onSDKListener;
+import com.txt.video.net.bean.FileSdkBean;
 import com.txt.video.net.bean.TxConfig;
 import com.txt.video.net.http.SystemHttpRequest;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.TICManager;
 import com.txt.video.common.callback.StartVideoResultOnListener;
 import com.txt.video.common.callback.onCreateRoomListener;
-import com.txt.video.common.callback.onFriendBtListener;
+import com.txt.video.common.callback.onFileClickListener;
 import com.txt.video.common.utils.AppUtils;
 import com.txt.video.ui.TXManagerImpl;
-import com.txt.video.ui.video.FriendBtObservable;
+import com.txt.video.ui.video.FileClickObservable;
 import com.txt.video.ui.video.RoomControlConfig;
 
 import org.json.JSONObject;
@@ -51,7 +51,7 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isShare;
 
-    private FriendBtObservable mFriendBtObservable;
+    private FileClickObservable mFriendBtObservable;
 
     @Override
     public boolean getShare() {
@@ -175,7 +175,7 @@ public class TXSdk extends TXSDKApi {
         }
         checkoutNetEnv(en);
         AppUtils.init(application);
-        mFriendBtObservable = new FriendBtObservable();
+        mFriendBtObservable = new FileClickObservable();
     }
 
     @Override
@@ -190,45 +190,15 @@ public class TXSdk extends TXSDKApi {
         SystemHttpRequest.getInstance().changeIP(en);
     }
 
-
     @Override
-    public void startTXVideo(Activity context, String agent, String orgAccount, String sign, JSONObject businessData, RoomControlConfig roomControlConfig, StartVideoResultOnListener listener) {
-        this.mRoomControlConfig = roomControlConfig;
-        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, businessData, listener, true);
-    }
-
-    @Override
-    public void startTXVideo(Activity context, String agent, String orgAccount, String sign, StartVideoResultOnListener listener) {
+    public void startVideo(Activity context, String agent, String orgAccount, String sign, StartVideoResultOnListener listener) {
         TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, null, listener, true);
     }
 
-    @Override
-    public void createRoom(final String agent, String orgAccount, String sign, final onCreateRoomListener listener) {
-        TXManagerImpl.getInstance().createRoom(agent, orgAccount, sign, null, null, listener);
-    }
 
 
     RoomControlConfig mRoomControlConfig;
 
-    @Override
-    public void joinRoom(Activity context, String roomId, String account, String userName, String orgAccount, String sign, JSONObject businessData, RoomControlConfig roomControlConfig, StartVideoResultOnListener listener) {
-        this.mRoomControlConfig = roomControlConfig;
-        TXManagerImpl.getInstance().checkPermission(context, roomId, account, userName, orgAccount, sign, businessData, listener, false);
-    }
-
-    @Override
-    public void getAgentAndRoomStatus(String agentId, String serviceId, String orgAccount, String sign, onSDKListener onSDKListener) {
-        TXManagerImpl.getInstance().getAgentAndRoomStatus(
-                agentId, serviceId, orgAccount, sign, onSDKListener
-        );
-    }
-
-    @Override
-    public void setAgentInRoomStatus(String account, String userName, String serviceId, String inviteAccount, String action, String orgAccount, String sign, onSDKListener onSDKListener) {
-        TXManagerImpl.getInstance().setAgentInRoomStatus(
-                account, userName, serviceId, inviteAccount, action, orgAccount, sign, onSDKListener
-        );
-    }
 
     public RoomControlConfig getRoomControlConfig() {
         if (null != mRoomControlConfig) {
@@ -241,21 +211,26 @@ public class TXSdk extends TXSDKApi {
 
     }
 
-    private onFriendBtListener onFriendBtListener;
+    private onFileClickListener onFileClickListener;
 
     @Override
-    public void addOnFriendBtListener(onFriendBtListener onFriendBtListener) {
+    public void addOnFileClickListener(onFileClickListener onFileClickListener) {
         //mFriendBtObservable.addObserver(onFriendBtListener);
-        this.onFriendBtListener = onFriendBtListener;
+        this.onFileClickListener = onFileClickListener;
     }
 
     @Override
-    public void removeOnFriendBtListener(onFriendBtListener onFriendBtListener) {
-        this.onFriendBtListener = null;
+    public void removeOnFileClickListener(onFileClickListener onFileClickListener) {
+        this.onFileClickListener = null;
     }
 
-    public onFriendBtListener getOnFriendBtListener() {
-        return this.onFriendBtListener;
+    @Override
+    public void addFileToSdk(FileSdkBean mFileSdkBean) {
+        TXManagerImpl.getInstance().addFileToSdk(mFileSdkBean);
+    }
+
+    public onFileClickListener getOnFriendBtListener() {
+        return this.onFileClickListener;
     }
 
 

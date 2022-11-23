@@ -3,6 +3,7 @@ package com.txt.video.trtc.ticimpl.utils;
 import com.tencent.rtmp.TXLog;
 import com.tencent.teduboard.TEduBoardController;
 import com.txt.video.net.utils.TxLogUtils;
+import com.txt.video.ui.boardpage.BoardViewActivity;
 import com.txt.video.ui.video.VideoActivity;
 
 import java.lang.ref.WeakReference;
@@ -60,7 +61,7 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
         TxLogUtils.i("onTEBAddBoard:" + fileId);
         VideoActivity activityEx = mActivityRef.get();
         if (activityEx != null) {
-            activityEx.onTEBAddBoard(boardId, fileId);
+//            activityEx.onTEBAddBoard(boardId, fileId);
         }
     }
 

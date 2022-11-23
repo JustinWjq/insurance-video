@@ -6,9 +6,8 @@ import com.txt.video.R
 import com.txt.video.common.adapter.base.TxBaseQuickAdapter
 import com.txt.video.common.adapter.base.TxBaseViewHolder
 import com.txt.video.common.glide.TxGlide
-import com.txt.video.net.bean.ResourceConditionsBean
 import com.txt.video.net.bean.ResourceTypeBean
-import com.txt.video.ui.weight.danmu.RoundTransform
+import com.txt.video.ui.weight.RoundTransform
 
 /**
  * Created by JustinWjq
@@ -21,7 +20,12 @@ public class ScreenShareResourcesResultAdapter  :
         helper.getView<TextView>(R.id.tx_tv_name).setText(item.name)
 
         TxGlide.with( helper.itemView.context).load(item.picUrl) //图片地址
-            .transform(RoundTransform(helper.itemView.context, 10))
+            .transform(
+                RoundTransform(
+                    helper.itemView.context,
+                    10
+                )
+            )
             .placeholder(R.drawable.tx_icon_resouce_placem)
             .into(helper.getView<ImageView>(R.id.iv))
     }

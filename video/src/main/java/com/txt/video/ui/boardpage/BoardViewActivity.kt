@@ -23,22 +23,28 @@ import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.common.TxBaseDialog
 import com.txt.video.common.utils.AppUtils
 import com.txt.video.common.utils.ToastUtils
+import com.txt.video.net.bean.FileType
 import com.txt.video.net.bean.ThickType
 import com.txt.video.net.bean.ToolType
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.ConfigHelper
+import com.txt.video.trtc.TICClassroomOption
 import com.txt.video.trtc.TICManager
 import com.txt.video.trtc.TRTCCloudManager
+import com.txt.video.trtc.ticimpl.TICCallback
+import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
 import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
+import com.txt.video.ui.video.word.view.TxWordDisplayView
 import com.txt.video.ui.weight.PicQuickAdapter
 import com.txt.video.ui.weight.dialog.CommonDialog
 import com.txt.video.ui.weight.dialog.PaintThickPopup
 import com.txt.video.ui.weight.dialog.TxMessageDialog
+import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils
 import kotlinx.android.synthetic.main.tx_activity_board_view.*
 import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_audience
 import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_show_audience
@@ -57,7 +63,8 @@ import org.json.JSONObject
  * des ：白板业务
  */
 class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardViewPresenter>(),
-    BoardViewContract.ICollectView, onCheckDialogListenerCallBack {
+    BoardViewContract.ICollectView, onCheckDialogListenerCallBack,
+    TEduBoardController.TEduBoardCallback {
 
     override fun getContentViewId(): Int {
         return R.layout.tx_activity_board_view
@@ -83,42 +90,29 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         return BoardViewPresenter(this, this)
     }
 
-    fun initBoardView(){
-        Handler().postDelayed({
-            val instance = TICManager.getInstance()
-            boardController = instance.boardController
+    fun initBoardView() {
+        initBoard()
+        try {
+            showAudioStatus()
+            videoBoradBusiness = arrayListOf(
+                tx_pen,
+                tx_arrow,
+                tx_eraser
+            )
 
+            initBoardTools()
 
-            val windowWidth = Utils.getWindowHeight(this) / 9 * 16
-            val layoutParams =
-                FrameLayout.LayoutParams(
-                    windowWidth,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
+        } catch (e: Exception) {
 
-            board_view_container.addView(boardController?.boardRenderView, layoutParams)
-            val layoutParams1 = board_view_container.layoutParams
-            layoutParams1.width =windowWidth
-            layoutParams1.height =  ViewGroup.LayoutParams.MATCH_PARENT
-            boardController?.boardContentFitMode =
-                TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
-
-        },50)
+        }
 
     }
+
     var boardController: TEduBoardController? = null
     var videoBoradBusiness: ArrayList<ImageButton>? = null
     fun initView() {
         initBoardView()
-        showAudioStatus()
-        videoBoradBusiness = arrayListOf(
-            tx_pen,
-            tx_arrow,
-            tx_eraser
-        )
 
-        initBoardTools()
-        initPicAdapter()
         iv_endshare.setOnClickListener {
             //结束共享
             endShare()
@@ -126,7 +120,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         }
     }
 
-    fun endShare(){
+    fun endShare() {
         TxMessageDialog.Builder(this)
             .setTitle("确定结束")
             .setMessage("您确定要结束共享吗?")
@@ -162,6 +156,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     var picQuickAdapter: PicQuickAdapter? = null
+    private var boardIdList = ArrayList<String>()
 
     //初始化缩略图list
     private fun initPicAdapter() {
@@ -170,15 +165,19 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         val stringArrayList = extras?.getStringArrayList(IntentKey.BOARDLISTS)
         extras?.getString(IntentKey.SERVICEID)?.let { mPresenter?.setServiceId(it) }
         extras?.getString(IntentKey.AGENTID)?.let { mPresenter?.setAgentId(it) }
-        extras?.getString( IntentKey.GROUPID)?.let {
-            initBarrage(it,
-            extras?.getString(IntentKey.SERVICEID)!!
-        ) }
+        extras?.getString(IntentKey.GROUPID)?.let {
+            initBarrage(
+                it,
+                extras?.getString(IntentKey.SERVICEID)!!
+            )
+        }
 
 
         if (null != stringArrayList && stringArrayList.size > 1) {
             ll_borads.visibility = View.VISIBLE
-            val boardIdLists = intent.extras?.getStringArrayList(IntentKey.BOARDIDLISTS)
+//            val boardIdLists = intent.extras?.getStringArrayList(IntentKey.BOARDIDLISTS)
+            val picsWordLists = intent.extras?.getStringArrayList(IntentKey.PICSWORDLISTS)
+            val addImagesFile = boardController?.addImagesFile(stringArrayList)
 
             picQuickAdapter =
                 PicQuickAdapter()
@@ -188,18 +187,43 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
             }
             tx_rv.adapter = picQuickAdapter
+            initWord()
+            txWordDisplayView?.setContent(picsWordLists?.get(0))
             picQuickAdapter?.setOnItemClickListener { adapter, view, position ->
-                boardController?.gotoBoard(boardIdLists?.get(position))
+                boardController?.gotoBoard(boardIdList?.get(position))
+                //点击展示对应的提词器
+                txWordDisplayView?.setContent(picsWordLists?.get(position))
             }
             picQuickAdapter?.setNewData(stringArrayList)
-
+            //展示提词器
         } else {
             ll_borads.visibility = View.GONE
         }
-
-
+        extras?.getString(IntentKey.VIDEOURL)?.let {
+            TxLogUtils.i(" IntentKey.VIDEOURL" + it)
+            boardController?.addVideoFile(it)
+        }
     }
 
+    var txWordDisplayView: TxWordDisplayView? = null;
+    private fun initWord() {
+
+        txWordDisplayView = TxWordDisplayView(this, "")
+        setWordShow(txWordDisplayView as View)
+        rl_word_show.visibility = View.VISIBLE
+    }
+
+    private fun setWordShow(view: View) {
+        val params = RelativeLayout.LayoutParams(
+            DisplayUtils.getScreenHeight(this) / 2,
+            DisplayUtils.getScreenHeight(this) / 2 + 50
+        )
+        params.leftMargin = 15
+        params.rightMargin = 15
+        params.bottomMargin = 10
+
+        rl_word_show.addView(view, params)
+    }
 
     override fun finishPage() {
         board_view_container.removeView(boardController?.boardRenderView)
@@ -341,7 +365,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             audioConfig.isEnableAudio = !audioConfig.isEnableAudio
             TRTCCloudManager.sharedInstance().muteLocalAudio(!audioConfig.isEnableAudio)
             tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
-        }else if (id == R.id.iv_switchscreen){
+        } else if (id == R.id.iv_switchscreen) {
             switchScreen()
         }
     }
@@ -363,6 +387,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         }
 
     }
+
     //横竖屏切换逻辑
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -579,9 +604,165 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     }
 
+    override fun initBoard() {
+
+        val instance = TICManager.getInstance()
+        boardController = instance.boardController
+        boardController?.addCallback(this)
+
+        val windowWidth = Utils.getWindowHeight(this) / 9 * 16
+        val layoutParams =
+            FrameLayout.LayoutParams(
+                windowWidth,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        val layoutParams1 = board_view_container.layoutParams
+        layoutParams1.width =windowWidth
+        layoutParams1.height =  ViewGroup.LayoutParams.MATCH_PARENT
+        boardController?.boardContentFitMode =
+            TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
+        TxLogUtils.i("txsdk---addBoardView")
+        boardController?.isDrawEnable = false
+
+        initPicAdapter()
+    }
+
+    var mBoardCallback: MyBoardCallback? = null
+    override fun joinClassroom() {
+//       var groupId = intent.extras?.getString(IntentKey.GROUPID)
+//        mBoardCallback =
+//            MyBoardCallback(this)
+//        //2、如果用户希望白板显示出来时，不使用系统默认的参数，就需要设置特性缺省参数，如是使用默认参数，则填null。
+//        val initParam = TEduBoardController.TEduBoardInitParam()
+//        initParam.brushColor = TEduBoardController.TEduBoardColor(255, 0, 0, 255)
+//        initParam.smoothLevel = 0f //用于指定笔迹平滑级别，默认值0.1，取值[0, 1]
+//        val classroomOption = TICClassroomOption()
+//        classroomOption.apply {
+//            classId = groupId?.toInt()!!
+//            boardCallback = mBoardCallback
+//            boardInitPara = initParam
+//        }
+//
+//        TICManager.getInstance()?.joinClassroom(classroomOption, object : TICCallback<String> {
+//            override fun onSuccess(data: String?) {
+//                TxLogUtils.i("txsdk---joinClassroom:onSuccess---$data")
+////                joinClass()
+//            }
+//
+//            override fun onError(module: String?, errCode: Int, errMsg: String?) {
+//                TxLogUtils.i("txsdk---joinClassroom:onError---$errCode----$errMsg")
+//            }
+//
+//        })
+    }
+
+    fun addBoardView() {
+
+
+    }
+
+    override fun onTEBError(p0: Int, p1: String?) {
+    }
+
+    override fun onTEBWarning(p0: Int, p1: String?) {
+    }
+
+    override fun onTEBInit() {
+        TxLogUtils.i("onTEBInit")
+
+    }
+
+    override fun onTEBHistroyDataSyncCompleted() {
+    }
+
+    override fun onTEBSyncData(p0: String?) {
+    }
+
+    override fun onTEBUndoStatusChanged(p0: Boolean) {
+    }
+
+    override fun onTEBRedoStatusChanged(p0: Boolean) {
+    }
+
+    override fun onTEBImageStatusChanged(p0: String?, p1: String?, p2: Int) {
+    }
+
+    override fun onTEBSetBackgroundImage(p0: String?) {
+    }
+
+    override fun onTEBAddImageElement(p0: String?) {
+    }
+
+    override fun onTEBBackgroundH5StatusChanged(p0: String?, p1: String?, p2: Int) {
+    }
+
+    override fun onTEBAddBoard(p0: MutableList<String>?, p1: String?) {
+        boardIdList?.clear()
+        boardIdList?.addAll(p0!!)
+//        boardController?.gotoBoard()
+    }
+
+
+    override fun onTEBDeleteBoard(p0: MutableList<String>?, p1: String?) {
+    }
+
+    override fun onTEBGotoBoard(p0: String?, p1: String?) {
+    }
+
+    override fun onTEBGotoStep(p0: Int, p1: Int) {
+    }
+
+    override fun onTEBRectSelected() {
+    }
+
+    override fun onTEBRefresh() {
+    }
+
+    override fun onTEBAddTranscodeFile(p0: String?) {
+    }
+
+    override fun onTEBDeleteFile(p0: String?) {
+    }
+
+    override fun onTEBSwitchFile(p0: String?) {
+    }
+
+    override fun onTEBFileUploadProgress(p0: String?, p1: Int, p2: Int, p3: Int, p4: Float) {
+    }
+
+    override fun onTEBFileUploadStatus(p0: String?, p1: Int, p2: Int, p3: String?) {
+    }
+
+    override fun onTEBFileTranscodeProgress(
+        p0: String?,
+        p1: String?,
+        p2: String?,
+        p3: TEduBoardController.TEduBoardTranscodeFileResult?
+    ) {
+    }
+
+    override fun onTEBH5FileStatusChanged(p0: String?, p1: Int) {
+    }
+
+    override fun onTEBAddImagesFile(p0: String?) {
+    }
+
+    override fun onTEBVideoStatusChanged(p0: String?, p1: Int, p2: Float, p3: Float) {
+    }
+
+    override fun onTEBSnapshot(p0: String?, p1: Int, p2: String?) {
+    }
+
+    override fun onTEBH5PPTStatusChanged(p0: Int, p1: String?, p2: String?) {
+    }
+
+
     var displayView: TUIBarrageDisplayView? = null
     var tuiBarbt: TUIBarrageButton? = null
+    var groupId = ""
     private fun initBarrage(groupId: String, serviceId: String) {
+        this.groupId = groupId
         //弹幕发送View
         tuiBarbt = TUIBarrageButton(this, groupId, serviceId)
         //弹幕显示View

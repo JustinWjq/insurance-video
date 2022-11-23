@@ -4,7 +4,9 @@ import android.app.Activity
 import com.txt.video.common.callback.StartVideoResultOnListener
 import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onSDKListener
+import com.txt.video.net.bean.FileSdkBean
 import com.txt.video.ui.video.RoomControlConfig
+import com.txt.video.ui.video.VideoActivity
 import org.json.JSONObject
 
 /**
@@ -89,4 +91,7 @@ interface TXManager {
 
     fun getRoomControlConfig(): RoomControlConfig
 
+    fun addFileToSdk( mFileSdkBean : FileSdkBean)
+
+    fun setAc( activityEx : VideoActivity)
 }

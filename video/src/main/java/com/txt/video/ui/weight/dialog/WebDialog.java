@@ -2,12 +2,15 @@ package  com.txt.video.ui.weight.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -39,9 +42,13 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         isShare = share;
     }
 
-    public WebDialog(Context context) {
+    private String mUrl;
+    private String mCookie;
+    public WebDialog(Context context,String url,String cookie) {
         super(context, R.style.tx_MyDialog);
         mContext = context;
+        this.mUrl = url;
+        this.mCookie = cookie;
 
 
     }
@@ -63,6 +70,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         window.setGravity(Gravity.BOTTOM);
 
         setCanceledOnTouchOutside(true);
+        injectCookie();
         initView();
     }
     WebView webView;
@@ -70,6 +78,23 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     TextView iv_close;
     TextView tv_endshare;
     TextView tv_title;
+    private void injectCookie(){
+        try {
+            CookieManager mCookieManager = CookieManager.getInstance();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mCookieManager.removeSessionCookies(null);
+                mCookieManager.flush();
+            }else{
+                mCookieManager.removeAllCookie();
+                CookieSyncManager.getInstance().sync();
+            }
+            mCookieManager.setAcceptCookie(true);
+            mCookieManager.setCookie(mUrl,mCookie);
+        }catch (Exception e){
+
+        }
+
+    }
     private void initView(){
 
         webView = findViewById(R.id.webView);
@@ -133,13 +158,11 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
         if (mListener != null) {
-            if (id == R.id.tv_endshare) {
+            if (id == R.id.tv_endshare||id == R.id.iv_close) {
                 mListener.onCheckFileWhiteBroad();
             } else if (id == R.id.tx_audio) {
                 mListener.onCheckBroad();
-            } else if (id == R.id.iv_close) {
-                mListener.onShareWhiteBroadEnd();
-            }else if (id == R.id.atv_exit) {
+            } else if (id == R.id.atv_exit) {
                 dismiss();
             }
         }

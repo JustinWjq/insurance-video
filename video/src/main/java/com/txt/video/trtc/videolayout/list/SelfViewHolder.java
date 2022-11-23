@@ -36,6 +36,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     private TextView mIvVideClose;
     private ImageView mIvIconHost, mIvIconHost1;
     private ImageView ivSelf;
+    private LinearLayout ll_bottom;
 
     public SelfViewHolder(View itemView) {
         super(itemView);
@@ -153,19 +154,21 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
         TxLogUtils.i("SelfViewHolder","showNoVideo" );
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        mVideoContainer.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
     }
 
     public void hideBg(boolean isHide){
-        TxLogUtils.i("SelfViewHolder","" + isHide);
-        if (!isHide) {
-            if (mMemberEntity.isHost()) {
-                ivSelf.setVisibility(View.VISIBLE);
-            }else{
-                ivSelf.setVisibility(View.GONE);
-            }
-        } else {
-            ivSelf.setVisibility(View.GONE);
-        }
+//        TxLogUtils.i("SelfViewHolder","" + isHide);
+//        if (!isHide) {
+//            if (mMemberEntity.isHost()) {
+//                ivSelf.setVisibility(View.VISIBLE);
+//            }else{
+//                ivSelf.setVisibility(View.GONE);
+//            }
+//        } else {
+//            ivSelf.setVisibility(View.GONE);
+//        }
     }
     public void addVideoView() {
         if (mMemberEntity == null) {
@@ -210,10 +213,8 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mVideoContainer.removeAllViews();
         if (model.isVideoAvailable()) {
             mVideoContainer.setVisibility(View.VISIBLE);
-//                mUserHeadImg.setVisibility(View.GONE);
         } else {
             mVideoContainer.setVisibility(View.GONE);
-//                mUserHeadImg.setVisibility(View.VISIBLE);
         }
         if (model.isMuteVideo()) {
             showNoVideo(true, true);
@@ -229,13 +230,20 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                 listener.onItemClick(getLayoutPosition());
             }
         });
-        itemView.setOnClickListener(new View.OnClickListener() {
+        ivSelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onItemClick(getLayoutPosition());
             }
         });
+
 //        showHost(model.isHost());
+        if (mMemberEntity.getBgUrl().isEmpty()){
+            ivSelf.setImageResource(R.drawable.tx_bg);
+        }else{
+            TxGlide.with(TXSdk.getInstance().application).load(mMemberEntity.getBgUrl())
+                    .into(ivSelf);
+        }
         hideBg(false);
     }
 
@@ -252,6 +260,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mIvIconHost1 = (ImageView) itemView.findViewById(R.id.trtc_icon_host1);
         mUserNameTv = (TextView) itemView.findViewById(R.id.trtc_tv_content);
         mUserNameTv1 = (TextView) itemView.findViewById(R.id.trtc_tv_content1);
+        ll_bottom = (LinearLayout) itemView.findViewById(R.id.ll_bottom1);
         ivSelf = (ImageView) itemView.findViewById(R.id.iv_self);
     }
 }
