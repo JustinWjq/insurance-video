@@ -3,12 +3,16 @@ package com.txt.video.ui.video
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothHeadset
+import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -37,12 +41,14 @@ import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
 import com.txt.video.common.floatview.FloatingView
 import com.txt.video.common.utils.CheckDoubleClickListener
+import com.txt.video.common.utils.CheckHeadSetSUtils
 import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.net.utils.TxLogUtils.i
 import com.txt.video.trtc.ConfigHelper
 import com.txt.video.trtc.TRTCCloudIView
+import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.TRTCCloudManagerListener
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserIView
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
@@ -118,6 +124,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun initViews() {
         //子view的布局先绘制完成了，
         // 自定义layoutmannger修改子布局的大小位置
+        regeistHeadsetReceiver()
         showInviteBt(isShow = true, noRemoterUser = true)
         mViewVideo = mPresenter!!.getMemberEntityList()[0].meetingVideoView
         var pageLayoutManager: RecyclerView.LayoutManager? = null
@@ -1620,6 +1627,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         textColorIntPostion = 0
         textSizeIntPostion = 1
         unregisterReceiver(broadcastReceiver)
+        unregisterReceiver(mHeadSetReceiver)
         super.onDestroy()
     }
 
@@ -3163,4 +3171,109 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     private fun hideSmartWebDialog() {
         mSmartWebDialog?.dismiss()
     }
+    //实时监听耳机状态
+
+
+    inner class HeadsetDetectReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action
+            if (Intent.ACTION_HEADSET_PLUG == action) {
+                if (intent.hasExtra("state")) {
+                    val state = intent.getIntExtra("state", 0)
+
+                    if (state == 1) {
+                        TxLogUtils.i("onReceive: 插入耳机")
+                        autoCheckAudioHand()
+                    } else if (state == 0) {
+                        TxLogUtils.i("onReceive: 拔出耳机")
+                        autoCheckAudioHand()
+                    }
+
+                }
+            } else if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
+                TxLogUtils.i(action)
+                var adapter = BluetoothAdapter.getDefaultAdapter()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    var state = adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
+                    if (BluetoothProfile.STATE_CONNECTED == state) {
+                        TxLogUtils.i("onReceive: 插入蓝牙耳机")
+                        autoCheckAudioHand()
+                    }
+                    if (BluetoothProfile.STATE_DISCONNECTED == state) {
+                        TxLogUtils.i("onReceive: 拔出蓝牙耳机")
+                        autoCheckAudioHand()
+                    }
+                }
+            }
+
+        }
+    }
+
+    private var mHeadSetReceiver: HeadsetDetectReceiver? = null
+
+    //注册监听耳机插入和拔出的广播
+    private fun regeistHeadsetReceiver() {
+        mHeadSetReceiver = HeadsetDetectReceiver()
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_HEADSET_PLUG)
+        filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+        registerReceiver(mHeadSetReceiver, filter)
+    }
+
+    var currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
+
+    override fun autoCheckAudioHand() {
+
+
+        //进入房间后，判断需要切换成外放还是耳机类型，判断当前是外放还是耳机模式
+        //在有线耳机先连接的情况下，蓝牙连接了，自动切到蓝牙耳机
+        //在蓝牙耳机先连接的情况下，有线耳机连接了，会自动切到有线耳机
+        //有线耳机不能切换
+        //蓝牙耳机可以切换
+        //会议时，检测耳机的状态，逻辑跟上面一样
+        val checkHeadSetSUtils = CheckHeadSetSUtils();
+        val headSetStatus = checkHeadSetSUtils.getHeadSetStatus(this)
+        when (headSetStatus) {
+            CheckHeadSetSUtils.HeadType.Only_WiredHeadset -> {
+                //有线耳机连接
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_WiredHeadset
+                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
+            }
+            CheckHeadSetSUtils.HeadType.Only_bluetooth -> {
+                //蓝牙耳机连接
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_bluetooth
+                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
+            }
+            CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth -> {
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth
+                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
+            }
+
+            else -> {
+                switchAudioHand(true)
+                currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
+                TxLogUtils.i("autoCheckAudioHand---NONE")
+            }
+        }
+
+    }
+
+    fun switchAudioHand(mIsAudioEarpieceMode: Boolean) {
+        //有蓝牙设备在的时候，不让切换
+        if (mIsAudioEarpieceMode) {
+            //切换扬声器
+            TRTCCloudManager.sharedInstance().enableAudioHandFree(true)
+//            tx_business_switchmic.isSelected = false
+        } else {
+            //切换听筒模式
+            TRTCCloudManager.sharedInstance().enableAudioHandFree(false)
+//            tx_business_switchmic.isSelected = true
+        }
+
+
+    }
+
 }

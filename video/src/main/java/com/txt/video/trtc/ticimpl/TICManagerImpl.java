@@ -1207,6 +1207,11 @@ public class TICManagerImpl  extends TICManager {
 
         }
 
+        @Override
+        public void onTEBPPtStatusChanged(int i, String s, String s1) {
+
+        }
+
         public void onTEBH5PPTStatusChanged(int statusCode, String fid, String describeMsg) {
             
         }

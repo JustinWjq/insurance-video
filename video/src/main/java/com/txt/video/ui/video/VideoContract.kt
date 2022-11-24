@@ -177,6 +177,8 @@ public class VideoContract {
         fun getPushWebUrlSuccess(webId: String, clientUrl: String, name: String)
 
         fun showSharePersonTipLayout()
+
+        fun autoCheckAudioHand()
     }
 
 
