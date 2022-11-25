@@ -166,12 +166,15 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
     }
 
 
-    @Override
     public void onTEBPPtStatusChanged(int statusCode, String fid, String describeMsg) {
 
     }
 
-//    @Override
+    @Override
+    public void onTEBH5PPTStatusChanged(int i, String s, String s1) {
+
+    }
+    //    @Override
 //    public void onTEBTextElementStatusChange(String status, String id, String value, int left, int top) {
 //
 //    }

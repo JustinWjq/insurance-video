@@ -1207,7 +1207,6 @@ public class TICManagerImpl  extends TICManager {
 
         }
 
-        @Override
         public void onTEBPPtStatusChanged(int i, String s, String s1) {
 
         }

@@ -3,10 +3,10 @@
 buildscript {
     ext.kotlin_version = "1.3.61"
     repositories {
-        maven { url 'https://jitpack.io' }
+
         google()
-        jcenter()
-        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://jitpack.io" }
         maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
@@ -23,16 +23,20 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'https://jitpack.io' }
+
+        flatDir{
+            dirs 'libs'
+
+        }
         google()
-        jcenter()
-        mavenCentral()
+//        jcenter()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://jitpack.io" }
         maven {
             url 'https://maven.google.com/'
             name 'Google'
         }
         maven { url 'https://repo1.maven.org/maven2/' }
-
     }
 }
 

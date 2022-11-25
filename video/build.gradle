@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply from: "aliyunmaven.gradle"
+
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
@@ -36,13 +36,13 @@ android {
 
     //统一资源前缀，规范资源引用
     resourcePrefix "tx_"
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-    }
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.config
+//        }
+//    }
 
 
         lintOptions {
@@ -126,9 +126,6 @@ dependencies {
     api 'com.squareup.okhttp3:okhttp:3.10.0'
 
     api "com.squareup.retrofit2:converter-gson:2.4.0"
-}
-repositories {
-    mavenCentral()
 }
 
 
