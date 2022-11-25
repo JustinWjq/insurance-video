@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.txt.video.net.utils.TxLogUtils;
+
 /**
  * author ：Justin
  * time ：2022/10/28.
@@ -67,7 +69,10 @@ public class CheckHeadSetSUtils {
                     flag = headset;
                 } else if (health == BluetoothProfile.STATE_CONNECTED) {
                     flag = health;
+                }else if (health == BluetoothProfile.STATE_DISCONNECTING) {
+                    flag = -1;
                 }
+                TxLogUtils.i("getHeadSetStatus"+flag);
                 // 说明连接上了三种设备的一种
                 if (flag != -1) {
                     return HeadType.Only_bluetooth;

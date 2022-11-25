@@ -429,6 +429,7 @@
 -keep class com.txt.video.TXSdk{*;}
 -keep class com.txt.video.common.callback.**{*;}
 -keep class com.txt.video.trtc.ticimpl.utils.**{*;}
+-keep class com.txt.video.ui.video.barrage.model.**{*;}
 
 
 -keep class com.txt.video.common.adapter.base.** {
