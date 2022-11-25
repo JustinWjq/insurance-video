@@ -67,6 +67,8 @@ public class CheckHeadSetSUtils {
                     flag = headset;
                 } else if (health == BluetoothProfile.STATE_CONNECTED) {
                     flag = health;
+                }else if (health == BluetoothProfile.STATE_DISCONNECTING) {
+                    flag = -1;
                 }
                 // 说明连接上了三种设备的一种
                 if (flag != -1) {
