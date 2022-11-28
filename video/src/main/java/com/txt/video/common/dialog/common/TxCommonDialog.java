@@ -68,6 +68,7 @@ public final class TxCommonDialog {
         public B setCancel(CharSequence text) {
             mCancelView.setText(text);
             mLineView.setVisibility((text == null || "".equals(text.toString())) ? View.GONE : View.VISIBLE);
+            mCancelView.setVisibility((text == null || "".equals(text.toString())) ? View.GONE : View.VISIBLE);
             return (B) this;
         }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
+import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
@@ -20,6 +22,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         mPaint.setColor(context.getResources().getColor(R.color.tx_color_ededed));
+        dividerHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, context.getResources().getDisplayMetrics());
+    }
+
+    public DividerItemDecoration(Context context,@ColorInt int color) {
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        mPaint.setColor(color);
         dividerHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, context.getResources().getDisplayMetrics());
     }
 

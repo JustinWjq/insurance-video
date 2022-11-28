@@ -179,6 +179,8 @@ public class VideoContract {
         fun showSharePersonTipLayout()
 
         fun autoCheckAudioHand()
+
+        fun showInfoDialog(info :String)
     }
 
 
@@ -366,5 +368,7 @@ public class VideoContract {
         fun getShareUserName(): String
 
         fun setShareUserId(shareUserId:String)
+
+        fun requestUserInfo(userId:String)
     }
 }

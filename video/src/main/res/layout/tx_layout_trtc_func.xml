@@ -189,7 +189,13 @@
         android:src="@drawable/tx_signal6"
         android:visibility="gone" />
 
-
+    <Button
+        android:id="@+id/bt_info"
+        android:layout_width="@dimen/tx_dp_20"
+        android:layout_height="@dimen/tx_dp_20"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/tx_dp_10"
+        android:background="@drawable/tx_fill_scale" />
 
 </RelativeLayout>
 

@@ -200,5 +200,7 @@ public class MemberListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void onItemClick(int position);
 
         void onItemDoubleClick(int position);
+
+        void onInfoClick(int position);
     }
 }

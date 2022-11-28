@@ -20,4 +20,9 @@
     <color name="tx_color_ededed">#EDEDED</color>
     <color name="tx_color_999999">#999999</color>
     <color name="tx_color_FA9B00">#FA9B00</color>
+    <color name="tx_color_333333">#333333</color>
+    <color name="tx_color_006dff">#006dff</color>
+    <color name="tx_color_666666">#666666</color>
+    <color name="tx_color_e6b980">#e6b980</color>
+
 </resources>

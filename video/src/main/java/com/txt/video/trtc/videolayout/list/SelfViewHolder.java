@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     private ImageView mPbAudioVolume;
     private ImageView mIvVideClose, mIvVideCloseScreen;
     private ImageView mIvIconHost;
+    private Button bt_info;
 
     public SelfViewHolder(View itemView) {
         super(itemView);
@@ -236,6 +238,14 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                 listener.onItemClick(getLayoutPosition());
             }
         });
+        bt_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onInfoClick(getLayoutPosition());
+                }
+            }
+        });
 //        showHost(model.isHost());
     }
     public void bind(final MemberEntity model){
@@ -275,6 +285,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
+        bt_info = (Button) itemView.findViewById(R.id.bt_info);
 //        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 //        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
 

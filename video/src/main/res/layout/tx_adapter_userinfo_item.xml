@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+
+
+        <com.txt.video.ui.weight.view.SmartTextView
+            android:id="@+id/tv_name"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/tx_black"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            tools:text="暂时离开"
+            />
+
+        <View
+            android:id="@+id/v_ui_line"
+            android:layout_width=".5dp"
+            android:background="@color/tx_color_803e3e3e"
+            android:layout_height="match_parent"/>
+
+        <com.txt.video.ui.weight.view.SmartTextView
+            android:id="@+id/tv_content"
+            android:textSize="16sp"
+            tools:text="结束会话"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/tx_black"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
