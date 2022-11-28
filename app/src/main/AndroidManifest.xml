@@ -38,11 +38,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="txtvideo"
-                    android:path="/videopage"
-                    android:port="8888"
-                    android:scheme="txt" />
+<!--                <data-->
+<!--                    android:host="txtvideo"-->
+<!--                    android:path="/videopage"-->
+<!--                    android:port="9999"-->
+<!--                    android:scheme="txt" />-->
             </intent-filter>
         </activity>
     </application>

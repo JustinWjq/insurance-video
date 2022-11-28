@@ -575,20 +575,21 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun skipCaller() {
-        startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(
-                    if (TXSdk.getInstance().isDemo) {
-                        "txt://txtvideo:8888/videopage"
-                    } else {
-                        "txt://txtvideo:9999/videopage"
-                    }
-                )
-
-
-            )
-        )
+        finish()
+//        startActivity(
+//            Intent(
+//                Intent.ACTION_VIEW,
+//                Uri.parse(
+//                    if (TXSdk.getInstance().isDemo) {
+//                        "txt://txtvideo:8888/videopage"
+//                    } else {
+//                        "txt://txtvideo:9999/videopage"
+//                    }
+//                )
+//
+//
+//            )
+//        )
     }
 
     fun showDeleteFileDialog(id: String?, isDeleteFile: Boolean = true) {
