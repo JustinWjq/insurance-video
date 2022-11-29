@@ -16,12 +16,6 @@
             android:name=".ui.checkres.CheckResWebActivity"
             android:exported="false" />
         <activity
-            android:name="com.txt.video.ui.weight.danmu.MainActivity"
-            android:exported="false"
-            android:label="@string/tx_title_activity_check_resources"
-            android:theme="@style/tx_NewActivityTheme1"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
             android:name=".ui.checkres.CheckResourcesActivity"
             android:exported="false"
             android:label="@string/tx_title_activity_check_resources"

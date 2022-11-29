@@ -178,17 +178,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         TXSdk.getInstance().addOnFileClickListener(object :onFileClickListener{
             override fun onSuccess() {
              //点击文件按钮跳转
-//                val mFileSdkBeanh5 =  FileSdkBean (FileType.h5,"https://www.baidu.com/?tn=64075107_1_dg","");
-//                mFileSdkBeanh5.h5Name ="长链测试地址"
-
-                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,"https://cos.ap-shenzhen-fsi.myqcloud.com/wisdom-exhibition-1301905869/oNFPK5ahJut2-Acwe8wS3xBb_VAk/1667801806842.mp4")
+                val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,"http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089","");
                 mFileSdkBeanVideo.h5Name ="长链测试地址"
+
+//                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,
+//                    "https://slupl106.sinosig.com/visit/file/d4072a7c10a3448ba5b797b1d703cf62.mp4")
+//                mFileSdkBeanVideo.h5Name ="长链测试地址"
 
 //                val arrayList = ArrayList<String>()
 //                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%88%B1%E5%BF%83%E4%BA%BA%E5%AF%BF%E5%AE%88%E6%8A%A4%E7%A5%9E2.0%E7%BB%88%E8%BA%AB%E5%AF%BF%E9%99%A9%E6%9D%A1%E6%AC%BE.jpg")
-//                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%88%B1%E5%BF%83%E4%BA%BA%E5%AF%BF%E5%AE%88%E6%8A%A4%E7%A5%9E2.0%E7%BB%88%E8%BA%AB%E5%AF%BF%E9%99%A9%E6%9D%A1%E6%AC%BE.jpg")
+//                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%94%B5%E5%AD%90%E6%8A%95%E4%BF%9D%E5%8D%95.jpg")
 //                val arrayListWord = ArrayList<String>()
-//                arrayListWord.add("13123123")
+//                arrayListWord.add("")
 //                arrayListWord.add("131231231231")
 //                var mFileSdkBeanVideo =  FileSdkBean(FileType.pics,arrayList)
 //                mFileSdkBeanVideo.picsWord = arrayListWord

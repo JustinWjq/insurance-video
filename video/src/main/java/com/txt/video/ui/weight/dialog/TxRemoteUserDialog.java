@@ -1,8 +1,12 @@
 package com.txt.video.ui.weight.dialog;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -42,6 +46,22 @@ public final class TxRemoteUserDialog {
             mRemoteUserListView = findViewById(R.id.view_remote_user);
             mRemoteUserListView.findViewById(R.id.iv_close).setOnClickListener(this);
             mRemoteUserListView.findViewById(R.id.iv_close1).setOnClickListener(this);
+//            EditText et_search = mRemoteUserListView.findViewById(R.id.et_search);
+//            et_search.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//                @Override
+//                public void onGlobalLayout() {
+//                    Rect rect = new Rect();
+//                    getDialog().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+//                    int height = getDialog().getWindow().getDecorView().getRootView().getHeight();
+//                    int i = height - rect.bottom;
+//                    if (i>0) {
+//
+//                    }else{
+//
+//                    }
+//                }
+//            });
+
         }
 
 
@@ -87,6 +107,7 @@ public final class TxRemoteUserDialog {
 //                        DisplayUtils.INSTANCE.dp2px(getContext(),7f));
 //                setHeight(getResources().getDisplayMetrics().heightPixels);
                 mRemoteUserListView.setBackgroundResource(R.drawable.tx_shape_round_topleft_15);
+
             }else {
                 mRemoteUserListView.findViewById(R.id.iv_close).setVisibility(View.VISIBLE);
                 mRemoteUserListView.findViewById(R.id.iv_close1).setVisibility(View.GONE);

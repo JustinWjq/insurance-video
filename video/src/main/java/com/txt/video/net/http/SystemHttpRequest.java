@@ -468,6 +468,38 @@ public class SystemHttpRequest {
     }
 
 
+    //录制音频
+    public void recordAudio(String serviceId, String userId, String agentId, String type, HttpRequestClient.RequestHttpCallBack callback) {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("serviceId", serviceId);
+            jsonObject.put("userId", userId);
+            jsonObject.put("agentId", agentId);
+            jsonObject.put("type", "1"); //操作类型 1: 发起录制 2: 同意录制 3: 拒绝录制
+
+        } catch (Exception e) {
+
+        }
+
+        HttpRequestClient.getIntance().post(IP + "/api/serviceRoom/recordAudio", jsonObject.toString(), "", callback);
+    }
+
+    //录制音频
+    public void endRecordAudio(String serviceId, HttpRequestClient.RequestHttpCallBack callback) {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("serviceId", serviceId);
+
+
+        } catch (Exception e) {
+
+        }
+
+        HttpRequestClient.getIntance().post(IP + "/api/serviceRoom/endRecordAudio", jsonObject.toString(), "", callback);
+    }
+
 
     public interface onRequestCallBack {
         public void onSuccess();

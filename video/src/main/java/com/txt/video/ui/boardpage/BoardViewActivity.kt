@@ -23,15 +23,12 @@ import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.common.TxBaseDialog
 import com.txt.video.common.utils.AppUtils
 import com.txt.video.common.utils.ToastUtils
-import com.txt.video.net.bean.FileType
 import com.txt.video.net.bean.ThickType
 import com.txt.video.net.bean.ToolType
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.ConfigHelper
-import com.txt.video.trtc.TICClassroomOption
 import com.txt.video.trtc.TICManager
 import com.txt.video.trtc.TRTCCloudManager
-import com.txt.video.trtc.ticimpl.TICCallback
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
@@ -46,16 +43,6 @@ import com.txt.video.ui.weight.dialog.PaintThickPopup
 import com.txt.video.ui.weight.dialog.TxMessageDialog
 import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils
 import kotlinx.android.synthetic.main.tx_activity_board_view.*
-import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_audience
-import kotlinx.android.synthetic.main.tx_activity_board_view.rl_barrage_show_audience
-import kotlinx.android.synthetic.main.tx_activity_board_view.rl_rv
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_board_view_business
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_boardtools
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_eraser
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_pen
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_rv
-import kotlinx.android.synthetic.main.tx_activity_board_view.tx_textstyle
-import org.json.JSONObject
 
 /**
  * author ：Justin
@@ -112,7 +99,16 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     var videoBoradBusiness: ArrayList<ImageButton>? = null
     fun initView() {
         initBoardView()
+        val extras = intent.extras
 
+        extras?.getString(IntentKey.SERVICEID)?.let { mPresenter?.setServiceId(it) }
+        extras?.getString(IntentKey.AGENTID)?.let { mPresenter?.setAgentId(it) }
+        extras?.getString(IntentKey.GROUPID)?.let {
+            initBarrage(
+                it,
+                extras?.getString(IntentKey.SERVICEID)!!
+            )
+        }
         iv_endshare.setOnClickListener {
             //结束共享
             endShare()
@@ -145,8 +141,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     fun showAudioStatus() {
-        val audioConfig = ConfigHelper.getInstance().audioConfig
-        tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
+//        val audioConfig = ConfigHelper.getInstance().audioConfig
+//        tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
     }
 
     override fun showMessage(message: String) {
@@ -160,49 +156,49 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     //初始化缩略图list
     private fun initPicAdapter() {
-
+        TxLogUtils.i("initPicAdapter","onTEBInit-----initPicAdapter")
         val extras = intent.extras
+
         val stringArrayList = extras?.getStringArrayList(IntentKey.BOARDLISTS)
-        extras?.getString(IntentKey.SERVICEID)?.let { mPresenter?.setServiceId(it) }
-        extras?.getString(IntentKey.AGENTID)?.let { mPresenter?.setAgentId(it) }
-        extras?.getString(IntentKey.GROUPID)?.let {
-            initBarrage(
-                it,
-                extras?.getString(IntentKey.SERVICEID)!!
-            )
-        }
 
+        if (null !=  extras?.getString(IntentKey.VIDEOURL)) {
+            extras?.getString(IntentKey.VIDEOURL)?.let {
+                TxLogUtils.i(" IntentKey.VIDEOURL" + it)
+                boardController?.addVideoFile(it)
+            }
+        }else{
 
-        if (null != stringArrayList && stringArrayList.size > 1) {
-            ll_borads.visibility = View.VISIBLE
+            if (null != stringArrayList && stringArrayList.size > 1) {
+                ll_borads.visibility = View.VISIBLE
 //            val boardIdLists = intent.extras?.getStringArrayList(IntentKey.BOARDIDLISTS)
-            val picsWordLists = intent.extras?.getStringArrayList(IntentKey.PICSWORDLISTS)
-            val addImagesFile = boardController?.addImagesFile(stringArrayList)
+                val picsWordLists = intent.extras?.getStringArrayList(IntentKey.PICSWORDLISTS)
+                val addImagesFile = boardController?.addImagesFile(stringArrayList)
 
-            picQuickAdapter =
-                PicQuickAdapter()
-            tx_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
-                this
-            ).apply {
-                orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+                picQuickAdapter =
+                    PicQuickAdapter()
+                tx_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                    this
+                ).apply {
+                    orientation = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+                }
+                tx_rv.adapter = picQuickAdapter
+                initWord()
+                txWordDisplayView?.setContent(picsWordLists?.get(0))
+                picQuickAdapter?.setOnItemClickListener { adapter, view, position ->
+                    if (0!= boardIdList.size) {
+                        boardController?.gotoBoard(boardIdList?.get(position))
+                        //点击展示对应的提词器
+                        txWordDisplayView?.setContent(picsWordLists?.get(position))
+                    }
+
+                }
+                picQuickAdapter?.setNewData(stringArrayList)
+                //展示提词器
+            } else {
+                ll_borads.visibility = View.GONE
             }
-            tx_rv.adapter = picQuickAdapter
-            initWord()
-            txWordDisplayView?.setContent(picsWordLists?.get(0))
-            picQuickAdapter?.setOnItemClickListener { adapter, view, position ->
-                boardController?.gotoBoard(boardIdList?.get(position))
-                //点击展示对应的提词器
-                txWordDisplayView?.setContent(picsWordLists?.get(position))
-            }
-            picQuickAdapter?.setNewData(stringArrayList)
-            //展示提词器
-        } else {
-            ll_borads.visibility = View.GONE
         }
-        extras?.getString(IntentKey.VIDEOURL)?.let {
-            TxLogUtils.i(" IntentKey.VIDEOURL" + it)
-            boardController?.addVideoFile(it)
-        }
+
     }
 
     var txWordDisplayView: TxWordDisplayView? = null;
@@ -226,16 +222,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun finishPage() {
+        boardController?.reset()
         board_view_container.removeView(boardController?.boardRenderView)
-        val selectToolsPosition = getSelectToolsPosition()
-        intent.putExtra(IntentKey.CHECKTOOLSPOSTIONS, selectToolsPosition)
-
-        //判断pop 是否显示
-        val showing = paintThickPopup?.isShowing
-
-        intent.putExtra(IntentKey.ISSHOWPOP, showing)
-
-        setResult(VideoCode.FINISHPAGE_CODE, intent)
         finish()
     }
 
@@ -256,9 +244,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     fun onTxClick(v: View?) {
         val id = v?.id
 
-        if (id == R.id.tx_ib_checkscreen1) {
-            finishPage()
-        } else if (id == R.id.tx_boardtools) {
+        if (id == R.id.tx_boardtools) {
             //点击画笔
             tx_board_view_business.visibility = if (isShowPaint) {
                 //隐藏
@@ -360,11 +346,6 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 View.GONE
             }
             tx_rlshow.isSelected = !selected
-        } else if (id == R.id.tx_ib_audiomute) {
-            val audioConfig = ConfigHelper.getInstance().audioConfig
-            audioConfig.isEnableAudio = !audioConfig.isEnableAudio
-            TRTCCloudManager.sharedInstance().muteLocalAudio(!audioConfig.isEnableAudio)
-            tx_ib_audiomute.isSelected = !audioConfig.isEnableAudio
         } else if (id == R.id.iv_switchscreen) {
             switchScreen()
         }
@@ -597,7 +578,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         images: MutableList<String>?
     ) {
         //跳出白板页面
-        finish()
+        finishPage()
     }
 
     override fun startShareFail(shareStatus: Boolean) {
@@ -616,6 +597,10 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 windowWidth,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
+        if ( boardController?.boardRenderView?.getParent() != null) {
+            ( boardController?.boardRenderView?.getParent() as ViewGroup).removeView(boardController?.boardRenderView)
+        }
+
         board_view_container.addView(boardController?.boardRenderView, layoutParams)
         val layoutParams1 = board_view_container.layoutParams
         layoutParams1.width =windowWidth
@@ -625,7 +610,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         TxLogUtils.i("txsdk---addBoardView")
         boardController?.isDrawEnable = false
 
-        initPicAdapter()
+        Handler().postDelayed({ initPicAdapter()},1000)
+
     }
 
     var mBoardCallback: MyBoardCallback? = null
@@ -669,7 +655,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun onTEBInit() {
-        TxLogUtils.i("onTEBInit")
+        TxLogUtils.i("initPicAdapter","onTEBInit-----1")
 
     }
 

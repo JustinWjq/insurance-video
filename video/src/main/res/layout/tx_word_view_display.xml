@@ -1,87 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/tx_shape_round_8_bf000000"
     android:orientation="vertical"
-    android:padding="@dimen/tx_dp_12"
     xmlns:tools="http://schemas.android.com/tools"
     >
-
-    <TextView
-        android:id="@+id/tv_title"
+    <ImageView
+        android:id="@+id/tv_title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="提词器"
+        android:text="关键话术"
         android:textSize="@dimen/tx_sp_12"
-        android:textColor="@color/tx_color_dadada"
+        android:src="@drawable/tx_noword"
+        android:visibility="gone"
         />
 
-
-    <ScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="none"
-      >
-
-        <TextView
-            android:id="@+id/tv_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/tx_dp_7"
-            android:textColor="@color/tx_white"
-            android:textSize="@dimen/tx_sp_14"
-            tools:text="1231231231\n12312312311231231231\n1231231231\n1231231231\n1231231231\n1231231231\n1231231231" />
-    </ScrollView>
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_word"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/tx_dp_13"
+        android:orientation="vertical"
+        android:padding="@dimen/tx_dp_12"
+        android:background="@drawable/tx_shape_round_12_left_bf000000"
         >
         <TextView
-            android:id="@+id/tv_title1"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提词器"
+            android:text="关键话术"
             android:textSize="@dimen/tx_sp_12"
-            android:visibility="gone"
-            android:textColor="@color/tx_color_dadada"
+            android:textColor="@color/tx_color_ff6666"
             />
 
-        <TextView
-            android:id="@+id/tv_size"
+
+        <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="字体"
-            android:paddingStart="@dimen/tx_dp_9"
-            android:paddingTop="@dimen/tx_dp_5"
-            android:paddingBottom="@dimen/tx_dp_5"
-            android:paddingEnd="@dimen/tx_dp_9"
-            android:textSize="@dimen/tx_sp_13"
-            android:textColor="@color/tx_color_e6b980"
-            android:background="@drawable/tx_shape_round_5_color_e6b980"
-            />
-        <View
-            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_height="@dimen/tx_dp_13"/>
+            android:scrollbars="none"
+            >
 
-        <ImageButton
-            android:id="@+id/tx_switch_word"
-            style="@style/tx_style_button"
+            <TextView
+                android:id="@+id/tv_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/tx_dp_7"
+                android:textColor="@color/tx_white"
+                android:textSize="@dimen/tx_sp_14"
+                tools:text="1231231231\n12312312311231231231\n1231231231\n1231231231\n1231231231\n1231231231\n1231231231" />
+        </ScrollView>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/tx_selector_status_word"
-            android:textColor="@color/tx_color_dadada"
-            android:textSize="@dimen/tx_sp_12" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/tx_dp_13"
+            >
 
 
+            <TextView
+                android:id="@+id/tv_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="字体"
+                android:paddingStart="@dimen/tx_dp_9"
+                android:paddingTop="@dimen/tx_dp_5"
+                android:paddingBottom="@dimen/tx_dp_5"
+                android:paddingEnd="@dimen/tx_dp_9"
+                android:textSize="@dimen/tx_sp_13"
+                android:textColor="@color/tx_color_e6b980"
+                android:background="@drawable/tx_shape_round_5_color_e6b980"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/tx_dp_13"/>
+
+            <ImageButton
+                android:id="@+id/tx_switch_word"
+                style="@style/tx_style_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tx_selector_status_word"
+                android:textColor="@color/tx_color_dadada"
+                android:textSize="@dimen/tx_sp_12" />
+
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

@@ -199,6 +199,10 @@ public class VideoContract {
         fun showBg(bgUrl: String)
 
         fun showSharePage(mFileSdkBean: FileSdkBean)
+
+        fun endRecordAudioSuccess()
+
+        fun endRecordAudioFail()
     }
 
 
@@ -376,5 +380,9 @@ public class VideoContract {
         )
 
         fun setCurrentArrowCount(currentCount: Int)
+
+        fun recordAudio( serviceId :String,  userId:String,  agentId :String,  type :String)
+
+        fun endRecordAudio( serviceId :String)
     }
 }

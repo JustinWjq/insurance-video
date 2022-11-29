@@ -70,6 +70,12 @@ public class RemoteUserListAdapter extends
             mVideoImg.setSelected(model.isMuteVideo());
             mAudioImg.setVisibility(View.VISIBLE);
             mVideoImg.setVisibility(View.VISIBLE);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onMuteAudioClick(model);
+                }
+            });
             mAudioImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

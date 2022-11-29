@@ -60,7 +60,9 @@ public class IMkey {
 
     public static String agreeStartRecord = "agreeStartRecord";
 
-    public static String refuseStartRecord = "refuseStartRecord";
+    public static String refuseStartRecord = "refuseRecord";
+
+    public static String STARTRECORD = "startRecord";
 
     public static String moveOutRoom = "moveOutRoom";
 

@@ -24,12 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/tx_dp_20"
-        android:layout_marginBottom="@dimen/tx_dp_20"
         android:elevation="@dimen/tx_dp_17"
         android:translationZ="@dimen/tx_dp_3"
         android:background="@drawable/tx_shape_round_5_color_ffffff"
-        app:layout_constraintBottom_toTopOf="@+id/iv_switchscreen"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/iv_switchscreen"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_switchscreen"
        >
 
         <LinearLayout
@@ -177,31 +176,6 @@
     </LinearLayout>
 
 
-    <ImageButton
-        android:id="@+id/tx_ib_checkscreen1"
-        style="@style/tx_style_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/tx_dp_20"
-        android:layout_marginBottom="@dimen/tx_dp_20"
-        android:onClick="onTxClick"
-        android:src="@drawable/tx_icon_landscape"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
-        app:layout_constraintLeft_toLeftOf="parent" />
-
-
-    <ImageButton
-        android:id="@+id/tx_ib_audiomute"
-        style="@style/tx_style_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/tx_dp_20"
-        android:onClick="onTxClick"
-        android:src="@drawable/tx_audio_notext_status_selector"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/tx_ib_checkscreen1"
-        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/iv_endshare"
@@ -237,7 +211,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tx_dp_15"
-        android:layout_marginBottom="@dimen/tx_dp_20"
+        android:layout_marginBottom="@dimen/tx_dp_40"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         app:layout_constraintHorizontal_bias="0.5"
@@ -251,8 +225,8 @@
         android:layout_marginBottom="@dimen/tx_dp_15"
         android:onClick="onTxClick"
         style="@style/tx_style_button"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/rl_word_show"
+        app:layout_constraintBottom_toBottomOf="@+id/rl_word_show"
         />
 
     <RelativeLayout
@@ -261,7 +235,8 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/rl_board_business"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

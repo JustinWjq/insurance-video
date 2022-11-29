@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,12 +35,13 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
     private Context mContext;
     private TextView tv_text; //显示文字
     private TextView tv_size; //字体选择
-    private TextView tv_title1; //
+    private ImageView tv_title1; //
     private TextView tv_title; //
     private ScrollView scrollview; //
     private ImageButton tx_switch_word; //显示提词器
     private ITxWordPresenter mPresenter;
     private String mGroupId;
+    private LinearLayout ll_word;
 
     public TxWordDisplayView(Context context) {
         super(context);
@@ -72,6 +76,7 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
         tv_title1 = findViewById(R.id.tv_title1);
         tv_title = findViewById(R.id.tv_title);
         scrollview = findViewById(R.id.scrollview);
+        ll_word = findViewById(R.id.ll_word);
         tv_size.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,45 +102,54 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
             }
         });
         tx_switch_word = (ImageButton) findViewById(R.id.tx_switch_word);
+        tv_title1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tv_text.getText().toString().isEmpty()){
+                    return;
+                }
+                hideWordView(false);
+            }
+        });
         tx_switch_word.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //显示或者隐藏
-                boolean selected = tx_switch_word.isSelected();
-                if (selected) { //如果是选中状态，就是关闭提词器
-                    tv_title.setVisibility(VISIBLE);
-                    tv_size.setVisibility(VISIBLE);
-                    tv_title1.setVisibility(GONE);
-                    scrollview.setVisibility(VISIBLE);
-                    post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                            layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 ;
-                            layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
-                            setLayoutParams(layoutParams);
-                        }
-                    });
-                } else {
-                    //默认是开启状态
-                    tv_title.setVisibility(GONE);
-                    tv_size.setVisibility(GONE);
-                    tv_title1.setVisibility(VISIBLE);
-                    scrollview.setVisibility(GONE);
-                    post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                            layoutParams.height = tx_switch_word.getHeight()+100;
-                            layoutParams.width = layoutParams.width/3*2 ;
-                            setLayoutParams(layoutParams);
-                        }
-                    });
-
-                }
-                tx_switch_word.setSelected(!selected);
+                hideWordView(true);
             }
         });
+    }
+    private void hideWordView(boolean isHide){
+        try {
+            if (isHide) {
+                //显示或者隐藏
+                ll_word.setVisibility(GONE);
+                tv_title1.setVisibility(VISIBLE);
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                        layoutParams.height = tx_switch_word.getHeight()+100;
+                        layoutParams.width = layoutParams.width/3*2 ;
+                        setLayoutParams(layoutParams);
+                    }
+                });
+            }else{
+                ll_word.setVisibility(VISIBLE);
+                tv_title1.setVisibility(GONE);
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                        layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 ;
+                        layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
+                        setLayoutParams(layoutParams);
+                    }
+                });
+            }
+        }catch (Exception e){
+
+        }
+
     }
 
     @Override
@@ -150,6 +164,23 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
     public void setContent(String content) {
         if (null != tv_text) {
             tv_text.setText(content);
+            if (content.isEmpty()){
+                tv_title1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.tx_noword));
+                hideWordView(true);
+            }else{
+                tv_title1.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.tx_hasword));
+                hideWordView(false);
+            }
         }
+    }
+
+    boolean isSelect = false;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
     }
 }

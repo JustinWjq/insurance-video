@@ -356,6 +356,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         TxLogUtils.i("txsdk---onRemoteUserLeaveRoom--$userId----$reason")
 
         // 回收分配的渲染的View
+        val entity = mPresenter!!.getStringMemberEntityMap()[userId]
+        showMessage(entity?.userName +"退出会议室")
         mPresenter?.getTRTCRemoteUserManager()!!.removeRemoteUser(userId)
         val index = mPresenter?.removeMemberEntity(userId!!)
 
@@ -754,6 +756,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     var shareWhiteBroadDialog: ShareWhiteBroadDialog? = null
+    var paintThickPopup :ShareScreenPopup?=null
     override fun showChangeBroadModeDialog(isShow: Boolean) {
 //        if (isShow) {
 //            onEnd()
@@ -766,11 +769,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 //            shareWhiteBroadDialog?.setOnShareWhiteBroadDialogListener(this)
 //            shareWhiteBroadDialog?.show()
 //        }
-        var paintThickPopup = ShareScreenPopup(
+        paintThickPopup = ShareScreenPopup(
             tx_business_share,
             R.layout.tx_layout_popup_sharescreen
         )
-        paintThickPopup.setOnCheckDialogListener(object : onShareWhiteBroadDialogListener {
+        paintThickPopup?.setOnCheckDialogListener(object : onShareWhiteBroadDialogListener {
             override fun onCheckFileWhiteBroad() {
                 if (null == TXSdk.getInstance().onFriendBtListener) {
                     showMessage( IBaseView.MessageType.MESSAGETYPE_FAIL,"该方法暂未注册")
@@ -1368,6 +1371,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
      * 隐藏上下栏
      */
     fun hideBar() {
+        paintThickPopup?.dismissTip()
         if (!isHide) {
             val y = ll_title.y.absoluteValue + ll_title.height
             var moveY = -(y)
@@ -1383,7 +1387,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             iv_switchscreen.animate().translationYBy(100f).setDuration(500).start()
             hideStatusBar()
             rl_barrage_audience.visibility = View.GONE
-
+            if (rl_chat_message.visibility == View.VISIBLE) {
+                bt_more.isSelected = false
+                bt_more.setTextColor(ContextCompat.getColor(this, R.color.tx_color_dadada))
+                rl_chat_message.visibility = View.GONE
+            }
         } else {
             val y = ll_title.y.absoluteValue
             var moveY = y
@@ -1452,6 +1460,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else if (id == R.id.tv_invite) {
             //邀请好友
 
+            // 如果内容为空就抛出异常
             handleMemberListView()
 
         } else if (id == R.id.tx_business_video) {
@@ -1493,25 +1502,42 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             //---2.全部都同意了，修改录制状态
             //再次点击重新发送
 //            bt_startrecord.isSelected = true
-            TxMessageDialog.Builder(this)
-                .setMessage(
-                    "本次录制需获得全部参会人员授权确\n" +
-                            "认后可进行录制，请您确认"
-                )
-                .setCancel("取消")
-                .setConfirm("确认")
-                .setListener {
-                    //发送消息
-                    mPresenter?.setCurrentArrowCount(0)
-                    mPresenter?.sendGroupMessage(
-                        mPresenter?.setIMTextData(IMkey.startRecordFromHost)!!
-                            .put(
-                                IMkey.USERID,
-                                mPresenter?.getAgentId()
-                            ).toString()
+            if (bt_startrecord.isSelected) {
+                TxMessageDialog.Builder(this)
+                    .setMessage(
+                       "是否结束录制？"
                     )
-                }
-                .show()
+                    .setCancel("我再想想")
+                    .setConfirm("结束录制")
+                    .setListener {
+                        //发送消息
+                        //recordAudio
+                        mPresenter?.endRecordAudio(
+                            mPresenter?.getServiceId()!!
+                        )
+                    }
+                    .show()
+            }else{
+                TxMessageDialog.Builder(this)
+                    .setMessage(
+                        "本次录制需获得全部参会人员授权确\n" +
+                                "认后可进行录制，请您确认"
+                    )
+                    .setCancel("取消")
+                    .setConfirm("确认")
+                    .setListener {
+                        //发送消息
+                        //recordAudio
+                        mPresenter?.recordAudio(
+                            mPresenter?.getServiceId()!!,
+                            mPresenter?.getAgentId()!!,
+                            mPresenter?.getAgentId()!!,
+                            ""
+                        )
+                    }
+                    .show()
+            }
+
         } else if (id == R.id.rl_chat_message) {
             //群聊
             val getmMsgList = displayView?.getmMsgList()
@@ -1754,12 +1780,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     //显示白板页面
     override fun addBoardView() {
         TxLogUtils.i("txsdk---addBoardView")
-        mBoard?.isDrawEnable = false
-        mBoard?.boardContentFitMode =
-            TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
-        if (mPresenter!!.getRoomShareStatus()) {
-            skipToBoardPage("0")
-        }
+//        mBoard?.isDrawEnable = false
+//        mBoard?.boardContentFitMode =
+//            TEduBoardController.TEduBoardContentFitMode.TEDU_BOARD_CONTENT_FIT_MODE_NONE
+//        if (mPresenter!!.getRoomShareStatus()) {
+//            skipToBoardPage("0")
+//        }
     }
 
 
@@ -2053,7 +2079,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
-    var paintThickPopup: PaintThickPopup? = null
 
 
     override fun checkOwenrToBigShareScreen(screenUserId: String) {
@@ -2096,42 +2121,43 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             memberEntities.add(memberEntity)
         }
         TxLogUtils.i("memberEntityList" + memberEntities!!.size)
-        if (memberEntities.size == 0) {
+        if (memberEntities.size == 1) {
             showMessage("共享文件失败，会议内暂无其他人员")
             return
         }
         if (memberEntities!!.size == 1) {
             for (i in 0 until memberEntities.size) {
-                try {
-                    val memberEntity = memberEntities.get(i)
-                    val userId = memberEntity.userId
-                    TxLogUtils.i("memberEntityList" + userId)
-                    if (isSameScreen) {
-                        //  跳到
-                        mPresenter!!.startShareWeb(
-                            webId!!,
-                            mPresenter!!.getServiceId(),
-                            mPresenter!!.getSelfUserId(),
-                            userId!!,
-                            name,
-                            cookie
-                        )
 
-                    } else {
-                        //推送链接给小程序
-                        mPresenter?.sendGroupMessage(JSONObject().apply {
-                            put("serviceId", mPresenter!!.getServiceId())
-                            put("type", IMkey.WXPUSHWEBFILE)
-                            put("userId", userId)
-                            put("webId", webId)
-                            put("webUrl", url)
-                            put("fromId", mPresenter!!.getSelfUserId())
-                            put(IMkey.FILENAME, name)
-                        }.toString(), "3")
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+            }
+            try {
+                val memberEntity = memberEntities.get(1)
+                val userId = memberEntity.userId
+                TxLogUtils.i("memberEntityList" + userId)
+                if (isSameScreen) {
+                    //  跳到
+                    mPresenter!!.startShareWeb(
+                        webId!!,
+                        mPresenter!!.getServiceId(),
+                        mPresenter!!.getSelfUserId(),
+                        userId!!,
+                        name,
+                        cookie
+                    )
+
+                } else {
+                    //推送链接给小程序
+                    mPresenter?.sendGroupMessage(JSONObject().apply {
+                        put("serviceId", mPresenter!!.getServiceId())
+                        put("type", IMkey.WXPUSHWEBFILE)
+                        put("userId", userId)
+                        put("webId", webId)
+                        put("webUrl", url)
+                        put("fromId", mPresenter!!.getSelfUserId())
+                        put(IMkey.FILENAME, name)
+                    }.toString(), "3")
                 }
+            } catch (e: JSONException) {
+                e.printStackTrace()
             }
         } else {
             if (selectPersonDialog == null) {
@@ -2500,6 +2526,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun allowstartrecord() {
         //todo
         bt_startrecord.isSelected = true
+        bt_startrecord.text = "结束录制"
+        bt_startrecord.setTextColor(ContextCompat.getColor(this,R.color.tx_color_ff6666))
     }
 
     override fun refuseStartRecord() {
@@ -2529,5 +2557,15 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 //        if (mPresenter!!.getRoomShareStatus()) {
 //            skipToBoardPage("0")
 //        }
+    }
+
+    override fun endRecordAudioFail() {
+
+    }
+
+    override fun endRecordAudioSuccess() {
+        bt_startrecord.isSelected = false
+        bt_startrecord.text = "开始录制"
+        bt_startrecord.setTextColor(ContextCompat.getColor(this,R.color.tx_color_dadada))
     }
 }
