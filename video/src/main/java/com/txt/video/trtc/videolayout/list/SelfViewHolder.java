@@ -155,7 +155,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         TxLogUtils.i("SelfViewHolder","showNoVideo" );
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
         mVideoContainer.setVisibility(!isShow ? View.VISIBLE : View.GONE);
-        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+//        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
     }
 
     public void hideBg(boolean isHide){
@@ -225,12 +225,6 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
 
         showVolume(model.isShowAudioEvaluation());
         itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(getLayoutPosition());
-            }
-        });
-        ivSelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onItemClick(getLayoutPosition());

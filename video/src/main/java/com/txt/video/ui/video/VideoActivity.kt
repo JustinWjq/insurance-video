@@ -59,6 +59,7 @@ import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
 import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
 import com.txt.video.ui.video.plview.V2VideoLayout
+import com.txt.video.ui.video.plview.V3VideoLayout
 import com.txt.video.ui.video.remoteuser.RemoteUserListView
 import com.txt.video.ui.weight.dialog.*
 import com.txt.video.ui.weight.easyfloat.EasyFloat
@@ -164,7 +165,13 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         regeistHeadsetReceiver()
         showInviteBt(isShow = true, noRemoterUser = true)
         mViewVideo = mPresenter!!.getMemberEntityList()[0].meetingVideoView
-        trtc_video_view_layout.setOnClickListener(object : V2VideoLayout.onVideoLayout {
+        layout_root.setOnClickListener(object :View.OnClickListener{
+            override fun onClick(v: View?) {
+                hideBar()
+            }
+        })
+
+        trtc_video_view_layout.setOnClickListener(object : V3VideoLayout.onVideoLayout {
             override fun onClick() {
                 hideBar()
             }
@@ -176,7 +183,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         trtc_video_view_layout.initAdapter(mPresenter?.getMemberEntityList())
         trtc_video_view_layout.setTRTCRemoteUserManager(mPresenter?.getTRTCRemoteUserManager())
         trtc_video_view_layout.setData(mPresenter?.getStringMemberEntityMap())
-        trtc_video_view_layout.setPageListener(object : V2VideoLayout.IBusListener {
+        trtc_video_view_layout.setPageListener(object : V3VideoLayout.IBusListener {
             override fun onItemVisible(fromItem: Int, toItem: Int) {
                 TxLogUtils.i("onItemVisible:fromItem" + fromItem + "------toItem" + toItem)
                 if (fromItem == 0) {
@@ -236,7 +243,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             trtc_video_view_layout!!.bigMeetingEntity.isMuteAudio = isMute
             trtc_video_view_layout!!.bigMeetingEntity.isShowAudioEvaluation = !isMute
             trtc_video_view_layout!!.notifyItemChangedPld(
-                mPresenter?.getTRTCParams()!!.userId,
+
                 0, VOLUME_SHOW
             )
         }
@@ -257,7 +264,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         if (null != entity) {
             entity?.isMuteVideo = isMute
             trtc_video_view_layout!!.notifyItemChangedPld(
-                entity?.userId!!,
                 mPresenter?.getMemberEntityList()!!.indexOf(
                     entity
                 ), VIDEO_CLOSE
@@ -265,7 +271,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
             trtc_video_view_layout!!.bigMeetingEntity.isMuteVideo = isMute
             trtc_video_view_layout!!.notifyItemChangedPld(
-                mPresenter?.getTRTCParams()!!.userId,
                 0, VIDEO_CLOSE
             )
         }
@@ -422,7 +427,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
         if (entity != null) {
             trtc_video_view_layout!!.notifyItemChangedPld(
-                entity?.userId!!,
                 mPresenter?.getMemberEntityList()!!.indexOf(
                     entity
                 ), VIDEO_CLOSE
@@ -493,7 +497,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 MemberListAdapter.VOLUME
             )
         } else {
-            trtc_video_view_layout!!.changeBigScreenViewVoice(volume)
         }
 
 
@@ -778,7 +781,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 if (null == TXSdk.getInstance().onFriendBtListener) {
                     showMessage( IBaseView.MessageType.MESSAGETYPE_FAIL,"该方法暂未注册")
                 } else {
-                    TXSdk.getInstance().onFriendBtListener.onSuccess()
+                    TXSdk.getInstance().onFriendBtListener.onSuccess(mPresenter!!.getRoomId())
                 }
             }
 
@@ -811,7 +814,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         showMessage("该方法暂未注册")
 //                        TXSdk.getInstance().onFriendBtListener.onFail(60001,"该方法暂未注册")
                     } else {
-                        TXSdk.getInstance().onFriendBtListener.onSuccess()
+                        TXSdk.getInstance().onFriendBtListener.onSuccess(mPresenter!!.getRoomId())
                         TXSdk.getInstance().share = true
                         //暂时离开
 //                        skipCaller()
@@ -1728,6 +1731,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     skipToBoardPage("2",mFileSdkBean)
                 }
                 FileType.h5 -> {
+                    if (RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size == 1) {
+                        showMessage("共享文件失败，会议内暂无其他人员")
+                        return
+                    }
                     mPresenter?.addShareUrl(TXSdk.getInstance().agent,
                         mFileSdkBean.h5Name,
                         mFileSdkBean.h5Url,
@@ -2121,10 +2128,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             memberEntities.add(memberEntity)
         }
         TxLogUtils.i("memberEntityList" + memberEntities!!.size)
-        if (memberEntities.size == 1) {
-            showMessage("共享文件失败，会议内暂无其他人员")
-            return
-        }
+
         if (memberEntities!!.size == 1) {
             for (i in 0 until memberEntities.size) {
 

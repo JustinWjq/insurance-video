@@ -160,8 +160,12 @@ public class MeetingPageLayoutManager1 extends RecyclerView.LayoutManager implem
             }
         } else {
             mMaxScrollX = 0;
+            if (getItemCount()<4) {
+                mMaxScrollY = 0;
+            }else{
+                mMaxScrollY = (getItemCount()-3) * getUsableHeight()/3 ;
+            }
 
-            mMaxScrollY = (getItemCount()-3) * getUsableHeight()/3 ;
 //            mMaxScrollY = (mPageCount-1) * getUsableHeight() ;
             if (mOffsetY > mMaxScrollY) {
                 mOffsetY = mMaxScrollY;

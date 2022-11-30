@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,15 +13,16 @@
         android:text="关键话术"
         android:textSize="@dimen/tx_sp_12"
         android:src="@drawable/tx_noword"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <LinearLayout
         android:id="@+id/ll_word"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/tx_dp_12"
+        android:visibility="gone"
         android:background="@drawable/tx_shape_round_12_left_bf000000"
         >
         <TextView

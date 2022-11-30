@@ -51,7 +51,7 @@ public class TUIBarrageIMService {
     public void unInitImListener() {
 //        TICManager.getInstance()
 //        V2TIMManager.getInstance().setGroupListener(null);
-        TICManager.getInstance().removeIMMessageListener(mSimpleListener);
+//        TICManager.getInstance().removeIMMessageListener(mSimpleListener);
     }
 
     public void sendBarrage(TUIBarrageModel model, final TUIBarrageCallBack.ActionCallback callback) {
@@ -145,9 +145,10 @@ public class TUIBarrageIMService {
 
         @Override
         public void onTICRecvGroupTextMessage(String fromUserId, String text) {
+            TxLogUtils.i(TAG,"onTICRecvGroupTextMessage"+text);
             if (mPresenter != null) {
                 try {
-                    TxLogUtils.i(TAG,"onTICRecvGroupTextMessage"+text);
+
                     JSONObject jsonObject = new JSONObject(text);
                     String type = jsonObject.optString("type");
                     if (IMkey.wxIM.equals(type)) {

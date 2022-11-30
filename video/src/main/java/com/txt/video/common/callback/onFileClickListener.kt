@@ -6,6 +6,6 @@ package com.txt.video.common.callback
  * des ：点击共享文件回调，跳转到甲方的页面
  */
 open interface  onFileClickListener{
-    fun onSuccess()
+    fun onSuccess(roomId : Int)
     fun onFail(errCode:Int,errMsg:String)
 }

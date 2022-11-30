@@ -166,7 +166,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         }
         mNoVideoContainer.setVisibility(isShow ? View.VISIBLE : View.GONE);
         mVideoContainer.setVisibility(!isShow ? View.VISIBLE : View.GONE);
-        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+//        ll_bottom.setVisibility(!isShow ? View.VISIBLE : View.GONE);
     }
 
     public void addVideoView(MeetingVideoView meetingVideoView) {

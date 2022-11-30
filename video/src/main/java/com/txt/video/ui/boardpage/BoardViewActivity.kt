@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.RelativeLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.google.gson.Gson
 import com.tencent.teduboard.TEduBoardController
 import com.txt.video.R
 import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
-import com.txt.video.base.constants.VideoCode
 import com.txt.video.common.callback.onCheckDialogListenerCallBack
 import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.common.TxBaseDialog
@@ -26,9 +26,7 @@ import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.ThickType
 import com.txt.video.net.bean.ToolType
 import com.txt.video.net.utils.TxLogUtils
-import com.txt.video.trtc.ConfigHelper
 import com.txt.video.trtc.TICManager
-import com.txt.video.trtc.TRTCCloudManager
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
@@ -183,12 +181,23 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 }
                 tx_rv.adapter = picQuickAdapter
                 initWord()
+
                 txWordDisplayView?.setContent(picsWordLists?.get(0))
+                if( picsWordLists?.get(0)?.isEmpty() == true){
+                    checkLand(isLand,false)
+                }else{
+                    checkLand(isLand,true)
+                }
                 picQuickAdapter?.setOnItemClickListener { adapter, view, position ->
                     if (0!= boardIdList.size) {
                         boardController?.gotoBoard(boardIdList?.get(position))
                         //点击展示对应的提词器
                         txWordDisplayView?.setContent(picsWordLists?.get(position))
+                        if (picsWordLists?.get(position)?.isEmpty() == true){
+                            checkLand(isLand,false)
+                        }else{
+                            checkLand(isLand,true)
+                        }
                     }
 
                 }
@@ -207,6 +216,12 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         txWordDisplayView = TxWordDisplayView(this, "")
         setWordShow(txWordDisplayView as View)
         rl_word_show.visibility = View.VISIBLE
+        txWordDisplayView?.setOnPenListener(object : TxWordDisplayView.onOpenListener{
+            override fun open(isOpen: Boolean) {
+                checkLand(isLand,false)
+            }
+
+        })
     }
 
     private fun setWordShow(view: View) {
@@ -214,9 +229,6 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             DisplayUtils.getScreenHeight(this) / 2,
             DisplayUtils.getScreenHeight(this) / 2 + 50
         )
-        params.leftMargin = 15
-        params.rightMargin = 15
-        params.bottomMargin = 10
 
         rl_word_show.addView(view, params)
     }
@@ -368,7 +380,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         }
 
     }
-
+    var isLand = true
     //横竖屏切换逻辑
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -384,6 +396,9 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             bvlayoutParams?.width = Utils.getWindowHeight(this) / 9 * 16
 
             iv_switchscreen.isSelected = true
+            isLand = true
+            txWordDisplayView?.setLand(true);
+            //
         } else {
             TxLogUtils.i("Configuration.ORIENTATION_PORTRAIT")
             val layoutParams1 = boardController?.boardRenderView?.layoutParams
@@ -395,7 +410,10 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
             bvlayoutParams?.height = Utils.getWindowWidth(this) / 16 * 9
 
             iv_switchscreen.isSelected = false
+            isLand = false
+            txWordDisplayView?.setLand(true);
         }
+        checkLand(isLand,false)
     }
 
     var paintThickPopup: PaintThickPopup? = null
@@ -835,5 +853,125 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         showBartimer = null
     }
 
+    fun setConstrainSet(){
+        //iv_switchscreen
+        //rl_word_show
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(layout_root)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.TOP)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.TOP)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.TOP,R.id.iv_endshare,ConstraintSet.BOTTOM)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+
+        constraintSet.applyTo(layout_root)
+    }
+
+    fun setConstrainSetPro(){
+        //iv_switchscreen
+        //rl_word_show
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(layout_root)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.TOP)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.TOP)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.TOP,R.id.iv_endshare,ConstraintSet.BOTTOM)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+
+        constraintSet.applyTo(layout_root)
+    }
+
+
+    fun setConstrainSetHasWord(){
+        //iv_switchscreen
+        //rl_word_show
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(layout_root)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.TOP)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.RIGHT,R.id.rl_word_show,ConstraintSet.LEFT)
+
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.TOP)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.TOP,R.id.iv_endshare,ConstraintSet.BOTTOM)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.BOTTOM,R.id.iv_switchscreen,ConstraintSet.BOTTOM)
+
+        constraintSet.applyTo(layout_root)
+    }
+
+    fun setConstrainSetHasWordPro(){
+        //iv_switchscreen
+        //rl_word_show
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(layout_root)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.TOP)
+        constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.RIGHT)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.BOTTOM)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.TOP)
+        constraintSet.clear(R.id.rl_word_show,ConstraintSet.LEFT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
+        constraintSet.connect(R.id.rl_word_show,ConstraintSet.TOP,R.id.iv_endshare,ConstraintSet.BOTTOM)
+
+        constraintSet.applyTo(layout_root)
+    }
+
+    fun checkLand(isLand :Boolean,hasWord1:Boolean){
+        try {
+            var hasWord = txWordDisplayView?.getContent()!!
+
+            TxLogUtils.i("checkLand","isLand:"+isLand +"-----hasWord"+hasWord)
+            if (isLand) {
+                if (!hasWord.isEmpty() && txWordDisplayView?.isSelect!!) {
+
+                    setConstrainSetHasWord()
+                    //改变布局
+                    txWordDisplayView?.changView()
+                }else{
+                    setConstrainSet()
+                }
+
+            }else{
+                if (!hasWord.isEmpty()&& txWordDisplayView?.isSelect!!) {
+                    setConstrainSetHasWordPro()
+                    //改变布局
+                    txWordDisplayView?.changView()
+                }else{
+                    setConstrainSetPro()
+                }
+            }
+        }catch (e:Exception){
+
+        }
+
+    }
 
 }

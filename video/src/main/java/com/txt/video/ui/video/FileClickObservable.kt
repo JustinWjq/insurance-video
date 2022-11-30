@@ -12,7 +12,7 @@ import java.util.*
  */
 class FileClickObservable : TICObservable<onFileClickListener>(),onFileClickListener{
 
-    override fun onSuccess() {
+    override fun onSuccess(roomId : Int) {
         val tmpList: LinkedList<WeakReference<onFileClickListener>> =
             LinkedList<WeakReference<onFileClickListener>>(listObservers)
         val it: Iterator<WeakReference<onFileClickListener>> =
@@ -21,7 +21,7 @@ class FileClickObservable : TICObservable<onFileClickListener>(),onFileClickList
         while (it.hasNext()) {
             val t: onFileClickListener? = it.next().get()
             if (t != null) {
-                t.onSuccess()
+                t.onSuccess(roomId)
             }
         }
     }

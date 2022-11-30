@@ -65,10 +65,10 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
         post(new Runnable() {
             @Override
             public void run() {
-                ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 +50;
-                layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
-                setLayoutParams(layoutParams);
+//                ViewGroup.LayoutParams layoutParams = getLayoutParams();
+//                layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 +50;
+//                layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
+//                setLayoutParams(layoutParams);
             }
         });
         tv_text = findViewById(R.id.tv_text);
@@ -109,12 +109,19 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
                     return;
                 }
                 hideWordView(false);
+                if (null != monOpenListener) {
+                    monOpenListener.open(true);
+                }
+
             }
         });
         tx_switch_word.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideWordView(true);
+                if (null != monOpenListener) {
+                    monOpenListener.open(false);
+                }
             }
         });
     }
@@ -128,30 +135,37 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
                     @Override
                     public void run() {
                         ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                        layoutParams.height = tx_switch_word.getHeight()+100;
-                        layoutParams.width = layoutParams.width/3*2 ;
+                        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                         setLayoutParams(layoutParams);
                     }
                 });
+                isSelect = false;
             }else{
                 ll_word.setVisibility(VISIBLE);
                 tv_title1.setVisibility(GONE);
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ViewGroup.LayoutParams layoutParams = getLayoutParams();
-                        layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/2 ;
-                        layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
-                        setLayoutParams(layoutParams);
-                    }
-                });
+
+                changView();
+                isSelect = true; //打开
             }
         }catch (Exception e){
 
         }
-
     }
 
+    public void changView(){
+        if (isLand) {
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = 500;
+            layoutParams.width =DisplayUtils.INSTANCE.getScreenHeight(getContext())/2  ;
+            setLayoutParams(layoutParams);
+        }else{
+            ViewGroup.LayoutParams layoutParams = getLayoutParams();
+            layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext())/4 ;
+            layoutParams.width =  DisplayUtils.INSTANCE.getScreenWidth(getContext()) ;
+            setLayoutParams(layoutParams);
+        }
+    }
     @Override
     protected void onDetachedFromWindow() {
         if (mPresenter != null) {
@@ -173,6 +187,13 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
             }
         }
     }
+   public String  getContent(){
+        if (null != tv_text) {
+          return   tv_text.getText().toString();
+        }else {
+            return  "";
+        }
+    }
 
     boolean isSelect = false;
 
@@ -182,5 +203,21 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
 
     public void setSelect(boolean select) {
         isSelect = select;
+    }
+
+    boolean isLand = true;
+
+    public void setLand(boolean isLand){
+        this.isLand = isLand;
+    }
+
+
+    public interface onOpenListener{
+        void open(boolean isOpen);
+    }
+    public onOpenListener monOpenListener;
+
+    public void setOnPenListener(onOpenListener mOnOpenListener){
+        this.monOpenListener = mOnOpenListener;
     }
 }

@@ -15,45 +15,7 @@
         android:layout_width="match_parent"
         android:background="@color/tx_black"
         android:layout_height="match_parent" />
-    <LinearLayout
-        android:id="@+id/ll_bottom1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@drawable/tx_shape_08101d"
-        >
-        <ImageView
-            android:id="@+id/trtc_icon_host"
-            android:layout_width="15dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            />
 
-        <ImageView
-            android:id="@+id/trtc_pb_audio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/tx_dp_10"
-            android:src="@drawable/tx_icon_volume_small_0"
-            />
-
-        <TextView
-            android:id="@+id/trtc_tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:layout_marginLeft="@dimen/tx_dp_2"
-            android:textColor="@color/tx_color_d7d7d7"
-            android:textSize="@dimen/tx_sp_12"
-            tools:text="XXXX" />
-
-
-    </LinearLayout>
     <RelativeLayout
         android:id="@+id/trtc_fl_no_video"
         android:layout_width="match_parent"
@@ -103,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:background="@drawable/tx_shape_08101d"
                 >
                 <ImageView
@@ -140,7 +103,45 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_bottom1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/tx_shape_08101d"
+        >
+        <ImageView
+            android:id="@+id/trtc_icon_host"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
 
+        <ImageView
+            android:id="@+id/trtc_pb_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/tx_dp_10"
+            android:src="@drawable/tx_icon_volume_small_0"
+            />
+
+        <TextView
+            android:id="@+id/trtc_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_marginLeft="@dimen/tx_dp_2"
+            android:textColor="@color/tx_color_d7d7d7"
+            android:textSize="@dimen/tx_sp_12"
+            tools:text="XXXX" />
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/tx_black"
@@ -134,7 +135,6 @@
         android:id="@+id/ll_borads"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/tx_dp_20"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -226,17 +226,15 @@
         android:onClick="onTxClick"
         style="@style/tx_style_button"
         app:layout_constraintRight_toLeftOf="@+id/rl_word_show"
-        app:layout_constraintBottom_toBottomOf="@+id/rl_word_show"
+        app:layout_constraintBottom_toBottomOf="@+id/ll_borads"
         />
 
     <RelativeLayout
         android:id="@+id/rl_word_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/tx_dp_20"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ll_borads"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

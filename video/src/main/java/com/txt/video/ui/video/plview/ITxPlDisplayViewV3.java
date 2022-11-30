@@ -3,7 +3,7 @@ package com.txt.video.ui.video.plview;
 
 import androidx.annotation.Nullable;
 
-public interface ITxPlDisplayView {
+public interface ITxPlDisplayViewV3 {
 
     /**
      * 横竖屏切换
