@@ -191,8 +191,8 @@ public class TXSdk extends TXSDKApi {
     }
 
     @Override
-    public void startVideo(Activity context, String agent, String orgAccount, String sign, StartVideoResultOnListener listener) {
-        TXManagerImpl.getInstance().checkPermission(context, agent, orgAccount, sign, null, listener, true);
+    public void startVideo(Activity context, String agent,String userName, String orgAccount, String sign, StartVideoResultOnListener listener) {
+        TXManagerImpl.getInstance().checkPermission(context, agent,userName, orgAccount, sign, null, listener, true);
     }
 
 

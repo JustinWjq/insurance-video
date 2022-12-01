@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             TXSdk.getInstance().startVideo(
                 this,
                 loginName,
+                loginName,
                 orgAccount,
                 encrypt,
                 object :

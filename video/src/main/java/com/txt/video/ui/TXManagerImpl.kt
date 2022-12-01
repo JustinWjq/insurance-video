@@ -35,6 +35,7 @@ class TXManagerImpl : TXManager {
     override fun checkPermission(
         context: Activity?,
         agent: String?,
+        userName: String,
         orgAccount: String?,
         sign: String?,
         businessData: JSONObject?,
@@ -45,7 +46,7 @@ class TXManagerImpl : TXManager {
             context,
             "",
             agent,
-            "",
+            userName,
             orgAccount,
             sign,
             businessData,
@@ -80,7 +81,7 @@ class TXManagerImpl : TXManager {
                         )
                     ) {
                         if (isAgent) {
-                            enterRoom(context, account, orgAccount, sign, businessData, listener)
+                            enterRoom(context, account,userName, orgAccount, sign, businessData, listener)
                         } else {
                             joinRoom(
                                 context,
@@ -118,7 +119,7 @@ class TXManagerImpl : TXManager {
         } else {
             i("txsdk---joinRoom----23以下 ")
             if (isAgent) {
-                enterRoom(context, userName, orgAccount, sign, businessData, listener)
+                enterRoom(context, account,userName, orgAccount, sign, businessData, listener)
             } else {
                 joinRoom(
                     context,
@@ -140,6 +141,7 @@ class TXManagerImpl : TXManager {
     override fun enterRoom(
         context: Activity?,
         agent: String?,
+        userName:String?,
         orgAccount: String?,
         sign: String?,
         businessData: JSONObject?,
@@ -153,7 +155,7 @@ class TXManagerImpl : TXManager {
             }
         } else {
             SystemHttpRequest.getInstance()
-                .startAgent(agent, orgAccount, sign, businessData, object : RequestHttpCallBack {
+                .startAgent(agent,userName, orgAccount, sign, businessData, object : RequestHttpCallBack {
                     override fun onSuccess(json: String) {
 
                         mHandler.post {

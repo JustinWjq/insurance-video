@@ -159,7 +159,7 @@ public class SystemHttpRequest {
 
 
     //代理人进入房间
-    public void startAgent(String loginName, String orgAccount, String sign, JSONObject businessData, HttpRequestClient.RequestHttpCallBack callback) {
+    public void startAgent(String loginName,String userName, String orgAccount, String sign, JSONObject businessData, HttpRequestClient.RequestHttpCallBack callback) {
         JSONObject jsonObject;
         if (businessData==null) {
             jsonObject = new JSONObject();
@@ -169,6 +169,7 @@ public class SystemHttpRequest {
 
         try {
             jsonObject.put("agent", loginName);
+            jsonObject.put("userName", userName);
             jsonObject.put("orgAccount", orgAccount);
             TxLogUtils.i("sign---" + sign);
             jsonObject.put("sign", sign);

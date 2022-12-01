@@ -2564,7 +2564,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun endRecordAudioFail() {
-
+        TxLogUtils.i("endRecordAudioFail")
+        showMessage("结束录制失败，请重试")
     }
 
     override fun endRecordAudioSuccess() {

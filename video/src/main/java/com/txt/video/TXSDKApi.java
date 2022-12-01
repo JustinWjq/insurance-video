@@ -161,6 +161,7 @@ public abstract class TXSDKApi {
      * @note
      */
     public abstract void startVideo(final Activity context, final String agent,
+                                    final String  userName,
                                     String orgAccount, String sign,
                                     final StartVideoResultOnListener listener);
 

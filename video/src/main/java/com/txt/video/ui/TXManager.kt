@@ -19,6 +19,7 @@ interface TXManager {
     fun checkPermission(
         context: Activity?,
         agent: String?,
+        userName: String,
         orgAccount: String?,
         sign: String?,
         businessData: JSONObject?,
@@ -43,6 +44,7 @@ interface TXManager {
     fun enterRoom(
         context: Activity?,
         agent: String?,
+        userName: String?,
         orgAccount: String?,
         sign: String?,
         businessData: JSONObject?,
