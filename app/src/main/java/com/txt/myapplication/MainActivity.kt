@@ -179,12 +179,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         TXSdk.getInstance().addOnFileClickListener(object :onFileClickListener{
             override fun onSuccess(roomId : Int) {
              //点击文件按钮跳转
-                val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,"http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089","");
-                mFileSdkBeanVideo.h5Name ="长链测试地址"
-
-//                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,
-//                    "https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/23_1669795818.mp4")
+//                val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,"http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089","");
 //                mFileSdkBeanVideo.h5Name ="长链测试地址"
+
+                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,
+                    "https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/23_1669795818.mp4")
+                mFileSdkBeanVideo.h5Name ="长链测试地址"
 
 //                val arrayList = ArrayList<String>()
 //                arrayList.add("https://gdrb-dingsun-test-1255383806.cos.ap-shanghai.myqcloud.com/%E7%88%B1%E5%BF%83%E4%BA%BA%E5%AF%BF%E5%AE%88%E6%8A%A4%E7%A5%9E2.0%E7%BB%88%E8%BA%AB%E5%AF%BF%E9%99%A9%E6%9D%A1%E6%AC%BE.jpg")

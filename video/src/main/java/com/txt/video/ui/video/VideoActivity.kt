@@ -714,7 +714,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun showBroad() {
-
+        skipToBoardPage("1",mFileSdkBean)
 
     }
 
@@ -1728,6 +1728,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
                     mPresenter?.setRoomShareStatus(true)
+                    mPresenter?.setShareStatus(true, "", null)
                     skipToBoardPage("2",mFileSdkBean)
                 }
                 FileType.h5 -> {
@@ -1735,6 +1736,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         showMessage("共享文件失败，会议内暂无其他人员")
                         return
                     }
+                    mPresenter?.setScreenStatus(true)
                     mPresenter?.addShareUrl(TXSdk.getInstance().agent,
                         mFileSdkBean.h5Name,
                         mFileSdkBean.h5Url,
@@ -1749,6 +1751,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         mPresenter?.setIMTextData(IMkey.SHAREWHITEBOARD)
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
+                    mPresenter?.setShareStatus(true, "", null)
                     mPresenter?.setRoomShareStatus(true)
                     skipToBoardPage("1",mFileSdkBean)
                 }
