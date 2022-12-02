@@ -114,6 +114,7 @@ object DisplayUtils {
         return point.y - getNavigationBarCurrentHeight(context)
     }
 
+
     /**
      * 华为手机是否隐藏了虚拟导航栏
      * @return true 表示隐藏了，false 表示未隐藏

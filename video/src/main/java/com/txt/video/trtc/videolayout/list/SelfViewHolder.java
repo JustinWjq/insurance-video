@@ -239,6 +239,22 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
                     .into(ivSelf);
         }
         hideBg(false);
+        mVideoContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(getLayoutPosition());
+                }
+            }
+        });
+        mNoVideoContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(getLayoutPosition());
+                }
+            }
+        });
     }
 
     //iv_video_head

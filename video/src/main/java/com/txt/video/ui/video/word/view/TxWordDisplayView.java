@@ -169,7 +169,7 @@ public class TxWordDisplayView extends FrameLayout implements ITxWordDisplayView
     @Override
     protected void onDetachedFromWindow() {
         if (mPresenter != null) {
-            mPresenter.destroyPresenter();
+//            mPresenter.destroyPresenter();
         }
         super.onDetachedFromWindow();
     }

@@ -165,6 +165,6 @@ public class BoardViewPresenter(val context: Context, val activity: BoardViewAct
 
     override fun detachView() {
         super.detachView()
-        TICManager.getInstance().removeIMMessageListener(this)
+//        TICManager.getInstance().removeIMMessageListener(this)
     }
 }

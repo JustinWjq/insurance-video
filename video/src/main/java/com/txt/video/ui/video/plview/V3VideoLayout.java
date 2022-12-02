@@ -1,6 +1,7 @@
 package com.txt.video.ui.video.plview;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -143,12 +144,15 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         ll_videolayouttwo.setOrientation(LinearLayout.HORIZONTAL);
         trtc_video_view_layout.setLayoutManager(verticalmeetingpagelayoutmanager1);
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
-        layoutParams.width = DisplayUtils.INSTANCE.getScreenWidth(getContext()) / 10 * 3;
+        Point screenSize = DisplayUtils.INSTANCE.getScreenSize(getContext());
+
+        layoutParams.width =  screenSize.x / 10 * 3;
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         trtc_video_view_layout.setLayoutParams(layoutParams);
 
 
         ViewGroup.LayoutParams rl_leftlayoutParams = rl_left.getLayoutParams();
-        rl_leftlayoutParams.width = DisplayUtils.INSTANCE.getScreenWidth(getContext()) / 10 * 7;
+        rl_leftlayoutParams.width = screenSize.x / 10 * 7;
         rl_leftlayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         rl_left.setLayoutParams(rl_leftlayoutParams);
         rl_left.setVisibility(VISIBLE);
@@ -177,6 +181,10 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
             //判断人数
             TxLogUtils.i(TAG, "notifyItemInserted" + mMemberEntityList.size());
             mMemberListAdapter.notifyItemInserted(position);
+            if ( mMemberEntityList.size()>3){
+                rl_video_view_layout.setClickable(false);
+            }
+
         }
     }
 
@@ -186,6 +194,10 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         TxLogUtils.i(TAG, "notifyItemRemoved" + position);
         if (null != mMemberListAdapter) {
             mMemberListAdapter.notifyItemRemoved(position);
+            if ( mMemberEntityList.size()<4){
+                rl_video_view_layout.setClickable(true);
+            }
+
         }
     }
 
@@ -255,7 +267,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
                             @Override
                             public void onItemClick(int position) {
                                 if (null != mIBusListener) {
-//                                    mIBusListener.onRvItemClick(position);
+                                    mIBusListener.onRvItemClick(position);
                                 }
                             }
 

@@ -429,7 +429,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             trtc_video_view_layout!!.notifyItemChangedPld(
                 mPresenter?.getMemberEntityList()!!.indexOf(
                     entity
-                ), VIDEO_CLOSE
+                )
             )
         }
 
@@ -742,7 +742,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             override fun onItemClick(url: String?, images: MutableList<String>) {
                 //点击显示白板
-                mPresenter?.setShareStatus(true, url, images)
+                mPresenter?.setShareStatus(true, url, images,true)
 
             }
 
@@ -787,7 +787,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             override fun onCheckBroad() {
 
-                mPresenter?.setShareStatus(true, null, null)
+                mPresenter?.setShareStatus(true, null, null,true)
             }
 
         })
@@ -1158,24 +1158,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             VideoCode.FINISHPAGE_CODE -> {
                 if (requestCode == VideoCode.SKIPBOARDPAGE_CODE) {
                     mPresenter?.isSkipBoradPage = false
-                    restoreBoardView()
-                    val extras = data?.extras
-                    val position = extras?.getInt(IntentKey.CHECKTOOLSPOSTIONS, -1)
-                    val endWhiteBroad = extras?.getBoolean(IntentKey.ENDWHITEBROAD, false)
-                    TxLogUtils.i("endWhiteBroad ---$endWhiteBroad")
-                    if (endWhiteBroad!!) {
-                        mPresenter?.setRoomShareStatus(false)
-                        showPersonWhiteBroad(false)
-                    } else {
-                        if (-1 != position) {
-                            val isShowPop = extras.getBoolean(IntentKey.ISSHOWPOP)
-                            restoreBoardTool(position!!, isShowPop)
-                        } else {
-                            hideBoardTools()
-                        }
-                    }
-
-
+                    TUIBarragePresenter.sharedInstance().initDisplayView(displayView)
                 }
             }
             Activity.RESULT_OK -> {
@@ -1728,7 +1711,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
                     mPresenter?.setRoomShareStatus(true)
-                    mPresenter?.setShareStatus(true, "", null)
+                    mPresenter?.setShareStatus(true, "", null,false)
                     skipToBoardPage("2",mFileSdkBean)
                 }
                 FileType.h5 -> {
@@ -1751,7 +1734,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         mPresenter?.setIMTextData(IMkey.SHAREWHITEBOARD)
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
-                    mPresenter?.setShareStatus(true, "", null)
+                    mPresenter?.setShareStatus(true, "", null,false)
                     mPresenter?.setRoomShareStatus(true)
                     skipToBoardPage("1",mFileSdkBean)
                 }
@@ -1865,7 +1848,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun onCheckBroad() {
-        mPresenter?.setShareStatus(true, "", null)
+//        mPresenter?.setShareStatus(true, "", null,true)
 
     }
 
@@ -2444,6 +2427,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         setBarrage(tuiBarbt as View)
         setBarrageShow(displayView as View)
+        TUIBarragePresenter.sharedInstance().initDisplayView(displayView)
         tuiBarbt?.sendView?.setBarrageListener(object : ITUIBarrageListener {
             override fun onSuccess(code: Int, msg: String, model: TUIBarrageModel) {
                 if (model == null || TextUtils.isEmpty(model.content)) {

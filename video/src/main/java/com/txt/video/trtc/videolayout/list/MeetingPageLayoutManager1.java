@@ -88,10 +88,10 @@ public class MeetingPageLayoutManager1 extends RecyclerView.LayoutManager implem
      */
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        TxLogUtils.i("Item onLayoutChildren");
-        TxLogUtils.i("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
-        TxLogUtils.i("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
-        TxLogUtils.i("Item onLayoutChildren state = " + state);
+        TxLogUtils.d(TAG,"Item onLayoutChildren");
+        TxLogUtils.d(TAG,"Item onLayoutChildren isPreLayout = " + state.isPreLayout());
+        TxLogUtils.d(TAG,"Item onLayoutChildren isMeasuring = " + state.isMeasuring());
+        TxLogUtils.d(TAG,"Item onLayoutChildren state = " + state);
 
         // 如果是 preLayout 则不重新布局
         if (state.isPreLayout() || getUsableWidth() == 0) {
@@ -279,7 +279,7 @@ public class MeetingPageLayoutManager1 extends RecyclerView.LayoutManager implem
         }
 //        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
         if (mPageListener != null) {
-            mPageListener.onItemVisible(startPos, stopPos);
+            mPageListener.onItemVisible(0, getItemCount()-1);
         }
     }
 

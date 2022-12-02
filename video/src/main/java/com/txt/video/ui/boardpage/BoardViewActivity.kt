@@ -18,6 +18,7 @@ import com.txt.video.R
 import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
+import com.txt.video.base.constants.VideoCode
 import com.txt.video.common.callback.onCheckDialogListenerCallBack
 import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.common.TxBaseDialog
@@ -31,6 +32,7 @@ import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
 import com.txt.video.trtc.videolayout.Utils
 import com.txt.video.ui.video.VideoActivity
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel
+import com.txt.video.ui.video.barrage.presenter.TUIBarragePresenter
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
 import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
@@ -236,6 +238,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     override fun finishPage() {
         boardController?.reset()
         board_view_container.removeView(boardController?.boardRenderView)
+        setResult(VideoCode.FINISHPAGE_CODE)
         finish()
     }
 
@@ -771,6 +774,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         tuiBarbt = TUIBarrageButton(this, groupId, serviceId)
         //弹幕显示View
         displayView = TUIBarrageDisplayView(this, groupId)
+        TUIBarragePresenter.sharedInstance().initDisplayView(displayView)
         setBarrage(tuiBarbt as View)
         setBarrageShow(displayView as View)
         tuiBarbt?.sendView?.setBarrageListener(object : ITUIBarrageListener {
@@ -886,6 +890,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         constraintSet.clear(R.id.iv_switchscreen,ConstraintSet.LEFT)
         constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.RIGHT,R.id.layout_root,ConstraintSet.RIGHT)
         constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.ll_borads,ConstraintSet.TOP)
+        constraintSet.connect(R.id.iv_switchscreen,ConstraintSet.BOTTOM,R.id.rl_barrage_audience,ConstraintSet.BOTTOM)
 
         constraintSet.clear(R.id.rl_word_show,ConstraintSet.RIGHT)
         constraintSet.clear(R.id.rl_word_show,ConstraintSet.BOTTOM)

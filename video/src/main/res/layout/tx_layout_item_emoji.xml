@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tv_emoji"
     android:padding="@dimen/tx_dp_10"
+    android:textSize="20sp"
     android:layout_width="50dp"
     android:layout_height="50dp"
    />

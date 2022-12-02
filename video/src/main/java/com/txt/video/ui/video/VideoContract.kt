@@ -292,7 +292,8 @@ public class VideoContract {
         fun setShareStatus(
             screenStatus: Boolean,
             url: String?,
-            images: MutableList<String>?
+            images: MutableList<String>?,
+            needCallBack :Boolean
         )
 
         fun deleteFile(id: String?)

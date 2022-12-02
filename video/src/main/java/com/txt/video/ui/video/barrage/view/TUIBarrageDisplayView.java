@@ -63,8 +63,8 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
     }
 
     private void initPresenter() {
-        mPresenter =  TUIBarragePresenter.sharedInstance();
-        mPresenter.initDisplayView(this);
+//        mPresenter =  TUIBarragePresenter.sharedInstance();
+//        mPresenter.initDisplayView(this);
 
     }
 
@@ -87,7 +87,7 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
     @Override
     protected void onDetachedFromWindow() {
         if (mPresenter != null) {
-            mPresenter.destroyPresenter();
+//            mPresenter.destroyPresenter();
         }
         super.onDetachedFromWindow();
     }
@@ -121,6 +121,7 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
         mMsgList.add(entity);
         mAdapter.notifyDataSetChanged();
         mRecyclerMsg.smoothScrollToPosition(mAdapter.getItemCount());
+        TxLogUtils.i("mRecyclerMsg",""+mAdapter.getItemCount());
         if (null != mBarrageListener) {
             mBarrageListener.onSuccess(200,"",model);
         }
