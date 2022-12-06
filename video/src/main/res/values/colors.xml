@@ -9,6 +9,7 @@
     <color name="tx_black_80">#80000000</color>
     <color name="tx_black">#000000</color>
     <color name="tx_color_80_black">#80000000</color>
+    <color name="tx_color_80_white">#CCFFFFFF</color>
     <color name="tx_08101d">#08101d</color>
     <color name="tx_divider">#EEEEEE</color>
     <color name="tx_color_1da575">#1da575</color>
@@ -24,5 +25,8 @@
     <color name="tx_color_006dff">#006dff</color>
     <color name="tx_color_666666">#666666</color>
     <color name="tx_color_e6b980">#e6b980</color>
+    <color name="tx_color_676767">#676767</color>
+    <color name="tx_color_aaaaaa">#aaaaaa</color>
+    <color name="tx_color_bbbbbb">#bbbbbb</color>
 
 </resources>

@@ -17,6 +17,9 @@ import com.txt.video.common.dialog.common.TxCommonDialog;
 import com.txt.video.net.bean.UserInfoBean;
 import com.txt.video.ui.weight.adapter.UserInfoDialogAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -32,28 +35,42 @@ public final class TxInfoDialog {
             TextView.OnEditorActionListener {
 
         private OnListener mListener;
-
+        private  RecyclerView rv_file;
         public Builder(Context context) {
             super(context);
-            setGravity(Gravity.CENTER);
+            setGravity(Gravity.BOTTOM);
             setThemeStyle(R.style.tx_MyDialog);
             setContentView(R.layout.tx_layout_userinfo);
             setAnimStyle(TxBaseDialog.ANIM_DEFAULT);
-            RecyclerView rv_file = findViewById(R.id.rv_file);
-            ArrayList zhanyAl = new ArrayList<UserInfoBean>();
-            zhanyAl.add(new UserInfoBean("真实姓名：", "张三"));
-            zhanyAl.add(new UserInfoBean("备注名：", "张三"));
-            zhanyAl.add(new UserInfoBean("性别：", "男"));
-            zhanyAl.add(new UserInfoBean("生日", "1990-01-12"));
-            UserInfoDialogAdapter screenShareResourcesAdapter = new UserInfoDialogAdapter();
-            rv_file.addItemDecoration(new DividerItemDecoration(context,context.getResources().getColor(R.color.tx_color_803e3e3e)));
-            screenShareResourcesAdapter.setNewData(zhanyAl);
-            rv_file.setAdapter(screenShareResourcesAdapter);
+            setWidth(context.getResources().getDisplayMetrics().widthPixels);
+            rv_file = findViewById(R.id.rv_file);
+
         }
 
 
         public Builder setListener(OnListener listener) {
             mListener = listener;
+            return this;
+        }
+
+        public Builder setInfo(String info) {
+            ArrayList zhanyAl = new ArrayList<UserInfoBean>();
+            try {
+                JSONObject jsonObject = new JSONObject(info);
+                zhanyAl.add(new UserInfoBean("真实姓名", jsonObject.optString("fn")));
+                zhanyAl.add(new UserInfoBean("备注名", jsonObject.optString("alias")));
+                zhanyAl.add(new UserInfoBean("性别", jsonObject.optString("sex")));
+                zhanyAl.add(new UserInfoBean("生日", jsonObject.optString("birthday")));
+                zhanyAl.add(new UserInfoBean("手机", jsonObject.optJSONArray("tels").toString()));
+                zhanyAl.add(new UserInfoBean("邮箱", jsonObject.optString("email")));
+                zhanyAl.add(new UserInfoBean("详细地址", jsonObject.optString("adr")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            UserInfoDialogAdapter screenShareResourcesAdapter = new UserInfoDialogAdapter();
+            screenShareResourcesAdapter.setNewData(zhanyAl);
+            rv_file.setAdapter(screenShareResourcesAdapter);
             return this;
         }
 

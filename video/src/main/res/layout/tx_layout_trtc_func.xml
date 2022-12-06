@@ -194,8 +194,11 @@
         android:layout_width="@dimen/tx_dp_20"
         android:layout_height="@dimen/tx_dp_20"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/tx_dp_10"
-        android:background="@drawable/tx_fill_scale" />
+        android:layout_marginStart="@dimen/tx_dp_10"
+        android:layout_marginTop="@dimen/tx_dp_10"
+        android:layout_marginEnd="@dimen/tx_dp_10"
+        android:layout_marginBottom="@dimen/tx_dp_10"
+        android:background="@drawable/tx_small_info" />
 
 </RelativeLayout>
 

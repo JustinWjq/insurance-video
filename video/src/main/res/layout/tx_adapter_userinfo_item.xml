@@ -21,9 +21,9 @@
 
         <com.txt.video.ui.weight.view.SmartTextView
             android:id="@+id/tv_name"
-            android:textSize="16sp"
+            android:textSize="@dimen/tx_sp_14"
             android:gravity="center"
-            android:textColor="@color/tx_black"
+            android:textColor="@color/tx_color_333333"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:layout_width="0dp"
@@ -32,22 +32,16 @@
             tools:text="暂时离开"
             />
 
-        <View
-            android:id="@+id/v_ui_line"
-            android:layout_width=".5dp"
-            android:background="@color/tx_color_803e3e3e"
-            android:layout_height="match_parent"/>
-
-        <com.txt.video.ui.weight.view.SmartTextView
+        <TextView
             android:id="@+id/tv_content"
-            android:textSize="16sp"
+            android:textSize="@dimen/tx_sp_14"
             tools:text="结束会话"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@color/tx_black"
+            android:textColor="@color/tx_color_676767"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="match_parent" />
 
 

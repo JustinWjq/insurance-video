@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
 
         setContentView(R.layout.activity_main)
         if (BuildConfig.DEBUG)
-            et.setText("wjqdev123")
+            et.setText("18200409")
         initView()
 
     }

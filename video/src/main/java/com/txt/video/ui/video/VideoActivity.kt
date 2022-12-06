@@ -249,7 +249,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
                     override fun onInfoClick(position: Int) {
                         //todo 点击弹出信息
-                        mPresenter?.requestUserInfo("")
+                        mPresenter?.requestUserInfo(mPresenter!!.getAgentId())
                     }
 
                 })
@@ -3315,6 +3315,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 .show()
         } else {
             TxInfoDialog.Builder(this)
+                .setInfo(info)
                 .show()
         }
 

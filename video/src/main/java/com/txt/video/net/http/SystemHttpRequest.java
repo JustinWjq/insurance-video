@@ -302,6 +302,7 @@ public class SystemHttpRequest {
             jsonObject.put("inviteNumber", roomId);
             jsonObject.put("userId", userId);
             jsonObject.put("userName", userName);
+            jsonObject.put("userPhone", "18800205406");
             jsonObject.put("orgAccount", orgAccount);
             jsonObject.put("sign", sign);
             if (null != businessData) {
@@ -468,6 +469,27 @@ public class SystemHttpRequest {
         stringBuffer.append("&orgAccount=").append(orgAccount);
         stringBuffer.append("&sign=").append(sign);
         HttpRequestClient.getIntance().get(IP + "/api/agents/roomStatus?" + stringBuffer, callback);
+
+    }
+
+    //获取用户详情
+    public void getUserDetail(String serviceId, String userId, HttpRequestClient.RequestHttpCallBack callback) {
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("serviceId=").append(serviceId);
+        stringBuffer.append("&userId=").append(userId);
+        HttpRequestClient.getIntance().get(IP + "/api/serviceRoom/userDetail?" + stringBuffer, callback);
+
+    }
+
+
+    //获取用户详情
+    public void customerAction(String uid, String cid, HttpRequestClient.RequestHttpCallBack callback) {
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("uid=").append(uid);
+        stringBuffer.append("&cid=").append(cid);
+        HttpRequestClient.getIntance().get(IP + "/api/chinalife/customerAction?" + stringBuffer, callback);
 
     }
 

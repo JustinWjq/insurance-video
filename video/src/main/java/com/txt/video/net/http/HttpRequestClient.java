@@ -262,7 +262,7 @@ public class HttpRequestClient {
 
     //get请求
     public void get(String url, final RequestHttpCallBack callBack) {
-        TxLogUtils.d(TAG+"--get: url" + url);
+        TxLogUtils.i("get: url" + url);
         CacheControl build = new CacheControl.Builder().noCache().build();
         Request request = new Request.
                 Builder().
@@ -283,7 +283,7 @@ public class HttpRequestClient {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String result = response.body().string();
-                TxLogUtils.d(TAG+"-----onResponse: result" + result);
+                TxLogUtils.i("get: url" + "-----onResponse: result" + result);
                 String errCode = null;
                 try {
                     JSONObject jsonObject = new JSONObject(result);
