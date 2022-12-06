@@ -40,14 +40,12 @@ import com.txt.video.base.constants.IntentKey
 import com.txt.video.base.constants.VideoCode
 import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
-import com.txt.video.common.dialog.common.TxCommonDialog
 import com.txt.video.common.floatview.FloatingView
 import com.txt.video.common.utils.CheckDoubleClickListener
 import com.txt.video.common.utils.CheckHeadSetSUtils
 import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
-import com.txt.video.net.utils.TxLogUtils.i
 import com.txt.video.trtc.ConfigHelper
 import com.txt.video.trtc.TRTCCloudIView
 import com.txt.video.trtc.TRTCCloudManager
@@ -249,7 +247,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
                     override fun onInfoClick(position: Int) {
                         //todo 点击弹出信息
-                        mPresenter?.requestUserInfo(mPresenter!!.getAgentId())
+                        val memberEntity = mPresenter!!.getMemberEntityList()[position]
+                        mPresenter?.requestUserInfo(memberEntity.userId)
                     }
 
                 })
@@ -2679,7 +2678,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     detachBigScreen(screenUserId)
                 }
 
-                override fun onSwitch() {
+                override fun onClickInfo() {
+                    //点击用户信息
+                    mPresenter?.requestUserInfo(screenUserId)
                 }
 
                 override fun onMuteAudioClick() {
@@ -3306,7 +3307,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
-    override fun showInfoDialog(info: String) {
+    override fun showInfoDialog(userId: String, info: String) {
         if (TextUtils.isEmpty(info)) {
             TxMessageDialog1.Builder(this)
                 .setTitle("客户信息")
@@ -3315,6 +3316,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 .show()
         } else {
             TxInfoDialog.Builder(this)
+                .setUserId(userId)
                 .setInfo(info)
                 .show()
         }

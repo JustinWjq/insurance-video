@@ -14,9 +14,9 @@ import java.util.*
 
 object DatetimeUtil {
 
-    val DATE_PATTERN = "yyyy-MM-dd"
-    var DATE_PATTERN_SS = "yyyy-MM-dd HH:mm:ss"
-    var DATE_PATTERN_MM = "yyyy-MM-dd HH:mm"
+    public val DATE_PATTERN = "yyyy-MM-dd"
+    public var DATE_PATTERN_SS = "yyyy-MM-dd HH:mm:ss"
+    public var DATE_PATTERN_MM = "yyyy-MM-dd HH:mm"
 
     /**
      * 获取现在时刻
@@ -31,7 +31,6 @@ object DatetimeUtil {
             DATE_PATTERN,
             now
         )
-
 
 
     /**
@@ -101,7 +100,7 @@ object DatetimeUtil {
     /**
      * 获得指定时间的日期
      */
-    fun getCustomTime(dateStr: String):Date{
+    fun getCustomTime(dateStr: String): Date {
         return formatDate(
             DATE_PATTERN,
             dateStr
@@ -123,10 +122,10 @@ object DatetimeUtil {
         return simpleDateFormat.format(calendar.timeInMillis)
     }
 
-    fun getFormatHMS(time:Long) : String{
+    fun getFormatHMS(time: Long): String {
         val l = time / 1000;
 
-        return String.format("%02d:%02d:%02d",l/3600,l/60,l%60)
+        return String.format("%02d:%02d:%02d", l / 3600, l / 60, l % 60)
     }
 
 }

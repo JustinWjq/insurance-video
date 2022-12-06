@@ -484,11 +484,14 @@ public class SystemHttpRequest {
 
 
     //获取用户详情
-    public void customerAction(String uid, String cid, HttpRequestClient.RequestHttpCallBack callback) {
+    public void customerAction(String uid, String cid,String next_paging_id, HttpRequestClient.RequestHttpCallBack callback) {
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("uid=").append(uid);
         stringBuffer.append("&cid=").append(cid);
+        if (!next_paging_id.isEmpty()) {
+            stringBuffer.append("&next_paging_id=").append(next_paging_id);
+        }
         HttpRequestClient.getIntance().get(IP + "/api/chinalife/customerAction?" + stringBuffer, callback);
 
     }

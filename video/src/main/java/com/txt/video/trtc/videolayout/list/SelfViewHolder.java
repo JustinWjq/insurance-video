@@ -286,6 +286,8 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
         bt_info = (Button) itemView.findViewById(R.id.bt_info);
+        bt_info.setVisibility(View.GONE);
+
 //        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 //        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
 

@@ -180,7 +180,7 @@ public class VideoContract {
 
         fun autoCheckAudioHand()
 
-        fun showInfoDialog(info :String)
+        fun showInfoDialog(userId: String, json: String)
     }
 
 

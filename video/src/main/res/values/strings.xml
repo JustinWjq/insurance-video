@@ -12,8 +12,8 @@
     <string name="tx_dialog_exit_content"></string>
     <string name="tx_brvah_app_name">Library</string>
     <string name="tx_brvah_loading">正在加载中...</string>
-    <string name="tx_brvah_load_failed">加载失败，请点我重试</string>
-    <string name="tx_brvah_load_end">没有更多数据</string>
+    <string name="tx_brvah_load_failed">加载失败，点击重试</string>
+    <string name="tx_brvah_load_end">已经是全部内容了～</string>
 
     <string name="tx_str_invite">邀请成员</string>
     <string name="tx_str_invite1">管理成员</string>

@@ -15,6 +15,7 @@
             android:id="@+id/loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/tx_color_006DFF"
             style="?android:attr/progressBarStyleSmall"
             android:layout_marginRight="@dimen/tx_dp_4"/>
 
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/tx_dp_4"
             android:text="@string/tx_brvah_loading"
-            android:textColor="@android:color/black"
+            android:textColor="@color/tx_color_777777"
             android:textSize="@dimen/tx_sp_14"/>
     </LinearLayout>
 
@@ -40,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/tx_color_777777"
             android:text="@string/tx_brvah_load_failed"/>
 
     </FrameLayout>
@@ -55,6 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/tx_brvah_load_end"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@color/tx_color_777777"/>
     </FrameLayout>
 </FrameLayout>

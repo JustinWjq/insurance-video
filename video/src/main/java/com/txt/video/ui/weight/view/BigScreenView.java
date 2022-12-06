@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     FrameLayout mCloseVideo;
     Group mGroup;
     ImageView mIconHostPath, mAudioIB,iv_video_close,iv_video_srccen;
+    Button bt_info;
     TextView mName;
     private BigScreenViewCallback mBigScreenViewCallback;
 
@@ -57,8 +59,10 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
         mCloseVideo = itemView.findViewById(R.id.trtc_fl_no_video);
         iv_video_close = itemView.findViewById(R.id.iv_video_close);
         iv_video_srccen = itemView.findViewById(R.id.iv_video_srccen);
+        bt_info = itemView.findViewById(R.id.bt_info);
 //
         bigscreen.setOnClickListener(this);
+        bt_info.setOnClickListener(this);
 //        mVideoIB.setOnClickListener(this);
 //        mAudioIB.setOnClickListener(this);
 //        mSwitchIB.setOnClickListener(this);
@@ -111,6 +115,10 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
             if (null != mBigScreenViewCallback) {
                 mBigScreenViewCallback.onScreenFinishClick();
             }
+        }else if (id == R.id.bt_info){
+            if (null != mBigScreenViewCallback) {
+                mBigScreenViewCallback.onClickInfo();
+            }
         }
     }
 
@@ -118,7 +126,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     public interface BigScreenViewCallback {
         void onScreenFinishClick();
 
-        void onSwitch();
+        void onClickInfo();
 
         void onMuteAudioClick();
 

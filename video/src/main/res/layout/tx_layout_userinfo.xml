@@ -1,43 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/tx_color_80_white"
     android:orientation="vertical">
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/detaile_tablayout"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/tx_white"
-        app:layout_constraintBottom_toTopOf="@+id/divider1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="50dp"
         app:tabIndicatorColor="@color/tx_color_006DFF"
+        app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/tx_color_006DFF"
         app:tabTextColor="@color/tx_color_333333" >
-
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/tx_sp_16"
             android:text="客户信息"
             />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/tx_sp_16"
             android:text="客户动态"
             />
+
     </com.google.android.material.tabs.TabLayout>
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:src="@drawable/tx_icon_close"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        style="@style/tx_style_click"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/tx_color_bbbbbb"
+        android:layout_below="@+id/detaile_tablayout"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_file"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/detaile_tablayout"
         android:orientation="vertical"
-        />
+        android:paddingTop="@dimen/tx_dp_10"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-</LinearLayout>
+</RelativeLayout>
