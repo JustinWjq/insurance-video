@@ -302,7 +302,6 @@ public class SystemHttpRequest {
             jsonObject.put("inviteNumber", roomId);
             jsonObject.put("userId", userId);
             jsonObject.put("userName", userName);
-            jsonObject.put("userPhone", "18800205406");
             jsonObject.put("orgAccount", orgAccount);
             jsonObject.put("sign", sign);
             if (null != businessData) {
