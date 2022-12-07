@@ -2,6 +2,7 @@ package com.txt.video.net.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -35,7 +36,7 @@ public class WxUtil {
 		return result;
 	}
 	
-	public static byte[] getHtmlByteArray(final String url) {
+	public static Bitmap getHtmlByteArray(final String url) {
 		 URL htmlUrl = null;     
 		 InputStream inStream = null;     
 		 try {         
@@ -51,9 +52,9 @@ public class WxUtil {
 			 } catch (IOException e) {              
 				e.printStackTrace();    
 		  } 
-		byte[] data = inputStreamToByte(inStream);
-
-		return data;
+//		byte[] data = inputStreamToByte(inStream);
+		Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+		return bitmap;
 	}
 	
 	public static byte[] inputStreamToByte(InputStream is) {

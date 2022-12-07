@@ -580,6 +580,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun skipCaller() {
+        if (null == TXSdk.getInstance().onFriendBtListener) {
+            showMessage( IBaseView.MessageType.MESSAGETYPE_FAIL,"该方法暂未注册")
+        } else {
+            TXSdk.getInstance().onFriendBtListener.onEndRoom()
+        }
         finish()
 //        startActivity(
 //            Intent(

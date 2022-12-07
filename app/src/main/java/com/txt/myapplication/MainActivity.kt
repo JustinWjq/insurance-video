@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         } else {
             TXSdk.getInstance().startVideo(
                 this,
+                "20179427",
                 loginName,
                 loginName,
                 orgAccount,
@@ -195,6 +196,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
                 var mFileSdkBeanVideo =  FileSdkBean(FileType.pics,arrayList)
                 mFileSdkBeanVideo.picsWord = arrayListWord
                 TXSdk.getInstance().addFileToSdk(mFileSdkBeanVideo)
+            }
+
+            override fun onEndRoom() {
+                Log.i("TXSdk","onEndRoom")
             }
 
             override fun onFail(errCode: Int, errMsg: String) {

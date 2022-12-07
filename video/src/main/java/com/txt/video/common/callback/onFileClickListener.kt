@@ -7,5 +7,6 @@ package com.txt.video.common.callback
  */
 open interface  onFileClickListener{
     fun onSuccess(roomId : Int)
+    fun onEndRoom()
     fun onFail(errCode:Int,errMsg:String)
 }

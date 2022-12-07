@@ -160,21 +160,14 @@ public abstract class TXSDKApi {
      * @param listener          操作回调
      * @note
      */
-    public abstract void startVideo(final Activity context, final String agent,
+    public abstract void startVideo(final Activity context,
+                                    String roomId,
+                                    final String agent,
                                     final String  userName,
                                     String orgAccount, String sign,
                                     final StartVideoResultOnListener listener);
 
 
-    public abstract void joinRoom(
-            Activity  context,
-             String roomId,
-             String account,
-             String userName,
-             String orgAccount,
-             String sign,
-            final StartVideoResultOnListener listener
-    );
     /**
      * 监听文件按钮监听
      *

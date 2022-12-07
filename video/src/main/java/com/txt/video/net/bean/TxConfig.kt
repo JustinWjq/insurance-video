@@ -20,6 +20,8 @@ public data class TxConfig(
 
     @JvmField var  miniprogramDescription: String = "",
 
+    @JvmField var  miniprogramCardURL: String = "https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png",
+
     @JvmField var  miniProgramPath: String = "/components/PromoteBusiness/pages/index/index"
 
 

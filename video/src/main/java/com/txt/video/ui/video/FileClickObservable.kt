@@ -26,6 +26,20 @@ class FileClickObservable : TICObservable<onFileClickListener>(),onFileClickList
         }
     }
 
+    override fun onEndRoom() {
+        val tmpList: LinkedList<WeakReference<onFileClickListener>> =
+            LinkedList<WeakReference<onFileClickListener>>(listObservers)
+        val it: Iterator<WeakReference<onFileClickListener>> =
+            tmpList.iterator()
+
+        while (it.hasNext()) {
+            val t: onFileClickListener? = it.next().get()
+            if (t != null) {
+                t.onEndRoom()
+            }
+        }
+    }
+
     override fun onFail(errCode: Int, errMsg: String) {
         val tmpList: LinkedList<WeakReference<onFileClickListener>> =
             LinkedList<WeakReference<onFileClickListener>>(listObservers)
