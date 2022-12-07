@@ -148,6 +148,11 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void showNoVideo(boolean isShow, boolean isVideoClose) {
+        if ("partner".equals(mMemberEntity.getUserRole())) {
+            bt_info.setVisibility(View.VISIBLE);
+        }else {
+            bt_info.setVisibility(View.GONE);
+        }
         TxLogUtils.i("getRoomInfoSuccess",""+mMemberEntity.getUserHeadPath());
         if (isShow) {
             if (isVideoClose){
@@ -215,6 +220,11 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             }
         }
         showHost(model.isHost());
+        if ("partner".equals(mMemberEntity.getUserRole())) {
+            bt_info.setVisibility(View.VISIBLE);
+        }else {
+            bt_info.setVisibility(View.GONE);
+        }
     }
     private MemberListAdapter.ListCallback mListCallback;
 
@@ -264,7 +274,11 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
                 showNoVideo(false, true);
             }
         }
-
+        if ("partner".equals(mMemberEntity.getUserRole())) {
+            bt_info.setVisibility(View.VISIBLE);
+        }else {
+            bt_info.setVisibility(View.GONE);
+        }
 //        item_view.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -310,6 +324,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
         bt_info = (Button) itemView.findViewById(R.id.bt_info);
+
 //        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;
 //        itemView.findViewById(R.id.item_view).setLayoutParams(new ViewGroup.LayoutParams(widthPixels/2, widthPixels/2));
     }

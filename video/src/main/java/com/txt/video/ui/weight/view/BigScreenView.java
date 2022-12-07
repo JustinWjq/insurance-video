@@ -47,7 +47,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     FrameLayout mCloseVideo;
     Group mGroup;
     ImageView mIconHostPath, mAudioIB,iv_video_close,iv_video_srccen;
-    Button bt_info;
+    ImageView bt_info;
     TextView mName;
     private BigScreenViewCallback mBigScreenViewCallback;
 
@@ -188,6 +188,15 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
             mIconHostPath.setVisibility(View.INVISIBLE);
 
         }
+
+    }
+    public void showInfoIcon(boolean hide){
+        if (hide){
+            bt_info.setVisibility(GONE);
+        }else{
+            bt_info.setVisibility(VISIBLE);
+        }
+
 
     }
 

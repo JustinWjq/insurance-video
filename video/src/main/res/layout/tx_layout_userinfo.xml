@@ -39,7 +39,6 @@
         android:src="@drawable/tx_icon_close"
         android:gravity="center"
         android:layout_alignParentEnd="true"
-        style="@style/tx_style_click"
         />
 
     <View

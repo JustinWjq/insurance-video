@@ -274,6 +274,24 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mPresenter?.muteLocalVideo(!isEnableVideo)
         mPresenter?.isCloseVideo = !isEnableVideo
 
+        bigscreen.setBigScreenCallBack(object :
+            BigScreenView.BigScreenViewCallback {
+            override fun onScreenFinishClick() {
+
+            }
+
+            override fun onClickInfo() {
+                //点击用户信息
+                mPresenter?.requestUserInfo(bigMeetingEntity!!.userId)
+            }
+
+            override fun onMuteAudioClick() {
+            }
+
+            override fun onMuteVideoClick() {
+            }
+
+        })
     }
 
     fun selectIb(imageButton: ImageButton) {
@@ -516,6 +534,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 //                    bigScreenVerticalView.closeVideo(true)
                 } else {
                     bigscreen?.visibility = View.VISIBLE
+                    TxLogUtils.i("bigscreen----------- bigscreen?.visibility = View.VISIBLE")
 //                    bigscreen.closeVideo(true)
 
                 }
@@ -1380,11 +1399,21 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity?.isMuteVideo!!,
                         bigMeetingEntity?.userHeadPath
                     )
+                    if ("partner".equals( bigMeetingEntity?.userRole)) {
+                        bigScreenVerticalView.showInfoIcon(false);
+                    }else{
+                        bigScreenVerticalView.showInfoIcon(true);
+                    }
                 } else {
                     bigscreen.closeVideo(
                         bigMeetingEntity?.isMuteVideo!!,
                         bigMeetingEntity?.userHeadPath
                     )
+                    if ("partner".equals( bigMeetingEntity?.userRole)) {
+                        bigscreen.showInfoIcon(false);
+                    }else{
+                        bigscreen.showInfoIcon(true);
+                    }
                 }
 
             } else {
@@ -2467,7 +2496,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
             bigscreen?.visibility = View.VISIBLE
         }
-
+        if ("partner".equals( bigMeetingEntity?.userRole)) {
+            bigscreen.showInfoIcon(false);
+        }else{
+            bigscreen.showInfoIcon(true);
+        }
         changeBigScreenViewName(
             bigMeetingEntity.userName,
             bigMeetingEntity.userRole,
@@ -2669,6 +2702,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     bigMeetingEntity?.isMuteVideo!!,
                     bigMeetingEntity?.userHeadPath
                 )
+            }
+            if ("partner".equals( bigMeetingEntity?.userRole)) {
+                bigScreenVerticalView.showInfoIcon(false);
+            }else{
+                bigScreenVerticalView.showInfoIcon(true);
             }
 
 

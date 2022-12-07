@@ -28,7 +28,7 @@ class App : Application() {
         txConfig.miniprogramDescription = ""//显示小程序描述
         txConfig.miniProgramPath = "/components/PromoteBusiness/pages/index/index"//小程序跳转路径
         //2。域名环境 3。log显示 4。分享小程序的配置
-        TXSdk.getInstance().init(this, TXSdk.Environment.DEV, true, txConfig)
+        TXSdk.getInstance().init(this, TXSdk.Environment.TEST, true, txConfig)
         //设置演示demo 为true 为了一个手机装两个app，一个是客户的，一个是演示的app，区分隐式跳转
         TXSdk.getInstance().isDemo = true
 //        CrashReport.initCrashReport(this, "8351c98a70", true)

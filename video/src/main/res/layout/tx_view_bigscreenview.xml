@@ -83,16 +83,16 @@
 
     </RelativeLayout>
 
-    <Button
+    <ImageView
         android:id="@+id/bt_info"
-        android:layout_width="@dimen/tx_dp_20"
-        android:layout_height="@dimen/tx_dp_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="@dimen/tx_dp_20"
-        android:layout_marginTop="@dimen/tx_dp_130"
-        android:layout_marginEnd="@dimen/tx_dp_10"
-        android:layout_marginBottom="@dimen/tx_dp_10"
-        android:background="@drawable/tx_big_info" />
+        android:layout_marginTop="@dimen/tx_dp_170"
+        android:background="@drawable/tx_big_info"
+        android:visibility="gone"
+        />
 
 
 </merge>
