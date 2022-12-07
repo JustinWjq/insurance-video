@@ -195,7 +195,10 @@ public class TXSdk extends TXSDKApi {
         TXManagerImpl.getInstance().checkPermission(context, agent,userName, orgAccount, sign, null, listener, true);
     }
 
-
+    @Override
+    public void joinRoom(Activity context, String roomId, String account, String userName, String orgAccount, String sign, StartVideoResultOnListener listener) {
+        TXManagerImpl.getInstance().checkPermission(context,roomId, account,userName, orgAccount, sign, null, listener, false);
+    }
 
     RoomControlConfig mRoomControlConfig;
 

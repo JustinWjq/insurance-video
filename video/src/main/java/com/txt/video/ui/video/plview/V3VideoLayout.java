@@ -144,15 +144,16 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         ll_videolayouttwo.setOrientation(LinearLayout.HORIZONTAL);
         trtc_video_view_layout.setLayoutManager(verticalmeetingpagelayoutmanager1);
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
-        Point screenSize = DisplayUtils.INSTANCE.getScreenSize(getContext());
+        int screenSize = DisplayUtils.INSTANCE.getScreenWidth(getContext());
+        TxLogUtils.i("DisplayUtils.INSTANCE----" +  DisplayUtils.INSTANCE.hasNavigationBar(getContext()));
 
-        layoutParams.width =  screenSize.x / 10 * 3;
+        layoutParams.width =  screenSize / 10 * 3;
         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         trtc_video_view_layout.setLayoutParams(layoutParams);
 
 
         ViewGroup.LayoutParams rl_leftlayoutParams = rl_left.getLayoutParams();
-        rl_leftlayoutParams.width = screenSize.x / 10 * 7;
+        rl_leftlayoutParams.width = screenSize / 10 * 7;
         rl_leftlayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         rl_left.setLayoutParams(rl_leftlayoutParams);
         rl_left.setVisibility(VISIBLE);

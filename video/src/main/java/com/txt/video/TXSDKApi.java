@@ -165,6 +165,16 @@ public abstract class TXSDKApi {
                                     String orgAccount, String sign,
                                     final StartVideoResultOnListener listener);
 
+
+    public abstract void joinRoom(
+            Activity  context,
+             String roomId,
+             String account,
+             String userName,
+             String orgAccount,
+             String sign,
+            final StartVideoResultOnListener listener
+    );
     /**
      * 监听文件按钮监听
      *
