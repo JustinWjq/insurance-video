@@ -81,12 +81,14 @@ public final class TxInfoDialog {
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getText().toString().equals("客户动态")) {
                         //刷新
+                        next_paging_id= "";
                         ArrayList zhanyAl = new ArrayList<UserInfoBean>();
 
                         mUserInfoDynamicDialogAdapter.setNewData(zhanyAl);
                         rv_file.setAdapter(mUserInfoDynamicDialogAdapter);
                         getDynamicData();
                     } else {
+                        next_paging_id= "";
                         setUserInfo();
                     }
                 }
@@ -177,7 +179,7 @@ public final class TxInfoDialog {
                                 AppUtils.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        List<UserInfoBean> data = mUserInfoDynamicDialogAdapter.getData();
+                                        List<UserInfoBean> data = new ArrayList<>();
                                         JSONArray list = jsonObject.optJSONArray("list");
                                         for (int i = 0; i < list.length(); i++) {
                                             try {
