@@ -3354,7 +3354,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 .show()
         } else {
             TxInfoDialog.Builder(this)
-                .setUserId(userId)
+                .setUserId(mPresenter?.getAgentId())
                 .setInfo(info)
                 .show()
         }
