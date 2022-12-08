@@ -34,7 +34,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
     private ImageView mPbAudioVolume;
     private ImageView mIvVideClose, mIvVideCloseScreen;
     private ImageView mIvIconHost;
-    private Button bt_info;
+    private ImageView bt_info;
 
     public SelfViewHolder(View itemView) {
         super(itemView);
@@ -285,7 +285,7 @@ public class SelfViewHolder extends RecyclerView.ViewHolder {
         mUserSignal = (ImageView) itemView.findViewById(R.id.trtc_iv_nos);
         mPbAudioVolume = (ImageView) itemView.findViewById(R.id.trtc_pb_audio);
         mIvIconHost = (ImageView) itemView.findViewById(R.id.trtc_icon_host);
-        bt_info = (Button) itemView.findViewById(R.id.bt_info);
+        bt_info = (ImageView) itemView.findViewById(R.id.bt_info);
         bt_info.setVisibility(View.GONE);
 
 //        int widthPixels = Resources.getSystem().getDisplayMetrics().widthPixels;

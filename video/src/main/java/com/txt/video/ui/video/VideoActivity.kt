@@ -1400,9 +1400,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity?.userHeadPath
                     )
                     if ("partner".equals( bigMeetingEntity?.userRole)) {
-                        bigScreenVerticalView.showInfoIcon(false);
+                        bigScreenVerticalView.showInfoIconNice(false);
                     }else{
-                        bigScreenVerticalView.showInfoIcon(true);
+                        bigScreenVerticalView.showInfoIconNice(true);
                     }
                 } else {
                     bigscreen.closeVideo(
@@ -2704,9 +2704,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 )
             }
             if ("partner".equals( bigMeetingEntity?.userRole)) {
-                bigScreenVerticalView.showInfoIcon(false);
+                bigScreenVerticalView.showInfoIconNice(false);
             }else{
-                bigScreenVerticalView.showInfoIcon(true);
+                bigScreenVerticalView.showInfoIconNice(true);
             }
 
 
@@ -3359,6 +3359,19 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 .show()
         }
 
+    }
+
+    override fun onLoading() {
+
+        if (null != iOSLoadingView) {
+            ll_loading.setVisibility(View.VISIBLE)
+            iOSLoadingView.setVisibility(View.VISIBLE)
+        }
+    }
+
+    override fun onLoadSuccess() {
+        ll_loading.setVisibility(View.GONE)
+        iOSLoadingView.setVisibility(View.GONE)
     }
 
 }

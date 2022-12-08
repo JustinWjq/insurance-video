@@ -47,7 +47,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     FrameLayout mCloseVideo;
     Group mGroup;
     ImageView mIconHostPath, mAudioIB,iv_video_close,iv_video_srccen;
-    ImageView bt_info;
+    ImageView bt_info,bt_info_nice;
     TextView mName;
     private BigScreenViewCallback mBigScreenViewCallback;
 
@@ -60,9 +60,11 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
         iv_video_close = itemView.findViewById(R.id.iv_video_close);
         iv_video_srccen = itemView.findViewById(R.id.iv_video_srccen);
         bt_info = itemView.findViewById(R.id.bt_info);
+        bt_info_nice = itemView.findViewById(R.id.bt_info_nice);
 //
         bigscreen.setOnClickListener(this);
         bt_info.setOnClickListener(this);
+        bt_info_nice.setOnClickListener(this);
 //        mVideoIB.setOnClickListener(this);
 //        mAudioIB.setOnClickListener(this);
 //        mSwitchIB.setOnClickListener(this);
@@ -115,7 +117,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
             if (null != mBigScreenViewCallback) {
                 mBigScreenViewCallback.onScreenFinishClick();
             }
-        }else if (id == R.id.bt_info){
+        }else if (id == R.id.bt_info ||id == R.id.bt_info_nice){
             if (null != mBigScreenViewCallback) {
                 mBigScreenViewCallback.onClickInfo();
             }
@@ -191,10 +193,22 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
 
     }
     public void showInfoIcon(boolean hide){
+        bt_info_nice.setVisibility(GONE);
         if (hide){
             bt_info.setVisibility(GONE);
         }else{
             bt_info.setVisibility(VISIBLE);
+        }
+
+
+    }
+
+    public void showInfoIconNice(boolean hide){
+        bt_info.setVisibility(GONE);
+        if (hide){
+            bt_info_nice.setVisibility(GONE);
+        }else{
+            bt_info_nice.setVisibility(VISIBLE);
         }
 
 

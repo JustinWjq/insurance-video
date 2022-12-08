@@ -22,10 +22,11 @@
         <com.txt.video.ui.weight.view.SmartTextView
             android:id="@+id/tv_name"
             android:textSize="@dimen/tx_sp_14"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:textColor="@color/tx_color_333333"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/tx_dp_35"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"

@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         bt.text = btStr
         et_account.setText(
             when (TXSdk.getInstance().environment) {
-                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "gscyf_test"
+                TXSdk.Environment.DEV, TXSdk.Environment.TEST -> "test_org2"
                 else -> "gsc_test"
             }
         )

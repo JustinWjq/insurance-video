@@ -88,11 +88,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:padding="@dimen/tx_dp_10"
         android:layout_marginStart="@dimen/tx_dp_20"
         android:layout_marginTop="@dimen/tx_dp_170"
-        android:background="@drawable/tx_big_info"
+        android:src="@drawable/tx_big_info"
         android:visibility="gone"
         />
-
+    <ImageView
+        android:id="@+id/bt_info_nice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/tx_dp_10"
+        android:layout_marginStart="@dimen/tx_dp_20"
+        android:layout_marginTop="@dimen/tx_dp_20"
+        android:src="@drawable/tx_big_info"
+        android:visibility="gone"
+        />
 
 </merge>
