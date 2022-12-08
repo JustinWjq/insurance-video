@@ -16,6 +16,7 @@ import com.txt.video.common.callback.onCreateRoomListener
 import com.txt.video.common.callback.onSDKListener
 import com.txt.video.common.utils.PermissionConstants
 import com.txt.video.common.utils.TxPermissionUtils
+import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.ui.video.RoomControlConfig
 import org.json.JSONException
 import org.json.JSONObject
@@ -169,6 +170,7 @@ class TXManagerImpl : TXManager {
                                     userId = jsonObject.getString(IntentKey.AGENTID)
                                     agentName = jsonObject.getString(IntentKey.AGENTNAME)
                                     userRole = "owner"
+                                    TXSdk.getInstance().isHost = userRole=="owner"
                                     maxRoomTime =
                                         jsonObject.getInt(IntentKey.MAXROOMTIME)
                                     maxRoomUser =
@@ -239,6 +241,8 @@ class TXManagerImpl : TXManager {
                                         userId = jsonObject.getString(IntentKey.USERID)
                                         agentName = userName
                                         userRole = jsonObject.getString(IntentKey.USERROLE)
+                                        TXSdk.getInstance().isHost = userRole=="owner"
+                                        TxLogUtils.i("TXSdk.getInstance().isHost"+TXSdk.getInstance().isHost)
                                         inviteNumber =
                                             jsonObject.getString(IntentKey.INVITENUMBER)
                                         maxRoomUser =

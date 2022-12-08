@@ -220,7 +220,7 @@ public class OtherViewHolder extends RecyclerView.ViewHolder {
             }
         }
         showHost(model.isHost());
-        if ("partner".equals(mMemberEntity.getUserRole())) {
+        if ("partner".equals(mMemberEntity.getUserRole())&& TXSdk.getInstance().isHost()) {
             bt_info.setVisibility(View.VISIBLE);
         }else {
             bt_info.setVisibility(View.GONE);
