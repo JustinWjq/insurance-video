@@ -297,4 +297,11 @@ public abstract class TXSDKApi {
     public abstract void removeOnFriendBtListener(onFriendBtListener onFriendBtListener);
 
 
+    /**
+     * @note
+     */
+    public abstract boolean isHost();
+
+    public abstract void setHost(boolean host);
+
 }

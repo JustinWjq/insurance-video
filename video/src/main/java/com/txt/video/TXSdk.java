@@ -295,5 +295,14 @@ public class TXSdk extends TXSDKApi {
         }
         return singleton;
     }
+    private boolean host = false;
+    @Override
+    public boolean isHost() {
+        return host;
+    }
 
+    @Override
+    public void setHost(boolean host) {
+        this.host = host;
+    }
 }

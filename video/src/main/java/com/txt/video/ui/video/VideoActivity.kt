@@ -1399,7 +1399,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity?.isMuteVideo!!,
                         bigMeetingEntity?.userHeadPath
                     )
-                    if ("partner".equals( bigMeetingEntity?.userRole)) {
+                    if ("partner".equals( bigMeetingEntity?.userRole) && TXSdk.getInstance().isHost()) {
                         bigScreenVerticalView.showInfoIconNice(false);
                     }else{
                         bigScreenVerticalView.showInfoIconNice(true);
@@ -1409,7 +1409,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         bigMeetingEntity?.isMuteVideo!!,
                         bigMeetingEntity?.userHeadPath
                     )
-                    if ("partner".equals( bigMeetingEntity?.userRole)) {
+                    if ("partner".equals( bigMeetingEntity?.userRole)&& TXSdk.getInstance().isHost()) {
                         bigscreen.showInfoIcon(false);
                     }else{
                         bigscreen.showInfoIcon(true);
@@ -2496,7 +2496,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
             bigscreen?.visibility = View.VISIBLE
         }
-        if ("partner".equals( bigMeetingEntity?.userRole)) {
+        if ("partner".equals( bigMeetingEntity?.userRole)&& TXSdk.getInstance().isHost()) {
             bigscreen.showInfoIcon(false);
         }else{
             bigscreen.showInfoIcon(true);
@@ -2703,7 +2703,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     bigMeetingEntity?.userHeadPath
                 )
             }
-            if ("partner".equals( bigMeetingEntity?.userRole)) {
+            if ("partner".equals( bigMeetingEntity?.userRole)&& TXSdk.getInstance().isHost()) {
                 bigScreenVerticalView.showInfoIconNice(false);
             }else{
                 bigScreenVerticalView.showInfoIconNice(true);
