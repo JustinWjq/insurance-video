@@ -25,6 +25,7 @@ import com.txt.video.common.utils.DatetimeUtil;
 import com.txt.video.net.bean.UserInfoBean;
 import com.txt.video.net.http.HttpRequestClient;
 import com.txt.video.net.http.SystemHttpRequest;
+import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.ui.weight.adapter.UserInfoDialogAdapter;
 import com.txt.video.ui.weight.adapter.UserInfoDynamicDialogAdapter;
 
@@ -129,9 +130,6 @@ public final class TxInfoDialog {
         public String cid;
 
         private void setUserInfo() {
-            if (TextUtils.isEmpty(info)) {
-                return;
-            }
             ArrayList zhanyAl = new ArrayList<UserInfoBean>();
             try {
                 JSONObject jsonObject = new JSONObject(info);
@@ -153,7 +151,7 @@ public final class TxInfoDialog {
                 zhanyAl.add(new UserInfoBean("手机", stringBuilder.toString().isEmpty() ? "--" :stringBuilder.toString()));
                 zhanyAl.add(new UserInfoBean("邮箱", jsonObject.optString("email").isEmpty() ? "--" : jsonObject.optString("email")));
                 zhanyAl.add(new UserInfoBean("详细地址", jsonObject.optString("adr").isEmpty() ? "--" : jsonObject.optString("adr")));
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -180,40 +178,50 @@ public final class TxInfoDialog {
                                     @Override
                                     public void run() {
                                         List<UserInfoBean> data = new ArrayList<>();
-                                        JSONArray list = jsonObject.optJSONArray("list");
-                                        for (int i = 0; i < list.length(); i++) {
-                                            try {
-                                                JSONObject jsonObject1 = list.getJSONObject(i);
-                                                long dateLong = jsonObject1.getLong("date");
-                                                JSONObject content = jsonObject1.getJSONObject("content");
-                                                if (null != content) {
-                                                    String content1 = content.getString("content");
-                                                    if (null != content1) {
-                                                        String dateStr = DatetimeUtil.INSTANCE.formatDate(dateLong, DatetimeUtil.INSTANCE.getDATE_PATTERN_MM());
-                                                        data.add(new UserInfoBean(dateStr, content1));
+                                        if (jsonObject.has("list")) {
+                                            JSONArray list = jsonObject.optJSONArray("list");
+                                            for (int i = 0; i < list.length(); i++) {
+                                                try {
+                                                    JSONObject jsonObject1 = list.getJSONObject(i);
+                                                    long dateLong = jsonObject1.getLong("date");
+                                                    JSONObject content = jsonObject1.getJSONObject("content");
+                                                    if (null != content) {
+                                                        String content1 = content.getString("content");
+                                                        if (null != content1) {
+                                                            String dateStr = DatetimeUtil.INSTANCE.formatDate(dateLong, DatetimeUtil.INSTANCE.getDATE_PATTERN_MM());
+                                                            data.add(new UserInfoBean(dateStr, content1));
+                                                        }
                                                     }
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    TxLogUtils.d(e.getMessage());
                                                 }
 
-                                            } catch (JSONException e) {
 
-                                                e.printStackTrace();
                                             }
-
-
                                         }
+
                                         mUserInfoDynamicDialogAdapter.addData(data);
                                         mUserInfoDynamicDialogAdapter.loadMoreComplete();
                                     }
                                 });
 
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
+                                TxLogUtils.d(e.getMessage());
                             }
                         }
 
                         @Override
                         public void onFail(String err, int code) {
                             //加载失败
+                            AppUtils.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mUserInfoDynamicDialogAdapter.loadMoreFail();
+                                }
+                            });
                         }
                     }
             );

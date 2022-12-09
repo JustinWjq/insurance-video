@@ -3346,19 +3346,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     override fun showInfoDialog(userId: String, info: String) {
-        if (TextUtils.isEmpty(info)) {
-            TxMessageDialog1.Builder(this)
-                .setTitle("客户信息")
-                .setMessage(info)
-                .setConfirm("确定")
-                .show()
-        } else {
-            TxInfoDialog.Builder(this)
-                .setUserId(mPresenter?.getAgentId())
-                .setInfo(info)
-                .show()
-        }
-
+        TxInfoDialog.Builder(this)
+            .setUserId(mPresenter?.getAgentId())
+            .setInfo(info)
+            .show()
     }
 
     override fun onLoading() {
