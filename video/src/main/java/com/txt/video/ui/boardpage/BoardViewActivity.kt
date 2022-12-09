@@ -798,6 +798,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 //收到消息
 
                 rl_barrage_show_audience.visibility = View.VISIBLE
+                displayView?.scroll()
                 startShowBarrageTimer()
             }
 

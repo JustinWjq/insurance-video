@@ -78,6 +78,7 @@ public final class TxUserChatDialog {
         //setRemoteUser
         public Builder setRemoteUser(List<MultiItemEntity> memberEntityList) {
             chatAdapter.setNewData(memberEntityList);
+            mRemoteUserListView.smoothScrollToPosition(chatAdapter.getItemCount());
             return this;
         }
 

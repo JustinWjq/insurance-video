@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.base.constants.IMkey;
+import com.txt.video.common.utils.AppUtils;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.ticimpl.TICEventListener;
 import com.txt.video.ui.video.barrage.model.TUIBarrageModel;
@@ -18,6 +19,7 @@ import com.txt.video.ui.video.barrage.presenter.ITUIBarragePresenter;
 import com.txt.video.ui.video.barrage.presenter.TUIBarragePresenter;
 import com.txt.video.ui.video.barrage.view.adapter.TUIBarrageMsgEntity;
 import com.txt.video.ui.video.barrage.view.adapter.TUIBarrageMsgListAdapter;
+import com.txt.video.ui.video.barrage.view.adapter.TopSmoothScroller;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -119,13 +121,27 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
 
         //接收到弹幕后,更新显示界面
         mMsgList.add(entity);
-        mAdapter.notifyDataSetChanged();
-        mRecyclerMsg.smoothScrollToPosition(mAdapter.getItemCount());
+        mAdapter.notifyItemInserted(mMsgList.size()-1);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroll();
+            }
+        },50);
+
+//        mRecyclerMsg.smoothScrollToPosition();
         TxLogUtils.i("mRecyclerMsg",""+mAdapter.getItemCount());
         if (null != mBarrageListener) {
             mBarrageListener.onSuccess(200,"",model);
         }
 
+    }
+    public void scroll(){
+        if (null != mRecyclerMsg) {
+            TopSmoothScroller topSmoothScroller = new TopSmoothScroller(getContext());
+            topSmoothScroller.setTargetPosition(mAdapter.getItemCount());
+            mRecyclerMsg.getLayoutManager().startSmoothScroll(topSmoothScroller);
+        }
     }
 
 

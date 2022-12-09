@@ -2454,6 +2454,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 //收到消息
 
                 rl_barrage_show_audience.visibility = View.VISIBLE
+                displayView?.scroll()
                 startShowBarrageTimer()
 
                 if (null != txUserChatDialogBuilder) {
