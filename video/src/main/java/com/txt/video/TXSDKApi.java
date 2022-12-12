@@ -8,6 +8,7 @@ import com.txt.video.net.bean.TxConfig;
 import com.txt.video.common.callback.StartVideoResultOnListener;
 import com.txt.video.common.callback.onCreateRoomListener;
 import com.txt.video.common.callback.onFileClickListener;
+import com.txt.video.ui.TXManagerImpl;
 import com.txt.video.ui.video.RoomControlConfig;
 
 import org.json.JSONObject;
@@ -166,6 +167,14 @@ public abstract class TXSDKApi {
                                     final String  userName,
                                     String orgAccount, String sign,
                                     final StartVideoResultOnListener listener);
+
+
+    public abstract void startVideo(Activity context,
+                                    String agent,
+                                    String userName,
+                                    String orgAccount,
+                                    String sign,
+                                    StartVideoResultOnListener listener);
 
 
     /**

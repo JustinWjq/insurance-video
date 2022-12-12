@@ -19,6 +19,7 @@ import com.txt.video.base.BaseActivity
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
 import com.txt.video.base.constants.VideoCode
+import com.txt.video.common.bar.TximmersionBar
 import com.txt.video.common.callback.onCheckDialogListenerCallBack
 import com.txt.video.common.callback.onExitDialogListener
 import com.txt.video.common.dialog.common.TxBaseDialog
@@ -798,7 +799,6 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
                 //收到消息
 
                 rl_barrage_show_audience.visibility = View.VISIBLE
-                displayView?.scroll()
                 startShowBarrageTimer()
             }
 
@@ -857,7 +857,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         showBartimer?.cancel()
         showBartimer = null
     }
-
+    //横屏幕的无话术页面
     fun setConstrainSet(){
         //iv_switchscreen
         //rl_word_show
@@ -880,6 +880,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         constraintSet.applyTo(layout_root)
     }
 
+    //竖屏幕的无话术页面
     fun setConstrainSetPro(){
         //iv_switchscreen
         //rl_word_show
@@ -903,7 +904,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         constraintSet.applyTo(layout_root)
     }
 
-
+    //横屏幕的有话术页面
     fun setConstrainSetHasWord(){
         //iv_switchscreen
         //rl_word_show
@@ -927,7 +928,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
         constraintSet.applyTo(layout_root)
     }
-
+    //竖屏幕的有话术页面
     fun setConstrainSetHasWordPro(){
         //iv_switchscreen
         //rl_word_show

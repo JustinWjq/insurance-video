@@ -159,7 +159,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         } else {
             TXSdk.getInstance().startVideo(
                 this,
-                "20179427",
                 loginName,
                 loginName,
                 orgAccount,

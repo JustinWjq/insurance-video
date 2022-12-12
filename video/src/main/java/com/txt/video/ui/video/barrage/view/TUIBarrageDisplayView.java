@@ -2,6 +2,7 @@ package com.txt.video.ui.video.barrage.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -77,10 +78,12 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
 
         //弹幕暂时不需要处理点击事件,因此点击回调设置为空
         mAdapter = new TUIBarrageMsgListAdapter(context, mMsgList, null);
-        mRecyclerMsg.setLayoutManager(new LinearLayoutManager(context){
+        // canScrollVertically影响到 smoothScrollToPosition
+        mRecyclerMsg.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerMsg.setOnTouchListener(new OnTouchListener() {
             @Override
-            public boolean canScrollVertically() {
-                return false;
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
         });
         mRecyclerMsg.setAdapter(mAdapter);
@@ -127,7 +130,7 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
             public void run() {
                 scroll();
             }
-        },50);
+        },500);
 
 //        mRecyclerMsg.smoothScrollToPosition();
         TxLogUtils.i("mRecyclerMsg",""+mAdapter.getItemCount());
@@ -138,9 +141,10 @@ public class TUIBarrageDisplayView extends FrameLayout implements ITUIBarrageDis
     }
     public void scroll(){
         if (null != mRecyclerMsg) {
-            TopSmoothScroller topSmoothScroller = new TopSmoothScroller(getContext());
-            topSmoothScroller.setTargetPosition(mAdapter.getItemCount());
-            mRecyclerMsg.getLayoutManager().startSmoothScroll(topSmoothScroller);
+//            TopSmoothScroller topSmoothScroller = new TopSmoothScroller(getContext());
+//            topSmoothScroller.setTargetPosition(mAdapter.getItemCount());
+//            mRecyclerMsg.getLayoutManager().startSmoothScroll(topSmoothScroller);
+            mRecyclerMsg.smoothScrollToPosition(mAdapter.getItemCount());
         }
     }
 
