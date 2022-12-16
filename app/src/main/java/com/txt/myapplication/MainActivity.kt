@@ -157,6 +157,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         }
         if (isCreateRoom) {
         } else {
+
+            TXSdk.getInstance().userNickname =  "&channel=txMeeting"+
+                    "&userCode=${loginName}"+
+                    "&userName=${loginName}"
             TXSdk.getInstance().startVideo(
                 this,
                 loginName,

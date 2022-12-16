@@ -202,5 +202,18 @@ public abstract class TXSDKApi {
      */
     public abstract void addFileToSdk(FileSdkBean mFileSdkBean);
 
+    /**
+     * 传入自定义小程序path参数
+     *
+     * @param userNickname
+     *
+     */
+    public abstract void setUserNickname(String userNickname);
+
+    /**
+     * 获取自定义小程序path参数
+     */
+    public abstract String  getUserNickname();
+
 
 }

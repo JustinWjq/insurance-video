@@ -232,6 +232,17 @@ public class TXSdk extends TXSDKApi {
         TXManagerImpl.getInstance().addFileToSdk(mFileSdkBean);
     }
 
+    private String mUserNickname = "";
+    @Override
+    public void setUserNickname(String userNickname) {
+        this.mUserNickname = userNickname;
+    }
+
+    @Override
+    public String getUserNickname() {
+        return mUserNickname;
+    }
+
     public onFileClickListener getOnFriendBtListener() {
         return this.onFileClickListener;
     }
@@ -253,6 +264,7 @@ public class TXSdk extends TXSDKApi {
         int TXSDK_ERROR_INVITENUMBER_INVALID = 1;
 
     }
+
 
     public static TXSdk getInstance() {
         if (singleton == null) {
