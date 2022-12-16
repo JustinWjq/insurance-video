@@ -185,7 +185,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         trtc_video_view_layout.setData(mPresenter?.getStringMemberEntityMap())
         trtc_video_view_layout.setPageListener(object : V3VideoLayout.IBusListener {
             override fun onItemVisible(fromItem: Int, toItem: Int) {
-                TxLogUtils.i("onItemVisible:fromItem" + fromItem + "------toItem" + toItem)
+//                TxLogUtils.i("onItemVisible:fromItem" + fromItem + "------toItem" + toItem)
                 if (fromItem == 0) {
                     processSelfVideoPlay()
                     mPresenter?.processVideoPlay(0, toItem)
@@ -240,8 +240,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
         } else {
-            trtc_video_view_layout!!.bigMeetingEntity.isMuteAudio = isMute
-            trtc_video_view_layout!!.bigMeetingEntity.isShowAudioEvaluation = !isMute
+//            trtc_video_view_layout!!.bigMeetingEntity.isMuteAudio = isMute
+//            trtc_video_view_layout!!.bigMeetingEntity.isShowAudioEvaluation = !isMute
             trtc_video_view_layout!!.notifyItemChangedPld(
 
                 0, VOLUME_SHOW
@@ -269,7 +269,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 ), VIDEO_CLOSE
             )
         } else {
-            trtc_video_view_layout!!.bigMeetingEntity.isMuteVideo = isMute
+//            trtc_video_view_layout!!.bigMeetingEntity.isMuteVideo = isMute
             trtc_video_view_layout!!.notifyItemChangedPld(
                 0, VIDEO_CLOSE
             )
@@ -1722,14 +1722,14 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 FileType.h5 -> {
                     if (RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size == 1) {
                         showMessage("共享文件失败，会议内暂无其他人员")
-                        return
+                    }else{
+                        mPresenter?.addShareUrl(TXSdk.getInstance().agent,
+                            mFileSdkBean.h5Name,
+                            mFileSdkBean.h5Url,
+                            mFileSdkBean.cookie
+                        )
                     }
-                    mPresenter?.setScreenStatus(true)
-                    mPresenter?.addShareUrl(TXSdk.getInstance().agent,
-                        mFileSdkBean.h5Name,
-                        mFileSdkBean.h5Url,
-                        mFileSdkBean.cookie
-                    )
+
                 }
                 else -> {
                     //图片

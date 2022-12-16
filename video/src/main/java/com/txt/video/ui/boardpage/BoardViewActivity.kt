@@ -154,7 +154,7 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     var picQuickAdapter: PicQuickAdapter? = null
     private var boardIdList = ArrayList<String>()
-
+    var addVideoFileBoardId = ""
     //初始化缩略图list
     private fun initPicAdapter() {
         TxLogUtils.i("initPicAdapter","onTEBInit-----initPicAdapter")
@@ -165,7 +165,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         if (null !=  extras?.getString(IntentKey.VIDEOURL)) {
             extras?.getString(IntentKey.VIDEOURL)?.let {
                 TxLogUtils.i(" IntentKey.VIDEOURL" + it)
-                boardController?.addVideoFile(it)
+                addVideoFileBoardId = boardController?.addVideoFile(it)!!
+
             }
         }else{
 
@@ -622,8 +623,13 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         if ( boardController?.boardRenderView?.getParent() != null) {
             ( boardController?.boardRenderView?.getParent() as ViewGroup).removeView(boardController?.boardRenderView)
         }
+        if (null != boardController?.boardRenderView){
+            board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        }else{
 
-        board_view_container.addView(boardController?.boardRenderView, layoutParams)
+        }
+
+
         val layoutParams1 = board_view_container.layoutParams
         layoutParams1.width =windowWidth
         layoutParams1.height =  ViewGroup.LayoutParams.MATCH_PARENT
@@ -636,39 +642,10 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
 
     }
 
-    var mBoardCallback: MyBoardCallback? = null
     override fun joinClassroom() {
-//       var groupId = intent.extras?.getString(IntentKey.GROUPID)
-//        mBoardCallback =
-//            MyBoardCallback(this)
-//        //2、如果用户希望白板显示出来时，不使用系统默认的参数，就需要设置特性缺省参数，如是使用默认参数，则填null。
-//        val initParam = TEduBoardController.TEduBoardInitParam()
-//        initParam.brushColor = TEduBoardController.TEduBoardColor(255, 0, 0, 255)
-//        initParam.smoothLevel = 0f //用于指定笔迹平滑级别，默认值0.1，取值[0, 1]
-//        val classroomOption = TICClassroomOption()
-//        classroomOption.apply {
-//            classId = groupId?.toInt()!!
-//            boardCallback = mBoardCallback
-//            boardInitPara = initParam
-//        }
-//
-//        TICManager.getInstance()?.joinClassroom(classroomOption, object : TICCallback<String> {
-//            override fun onSuccess(data: String?) {
-//                TxLogUtils.i("txsdk---joinClassroom:onSuccess---$data")
-////                joinClass()
-//            }
-//
-//            override fun onError(module: String?, errCode: Int, errMsg: String?) {
-//                TxLogUtils.i("txsdk---joinClassroom:onError---$errCode----$errMsg")
-//            }
-//
-//        })
-    }
-
-    fun addBoardView() {
-
 
     }
+
 
     override fun onTEBError(p0: Int, p1: String?) {
     }
@@ -706,8 +683,15 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun onTEBAddBoard(p0: MutableList<String>?, p1: String?) {
-        boardIdList?.clear()
-        boardIdList?.addAll(p0!!)
+        TxLogUtils.i("onTEBAddBoard","p1"+p1)
+        if (p1.equals(addVideoFileBoardId)) {
+            //生成teb白板就自动播放
+            boardController?.playVideo()
+        }else{
+            boardIdList?.clear()
+            boardIdList?.addAll(p0!!)
+        }
+
 //        boardController?.gotoBoard()
     }
 
