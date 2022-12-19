@@ -3300,33 +3300,33 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         //有线耳机不能切换
         //蓝牙耳机可以切换
         //会议时，检测耳机的状态，逻辑跟上面一样
-        val checkHeadSetSUtils = CheckHeadSetSUtils();
-        val headSetStatus = checkHeadSetSUtils.getHeadSetStatus(this)
-        when (headSetStatus) {
-            CheckHeadSetSUtils.HeadType.Only_WiredHeadset -> {
-                //有线耳机连接
-                switchAudioHand(false)
-                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_WiredHeadset
-                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
-            }
-            CheckHeadSetSUtils.HeadType.Only_bluetooth -> {
-                //蓝牙耳机连接
-                switchAudioHand(false)
-                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_bluetooth
-                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
-            }
-            CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth -> {
-                switchAudioHand(false)
-                currentHeadsetType = CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth
-                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
-            }
-
-            else -> {
-                switchAudioHand(true)
-                currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
-                TxLogUtils.i("autoCheckAudioHand---NONE")
-            }
-        }
+//        val checkHeadSetSUtils = CheckHeadSetSUtils();
+//        val headSetStatus = checkHeadSetSUtils.getHeadSetStatus(this)
+//        when (headSetStatus) {
+//            CheckHeadSetSUtils.HeadType.Only_WiredHeadset -> {
+//                //有线耳机连接
+//                switchAudioHand(false)
+//                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_WiredHeadset
+//                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
+//            }
+//            CheckHeadSetSUtils.HeadType.Only_bluetooth -> {
+//                //蓝牙耳机连接
+//                switchAudioHand(false)
+//                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_bluetooth
+//                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
+//            }
+//            CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth -> {
+//                switchAudioHand(false)
+//                currentHeadsetType = CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth
+//                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
+//            }
+//
+//            else -> {
+//                switchAudioHand(true)
+//                currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
+//                TxLogUtils.i("autoCheckAudioHand---NONE")
+//            }
+//        }
 
     }
 
