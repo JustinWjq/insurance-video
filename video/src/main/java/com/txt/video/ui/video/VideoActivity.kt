@@ -58,7 +58,6 @@ import com.txt.video.ui.video.barrage.presenter.TUIBarragePresenter
 import com.txt.video.ui.video.barrage.view.ITUIBarrageListener
 import com.txt.video.ui.video.barrage.view.TUIBarrageButton
 import com.txt.video.ui.video.barrage.view.TUIBarrageDisplayView
-import com.txt.video.ui.video.plview.V2VideoLayout
 import com.txt.video.ui.video.plview.V3VideoLayout
 import com.txt.video.ui.video.remoteuser.RemoteUserListView
 import com.txt.video.ui.weight.dialog.*
@@ -2120,10 +2119,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
         TxLogUtils.i("memberEntityList" + memberEntities!!.size)
 
-        if (memberEntities!!.size == 1) {
-            for (i in 0 until memberEntities.size) {
-
-            }
+        if (memberEntities!!.size == 2) {
             try {
                 val memberEntity = memberEntities.get(1)
                 val userId = memberEntity.userId
@@ -2383,6 +2379,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         })
         webDialog?.show()
+        webDialog?.changeUi(requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        TxLogUtils.i("url-----"+url)
         webDialog?.request(url, fromAgent, fileName)
 
     }

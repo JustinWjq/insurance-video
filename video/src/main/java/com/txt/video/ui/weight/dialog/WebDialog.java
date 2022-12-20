@@ -62,16 +62,29 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tx_dialog_web);
         Window window = getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
-//        attributes.height = Utils.getWindowHeight(mContext);
-        attributes.height = ViewGroup.LayoutParams.MATCH_PARENT;
-        attributes.width = Utils.getWindowWidth(mContext);
-        window.setAttributes(attributes);
         window.setGravity(Gravity.BOTTOM);
 
         setCanceledOnTouchOutside(true);
         injectCookie();
         initView();
+    }
+
+    public void changeUi(boolean isPro){
+        Window window = getWindow();
+        if (isPro) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+//        attributes.height = Utils.getWindowHeight(mContext);
+            attributes.height = mContext.getResources().getDisplayMetrics().heightPixels;
+            attributes.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            window.setAttributes(attributes);
+        }else {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+//        attributes.height = Utils.getWindowHeight(mContext);
+            attributes.height = mContext.getResources().getDisplayMetrics().heightPixels;
+            attributes.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            window.setAttributes(attributes);
+        }
+
     }
     WebView webView;
     ImageButton tx_audio;
@@ -80,6 +93,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     TextView tv_title;
     private void injectCookie(){
         try {
+            if (null != mCookie &&!mCookie.isEmpty()) {
             CookieManager mCookieManager = CookieManager.getInstance();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mCookieManager.removeSessionCookies(null);
@@ -89,7 +103,9 @@ public class WebDialog extends Dialog implements View.OnClickListener {
                 CookieSyncManager.getInstance().sync();
             }
             mCookieManager.setAcceptCookie(true);
-            mCookieManager.setCookie(mUrl,mCookie);
+
+                mCookieManager.setCookie(mUrl,mCookie);
+            }
         }catch (Exception e){
 
         }
@@ -147,6 +163,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
             tv_endshare.setVisibility(View.VISIBLE);
         }
         tv_title.setText(title);
+//        webView.loadUrl("https://sync-web-test.cloud-ins.cn/mirror.html?syncid=132-cvsstest1050020635123-3&synctoken=006880b027964924e6ca254b77531c2eaf3IAATJZVg7_uayN3siDhG1FCAnNGNyKufRj2ZShXkNESlzgGZEB8AAAAAEADJLSwHXoqiYwEA6ANeiqJj");
         webView.loadUrl(url);
     }
 
