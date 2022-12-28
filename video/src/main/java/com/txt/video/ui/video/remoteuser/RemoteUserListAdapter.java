@@ -56,10 +56,15 @@ public class RemoteUserListAdapter extends
                          final boolean isSelf,
                          final OnItemClickListener listener) {
             //todo 高亮展示
+
+            String userNameRemarks = model.getUserName();
+            if (userNameRemarks.length()>10) {
+                userNameRemarks = userNameRemarks.substring(0, 10)+"...";
+            }
             if (isSelf) {
-                tv_user_remarks.setText(model.getUserName() + " (主持人、我)");
+                tv_user_remarks.setText(userNameRemarks + " (主持人、我)");
             } else {
-                tv_user_remarks.setText(model.getUserName());
+                tv_user_remarks.setText(userNameRemarks);
             }
             String userName = model.getUserName();
             if (userName.length()>2) {

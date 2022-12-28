@@ -46,9 +46,9 @@ public final class TxRemoteUserControlDialog {
         public Builder showLand(Boolean showLand){
             if (showLand) {
                 setGravity(Gravity.RIGHT);
-                setXOffset(50);
+                setXOffset(100);
                 setAnimStyle(AnimAction.ANIM_RIGHT);
-                setWidth(getResources().getDisplayMetrics().widthPixels/2-100);
+                setWidth(800);
 //                setHeight(getResources().getDisplayMetrics().heightPixels);
 //                mRemoteUserListView.setBackgroundResource(R.drawable.tx_shape_round_topleft_15);
             }else {
@@ -153,7 +153,12 @@ public final class TxRemoteUserControlDialog {
             boolean muteVideo = mMemberEntity.isMuteVideo();
             boolean muteAudio = mMemberEntity.isMuteAudio();
             if (mTvTitle != null) {
-                mTvTitle.setText(userName);
+                if (userName.length()>10) {
+                    mTvTitle.setText(userName.substring(0, 10)+"...");
+                }else{
+                    mTvTitle.setText(userName);
+                }
+
                 if (mMemberEntity.getUserName().length() > 2) {
                     mIvTitle.setText(userName.substring(userName.length() - 2, userName.length()));
                 } else {

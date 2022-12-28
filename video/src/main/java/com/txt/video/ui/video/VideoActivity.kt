@@ -1472,8 +1472,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else if (id == R.id.tx_business_switch) {
             //反转镜头
             switchCamera()
-//            startActivity(Intent(this, CheckResourcesActivity::class.java))
-//            startActivity(Intent(this,MainActivity::class.java))
         } else if (id == R.id.tx_business_share) {
             //文档共享
             if (tx_business_share.isSelected) {
@@ -2379,7 +2377,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         })
         webDialog?.show()
-        webDialog?.changeUi(requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        webDialog?.changeUi( window.decorView.width , window.decorView.height)
         TxLogUtils.i("url-----"+url)
         webDialog?.request(url, fromAgent, fileName)
 

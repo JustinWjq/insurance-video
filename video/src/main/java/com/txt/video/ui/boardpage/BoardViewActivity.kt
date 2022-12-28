@@ -163,6 +163,8 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
         val stringArrayList = extras?.getStringArrayList(IntentKey.BOARDLISTS)
 
         if (null !=  extras?.getString(IntentKey.VIDEOURL)) {
+            //隐藏工具栏
+            rl_board_business.visibility = View.INVISIBLE
             extras?.getString(IntentKey.VIDEOURL)?.let {
                 TxLogUtils.i(" IntentKey.VIDEOURL" + it)
                 addVideoFileBoardId = boardController?.addVideoFile(it)!!
@@ -683,10 +685,15 @@ class BoardViewActivity : BaseActivity<BoardViewContract.ICollectView, BoardView
     }
 
     override fun onTEBAddBoard(p0: MutableList<String>?, p1: String?) {
-        TxLogUtils.i("onTEBAddBoard","p1"+p1)
+        TxLogUtils.i("addVideoFileBoardId","p1"+p1)
+        TxLogUtils.i("addVideoFileBoardId","addVideoFileBoardId"+addVideoFileBoardId)
         if (p1.equals(addVideoFileBoardId)) {
             //生成teb白板就自动播放
-            boardController?.playVideo()
+            Handler().postDelayed({
+                TxLogUtils.i("addVideoFileBoardId","playVideo")
+                boardController?.playVideo()
+            },5000)
+
         }else{
             boardIdList?.clear()
             boardIdList?.addAll(p0!!)
