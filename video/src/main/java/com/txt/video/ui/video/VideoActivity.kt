@@ -902,20 +902,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mPresenter?.getTRTCRemoteUserManager()
                 ?.addRemoteUser(userId, entity?.userName, streamType)
             mTxRemoteUserDialogBuilder?.notifyDataSetChanged()
-            if (bigScreen) {
-//                changeBigScreenViewName(
-//                    entity!!.userName,
-//                    entity.userRole,
-//                    entity.userRoleIconPath
-//                )
-            } else {
-                //todo
-                trtc_video_view_layout!!.notifyItemChangedPld(
-                    mPresenter?.getMemberEntityList()!!.indexOf(
-                        entity
-                    ), NAME_CHANGE
-                )
-            }
             trtc_video_view_layout!!.notifyItemChangedPld(
                 mPresenter?.getMemberEntityList()!!.indexOf(
                     entity
