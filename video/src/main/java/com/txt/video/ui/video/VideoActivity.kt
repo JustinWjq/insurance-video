@@ -164,7 +164,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         regeistHeadsetReceiver()
         showInviteBt(isShow = true, noRemoterUser = true)
         mViewVideo = mPresenter!!.getMemberEntityList()[0].meetingVideoView
-        layout_root.setOnClickListener(object :View.OnClickListener{
+        layout_root.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 hideBar()
             }
@@ -305,42 +305,53 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun onRemoteUserEnterRoom(remoteUserId: String?) {
         TxLogUtils.i("txsdk---onRemoteUserEnterRoom-----$remoteUserId")
-        TxLogUtils.i("txsdk---onRemoteUserEnterRoom-----${mPresenter?.isBroad}")
 
         //协配员进入房间，大屏显示业务员
         //业务员的话，流程不变
         //进入获取房间信息
-        val contains = remoteUserId?.contains("tic_record")
+        var remoteUserIdNew = ""
+        remoteUserIdNew = remoteUserId!!
+        val contains = remoteUserIdNew?.contains("tic_record")
         if (!contains!!) {
-//            val mMeetingVideoView = V2TRTCVideoLayout(this@VideoActivity)
-            val mMeetingVideoView = MeetingVideoView(this@VideoActivity).apply {
-                meetingUserId = remoteUserId
-                isNeedAttach = false
-                isPlaying = true
-            }
-            val insertIndex = mPresenter?.getMemberEntityList()!!.size
-            val entity = MemberEntity().apply {
-                userId = remoteUserId
-                userName = ""
-                meetingVideoView = mMeetingVideoView
-                isMuteAudio = true
-                isMuteVideo = true
-                isVideoAvailable = false
-                isAudioAvailable = false
-                isNeedFresh = true
-                isShowAudioEvaluation = false
-            }
+            val contains1 = remoteUserIdNew.contains("extra")
+            if (contains1) {
+                //兼容小程序的extra，带后缀的去除
+                remoteUserIdNew = remoteUserIdNew?.split("extra")[0]
+            } else {
 
-            mPresenter?.addToAllMemberEntity(entity)
-            mPresenter?.addMemberEntity(entity)
-            trtc_video_view_layout!!.notifyItemInsertedPld(insertIndex)
-            mPresenter?.getRoomInfo(
-                remoteUserId,
-                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-                false,
-                entity,
-                false
-            )
+            }
+            //判断房间内是否还有这个id，有的话不需要添加
+            TxLogUtils.i("mPresenter!!.getStringMemberEntityMap()[remoteUserIdNew]" + mPresenter!!.getStringMemberEntityMap()[remoteUserIdNew])
+            if (null == mPresenter!!.getStringMemberEntityMap()[remoteUserIdNew]) {
+                val mMeetingVideoView = MeetingVideoView(this@VideoActivity).apply {
+                    meetingUserId = remoteUserIdNew
+                    isNeedAttach = false
+                    isPlaying = true
+                }
+                val insertIndex = mPresenter?.getMemberEntityList()!!.size
+                val entity = MemberEntity().apply {
+                    userId = remoteUserIdNew
+                    userName = ""
+                    meetingVideoView = mMeetingVideoView
+                    isMuteAudio = true
+                    isMuteVideo = true
+                    isVideoAvailable = false
+                    isAudioAvailable = false
+                    isNeedFresh = true
+                    isShowAudioEvaluation = false
+                }
+
+                mPresenter?.addToAllMemberEntity(entity)
+                mPresenter?.addMemberEntity(entity)
+                trtc_video_view_layout!!.notifyItemInsertedPld(insertIndex)
+                mPresenter?.getRoomInfo(
+                    remoteUserIdNew,
+                    TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
+                    false,
+                    entity,
+                    false
+                )
+            }
         }
 
     }
@@ -358,31 +369,31 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun onRemoteUserLeaveRoom(userId: String?, reason: Int) {
         TxLogUtils.i("txsdk---onRemoteUserLeaveRoom--$userId----$reason")
-
-        // 回收分配的渲染的View
-        val entity = mPresenter!!.getStringMemberEntityMap()[userId]
-        showMessage(entity?.userName +"退出会议室")
-        mPresenter?.getTRTCRemoteUserManager()!!.removeRemoteUser(userId)
-        val index = mPresenter?.removeMemberEntity(userId!!)
-
-        mPresenter?.removeForAllMemberEntity(userId!!)
-        mTxRemoteUserDialogBuilder?.notifyDataSetChanged()
-
-        if (index!! >= 0) {
-            //todo
-            trtc_video_view_layout!!.notifyItemRemovedPld(index)
+        var remoteUserIdNew = ""
+        val contains1 = userId?.contains("extra")
+        if (contains1!!) {
+            //兼容小程序的extra，带后缀的去除
+            remoteUserIdNew = userId?.split("extra")[0]
         } else {
-//            if (bigMeetingEntity != null && userId == bigMeetingEntity?.userId) {
-//                bigscreen?.visibility = View.GONE
-//                trtc_fl_no_video.visibility = View.GONE
-//                rl_bigscreen_name.visibility = View.GONE
-//                bigMeetingEntity = null
-//                if (!mPresenter?.isBroad!! && mPresenter?.getAllMemberEntityList()!!.size == 1) {
-//                    checkSmallVideoToBigVideo(true)
-//                }
-//
-//            }
+            remoteUserIdNew = userId
         }
+        // 回收分配的渲染的View
+        val entity = mPresenter!!.getStringMemberEntityMap()[remoteUserIdNew]
+        if (null != entity) {
+            showMessage(entity?.userName + "退出会议室")
+            mPresenter?.getTRTCRemoteUserManager()!!.removeRemoteUser(remoteUserIdNew)
+            val index = mPresenter?.removeMemberEntity(remoteUserIdNew!!)
+
+            mPresenter?.removeForAllMemberEntity(remoteUserIdNew!!)
+            mTxRemoteUserDialogBuilder?.notifyDataSetChanged()
+
+            if (index!! >= 0) {
+                //todo
+                trtc_video_view_layout!!.notifyItemRemovedPld(index)
+            } else {
+            }
+        }
+
 
     }
 
@@ -580,7 +591,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun skipCaller() {
         if (null == TXSdk.getInstance().onFriendBtListener) {
-            showMessage( IBaseView.MessageType.MESSAGETYPE_FAIL,"该方法暂未注册")
+            showMessage(IBaseView.MessageType.MESSAGETYPE_FAIL, "该方法暂未注册")
         } else {
             TXSdk.getInstance().onFriendBtListener.onEndRoom()
         }
@@ -718,7 +729,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
     override fun showBroad() {
-        skipToBoardPage("1",mFileSdkBean)
+        skipToBoardPage("1", mFileSdkBean)
 
     }
 
@@ -746,7 +757,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             override fun onItemClick(url: String?, images: MutableList<String>) {
                 //点击显示白板
-                mPresenter?.setShareStatus(true, url, images,true)
+                mPresenter?.setShareStatus(true, url, images, true)
 
             }
 
@@ -763,7 +774,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     var shareWhiteBroadDialog: ShareWhiteBroadDialog? = null
-    var paintThickPopup :ShareScreenPopup?=null
+    var paintThickPopup: ShareScreenPopup? = null
     override fun showChangeBroadModeDialog(isShow: Boolean) {
 //        if (isShow) {
 //            onEnd()
@@ -783,7 +794,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         paintThickPopup?.setOnCheckDialogListener(object : onShareWhiteBroadDialogListener {
             override fun onCheckFileWhiteBroad() {
                 if (null == TXSdk.getInstance().onFriendBtListener) {
-                    showMessage( IBaseView.MessageType.MESSAGETYPE_FAIL,"该方法暂未注册")
+                    showMessage(IBaseView.MessageType.MESSAGETYPE_FAIL, "该方法暂未注册")
                 } else {
                     TXSdk.getInstance().onFriendBtListener.onSuccess(mPresenter!!.getRoomId())
                 }
@@ -791,7 +802,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             override fun onCheckBroad() {
 
-                mPresenter?.setShareStatus(true, null, null,true)
+                mPresenter?.setShareStatus(true, null, null, true)
             }
 
         })
@@ -1373,7 +1384,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             var moveY = y
             var height = DisplayUtils.rejectedNavHeight(this)
             var ll_bottomY = if (ll_bottom.y >= height) {
-                ll_bottom.y -height + ll_bottom.height
+                ll_bottom.y - height + ll_bottom.height
             } else {
                 val fl = height - ll_bottom.y
                 val fl1 = ll_bottom.height - fl
@@ -1479,7 +1490,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             if (bt_startrecord.isSelected) {
                 TxMessageDialog.Builder(this)
                     .setMessage(
-                       "是否结束录制？"
+                        "是否结束录制？"
                     )
                     .setCancel("我再想想")
                     .setConfirm("结束录制")
@@ -1491,7 +1502,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         )
                     }
                     .show()
-            }else{
+            } else {
                 TxMessageDialog.Builder(this)
                     .setMessage(
                         "本次录制需获得全部参会人员授权确\n" +
@@ -1571,12 +1582,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
-    override fun  skipToBoardPage(type:String){
-        skipToBoardPage(type,null)
+    override fun skipToBoardPage(type: String) {
+        skipToBoardPage(type, null)
     }
     // 0 纯白板 1 图片 2 视频
 
-    override fun skipToBoardPage(type:String,mFileSdkBean: FileSdkBean?) {
+    override fun skipToBoardPage(type: String, mFileSdkBean: FileSdkBean?) {
 
         val intent = Intent(this, BoardViewActivity::class.java)
         intent.putExtra(IntentKey.SERVICEID, mPresenter?.getServiceId())
@@ -1584,11 +1595,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         intent.putExtra(IntentKey.GROUPID, "" + mPresenter?.getTRTCParams()?.roomId)
 
 
-        if (null !=  mFileSdkBean) {
+        if (null != mFileSdkBean) {
             when (type) {
                 "1" -> {
                     //图片
-                    if (null != mFileSdkBean.pics ) {
+                    if (null != mFileSdkBean.pics) {
                         intent.putStringArrayListExtra(
                             IntentKey.BOARDLISTS,
                             (mFileSdkBean.pics as java.util.ArrayList<String>?)!!
@@ -1679,16 +1690,17 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         mPresenter?.joinClassroom(mBoardCallback)
     }
 
-    private var mFileSdkBean : FileSdkBean ?=null
+    private var mFileSdkBean: FileSdkBean? = null
+
     //展示文件共享逻辑
-    override fun  showSharePage(mFileSdkBean: FileSdkBean){
+    override fun showSharePage(mFileSdkBean: FileSdkBean) {
         //传入共享文件需要的数据，前提是
         //如果是图片或者视频链接，进入白板页面
         //如果是同屏链接，这个时候弹出选择人，然后选择同屏文件进行共享
-        TxLogUtils.i("mFileSdkBean-------"+mFileSdkBean.toString())
+        TxLogUtils.i("mFileSdkBean-------" + mFileSdkBean.toString())
         if (null == mFileSdkBean) {
-            showMessage(IBaseView.MessageType.MESSAGETYPE_FAIL,"共享文件数据为空")
-        }else{
+            showMessage(IBaseView.MessageType.MESSAGETYPE_FAIL, "共享文件数据为空")
+        } else {
 
             when (mFileSdkBean.type) {
                 FileType.video -> {
@@ -1699,14 +1711,15 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
                     mPresenter?.setRoomShareStatus(true)
-                    mPresenter?.setShareStatus(true, "", null,false)
-                    skipToBoardPage("2",mFileSdkBean)
+                    mPresenter?.setShareStatus(true, "", null, false)
+                    skipToBoardPage("2", mFileSdkBean)
                 }
                 FileType.h5 -> {
                     if (RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size == 1) {
                         showMessage("共享文件失败，会议内暂无其他人员")
-                    }else{
-                        mPresenter?.addShareUrl(TXSdk.getInstance().agent,
+                    } else {
+                        mPresenter?.addShareUrl(
+                            TXSdk.getInstance().agent,
                             mFileSdkBean.h5Name,
                             mFileSdkBean.h5Url,
                             mFileSdkBean.cookie
@@ -1722,9 +1735,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                         mPresenter?.setIMTextData(IMkey.SHAREWHITEBOARD)
                             ?.put(IMkey.SHAREUSERID, mPresenter?.getSelfUserId()).toString()
                     )
-                    mPresenter?.setShareStatus(true, "", null,false)
+                    mPresenter?.setShareStatus(true, "", null, false)
                     mPresenter?.setRoomShareStatus(true)
-                    skipToBoardPage("1",mFileSdkBean)
+                    skipToBoardPage("1", mFileSdkBean)
                 }
             }
         }
@@ -1914,115 +1927,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
 
-    override fun checkItemToBig(position: Int) {
-//        val memberEntity = mPresenter!!.getMemberEntityList()[position]
-//        val mCuccentmeetingVideoView = memberEntity.meetingVideoView
-//        if (mCuccentmeetingVideoView.isSelfView || mPresenter?.isBroad!!) {
-//            return
-//        }
-//        val mCuccentmemberEntity =
-//            mPresenter!!.getStringMemberEntityMap()[mCuccentmeetingVideoView.meetingUserId!!]
-//        mPresenter?.getStringMemberEntityMap()!!.remove(mCuccentmeetingVideoView.meetingUserId!!)
-//
-//        //第一个用户不给点击
-//        val mCurrentmeetingVideoView = mCuccentmemberEntity?.meetingVideoView
-//        val mCuccentmemberUserId = mCuccentmemberEntity?.userId
-//        val mCuccentmemberUserName = mCuccentmemberEntity?.userName
-//        val mCuccentmemberIsAudioAvailable = mCuccentmemberEntity?.isAudioAvailable
-//        val mCuccentmemberIsVideoAvailable = mCuccentmemberEntity?.isVideoAvailable
-//        val mCuccentmemberIsShowAudioEvaluation = mCuccentmemberEntity?.isShowAudioEvaluation
-//        val mCuccentmemberIsHost = mCuccentmemberEntity?.isHost
-//        val mCuccentmemberUserRole = mCuccentmemberEntity?.userRole
-//        val mCuccentmemberUserRoleIconPath = mCuccentmemberEntity?.userRoleIconPath
-//
-//        //大屏幕把当前的video分开
-//        if (bigMeetingEntity == null) {
-//            bigMeetingEntity = MemberEntity()
-//            //异常情况，当前大屏幕没有画面，点击小屏幕切换
-//
-//        } else {
-//            val bigmeetingVideoView = bigMeetingEntity?.meetingVideoView
-//            val mBigMeetingUserId = bigMeetingEntity?.userId
-//            val mBigMeetingUserName = bigMeetingEntity?.userName
-//            val mBigMeetingIsAudioAvailable = bigMeetingEntity?.isAudioAvailable
-//            val mBigMeetingIsVideoAvailable = bigMeetingEntity?.isVideoAvailable
-//            val mBigMeetingIsShowAudioEvaluation = bigMeetingEntity?.isShowAudioEvaluation
-//            val mBigMeetingisHost = bigMeetingEntity?.isHost
-//            val mBigMeetingUserRole = bigMeetingEntity?.userRole
-//            val mBigMeetingUserRoleIconPath = bigMeetingEntity?.userRoleIconPath
-//
-//            bigscreen?.removeView(bigmeetingVideoView)
-//
-//            mCurrentmeetingVideoView?.detach()
-//
-//            mCurrentmeetingVideoView?.addViewToViewGroup(bigscreen)
-//
-//            bigmeetingVideoView?.waitBindGroup = mCuccentmeetingVideoView.waitBindGroup
-//            bigmeetingVideoView?.detach()
-//
-//            bigMeetingEntity?.apply {
-//                userId = mCuccentmemberUserId
-//                userName = mCuccentmemberUserName
-//                meetingVideoView = mCurrentmeetingVideoView
-//                meetingVideoView.meetingUserId = mCuccentmemberUserId
-//                meetingVideoView?.isNeedAttach = true
-//                isNeedFresh = true
-//                isShowOutSide = true
-//                isVideoAvailable = mCuccentmemberIsVideoAvailable!!
-//                isAudioAvailable = mCuccentmemberIsAudioAvailable!!
-//                isShowAudioEvaluation = mCuccentmemberIsShowAudioEvaluation!!
-//                isHost = mCuccentmemberIsHost!!
-//                userRole = mCuccentmemberUserRole!!
-//                userRoleIconPath = mCuccentmemberUserRoleIconPath!!
-//            }
-//            mCuccentmemberEntity?.apply {
-//                userId = mBigMeetingUserId
-//                userName = mBigMeetingUserName
-//                meetingVideoView = bigmeetingVideoView
-//                meetingVideoView.meetingUserId = mBigMeetingUserId
-//                meetingVideoView?.isNeedAttach = true
-//                isNeedFresh = true
-//                isShowOutSide = false
-//                isVideoAvailable = mBigMeetingIsVideoAvailable!!
-//                isAudioAvailable = mBigMeetingIsAudioAvailable!!
-//                isShowAudioEvaluation = mBigMeetingIsShowAudioEvaluation!!
-//                isHost = mBigMeetingisHost!!
-//                userRole = mBigMeetingUserRole!!
-//                userRoleIconPath = mBigMeetingUserRoleIconPath!!
-//            }
-//            mCuccentmemberEntity?.meetingVideoView?.refreshParent()
-//            TxLogUtils.i(
-//                "onSingleClick",
-//                "mCuccentmemberEntity?.isVideoAvailable " + mCuccentmemberEntity?.isVideoAvailable
-//            )
-//            mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
-//                bigMeetingEntity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                false
-//            )
-//
-//            mPresenter?.getTRTCRemoteUserManager()!!.setRemoteFillMode(
-//                mCuccentmemberEntity?.userId,
-//                TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG,
-//                true
-//            )
-//
-//            mPresenter!!.getStringMemberEntityMap()
-//                .put(mCuccentmemberEntity!!.userId, mCuccentmemberEntity!!)
-//
-//            changeBigVideo(bigMeetingEntity!!)
-//            //todo
-//            trtc_video_view_layout!!.notifyItemChanged(
-//                mPresenter?.getMemberEntityList()!!.indexOf(
-//                    mCuccentmemberEntity
-//                ), VIDEOVIEW_CHANGE
-//            )
-//
-//
-//        }
-//
-//
-    }
+    override fun checkItemToBig(position: Int) {}
 
 
     override fun checkSmallVideoToBigVideo(isShowToBig: Boolean) {
@@ -2059,7 +1964,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             .show()
 
     }
-
 
 
     override fun checkOwenrToBigShareScreen(screenUserId: String) {
@@ -2202,7 +2106,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         fileName: String,
         cookie: String
     ) {
-        showPersonDialog(webId!!, url, name, true, list, fileName,cookie)
+        showPersonDialog(webId!!, url, name, true, list, fileName, cookie)
 
     }
 
@@ -2213,9 +2117,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         cookie: String
     ) {
         if (!clientUrl.isEmpty()) {
-            showSelectChannelDialog(JSONArray(), webId!!, clientUrl, name, name,cookie)
+            showSelectChannelDialog(JSONArray(), webId!!, clientUrl, name, name, cookie)
         } else {
-           showMessage("返回的clientUrl为空")
+            showMessage("返回的clientUrl为空")
         }
 
     }
@@ -2299,8 +2203,9 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         // fromAgent 为true 显示结束共享按钮
         if (webDialog == null) {
             webDialog =
-                WebDialog(this,
-                        url,
+                WebDialog(
+                    this,
+                    url,
                     cookie
                 )
         }
@@ -2309,7 +2214,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 //结束共享
                 TxMessageDialog.Builder(this@VideoActivity)
                     .setMessage(
-                       "请问是否结束共享？"
+                        "请问是否结束共享？"
                     )
                     .setCancel("取消")
                     .setConfirm("确认")
@@ -2363,8 +2268,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         })
         webDialog?.show()
-        webDialog?.changeUi( window.decorView.width , window.decorView.height)
-        TxLogUtils.i("url-----"+url)
+        webDialog?.changeUi(window.decorView.width, window.decorView.height)
+        TxLogUtils.i("url-----" + url)
         webDialog?.request(url, fromAgent, fileName)
 
     }
@@ -2506,7 +2411,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         //todo
         bt_startrecord.isSelected = true
         bt_startrecord.text = "结束录制"
-        bt_startrecord.setTextColor(ContextCompat.getColor(this,R.color.tx_color_ff6666))
+        bt_startrecord.setTextColor(ContextCompat.getColor(this, R.color.tx_color_ff6666))
     }
 
     override fun refuseStartRecord() {
@@ -2546,6 +2451,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     override fun endRecordAudioSuccess() {
         bt_startrecord.isSelected = false
         bt_startrecord.text = "开始录制"
-        bt_startrecord.setTextColor(ContextCompat.getColor(this,R.color.tx_color_dadada))
+        bt_startrecord.setTextColor(ContextCompat.getColor(this, R.color.tx_color_dadada))
     }
 }

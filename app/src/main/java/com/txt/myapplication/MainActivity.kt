@@ -183,11 +183,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
         TXSdk.getInstance().addOnFileClickListener(object :onFileClickListener{
             override fun onSuccess(roomId : Int) {
              //点击文件按钮跳转
-//                val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,"https://sync-web-test.cloud-ins.cn/loan-demo/index.html#/info","");
-//                mFileSdkBeanVideo.h5Name ="长链测试地址"
+                val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,"https://sync-web-test.cloud-ins.cn/loan-demo/index.html#/info","");
+                mFileSdkBeanVideo.h5Name ="长链测试地址"
 
-                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,
-                    "https://slupl106.sinosig.com/visit/file/d4072a7c10a3448ba5b797b1d703cf62.mp4")
+//                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,
+//                    "https://slupl106.sinosig.com/visit/file/d4072a7c10a3448ba5b797b1d703cf62.mp4")
 
 //                mFileSdkBeanVideo.h5Name ="长链测试地址"
 

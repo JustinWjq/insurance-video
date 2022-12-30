@@ -50,6 +50,12 @@
             android:multiprocess="true"
             android:theme="@style/tx_activityTranslucent"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
     </application>
 
 </manifest>
