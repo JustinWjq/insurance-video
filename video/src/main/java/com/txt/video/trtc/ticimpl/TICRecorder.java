@@ -3,7 +3,7 @@ package com.txt.video.trtc.ticimpl;
 import android.text.TextUtils;
 
 import com.tencent.liteav.basic.log.TXCLog;
-import com.tencent.liteav.basic.util.TXCTimeUtil;
+//import com.tencent.liteav.basic.util.TXCTimeUtil;
 import com.tencent.teduboard.TEduBoardController;
 import com.txt.video.trtc.ticimpl.truetime.TrueTime;
 import com.txt.video.trtc.ticimpl.utils.TXHttpRequest;
@@ -111,7 +111,7 @@ public class TICRecorder implements TXHttpRequest.TXHttpListenner {
             if (code == NTPController.SUCC) {
                 TICReporter.report(TICReporter.EventId.sendOfflineRecordInfo_end);
                 try {
-                    long avsdk_time = TXCTimeUtil.getTimeTick();
+                    long avsdk_time = 1000;
                     long ntp_time = TrueTime.now().getTime();
                     long board_time = System.currentTimeMillis();
 

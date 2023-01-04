@@ -1,5 +1,6 @@
 package com.txt.video.common.utils;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -195,6 +196,11 @@ public final class TxPermissionUtils {
 
     private TxPermissionUtils(final String... permissions) {
         mPermissions = new LinkedHashSet<>();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.S){
+            mPermissions.add(Manifest.permission.BLUETOOTH_SCAN);
+            mPermissions.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+            mPermissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+        }
         for (String permission : permissions) {
             for (String aPermission : PermissionConstants.getPermissions(permission)) {
                 if (PERMISSIONS.contains(aPermission)) {

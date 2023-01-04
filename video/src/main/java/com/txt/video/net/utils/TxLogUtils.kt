@@ -19,7 +19,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.d(tag, msg)
+            Log.d(tag, msg!!)
         }
 
     }
@@ -30,7 +30,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.i(tag, msg)
+            Log.i(tag, msg!!)
         }
     }
 
@@ -40,7 +40,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.i(DEFAULT_TAG, msg)
+            Log.i(DEFAULT_TAG, msg!!)
         }
     }
 
@@ -60,7 +60,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.w(tag, msg)
+            Log.w(tag, msg!!)
         }
     }
 
@@ -70,7 +70,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.e(tag, msg)
+            Log.e(tag, msg!!)
         }
     }
 
@@ -80,7 +80,7 @@ object TxLogUtils {
             if (TextUtils.isEmpty(msg)) {
                 return
             }
-            Log.e(DEFAULT_TAG, msg)
+            Log.e(DEFAULT_TAG, msg!!)
         }
     }
 

@@ -181,6 +181,8 @@ public class VideoContract {
         fun autoCheckAudioHand()
 
         fun showInfoDialog(userId: String, json: String)
+
+        fun startForeService()
     }
 
 

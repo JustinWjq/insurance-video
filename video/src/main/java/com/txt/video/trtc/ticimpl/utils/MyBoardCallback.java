@@ -1,6 +1,6 @@
 package com.txt.video.trtc.ticimpl.utils;
 
-import com.tencent.rtmp.TXLog;
+//import com.tencent.rtmp.TXLog;
 import com.tencent.teduboard.TEduBoardController;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.ui.video.VideoActivity;
@@ -24,7 +24,7 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
 
     @Override
     public void onTEBError(int code, String msg) {
-        TXLog.i(TAG, "onTEBError:" + code + "|" + msg);
+        TxLogUtils.i(TAG, "onTEBError:" + code + "|" + msg);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
 
     @Override
     public void onTEBAddTranscodeFile(String s) {
-        TXLog.i(TAG, "onTEBAddTranscodeFile:" + s);
+        TxLogUtils.i(TAG, "onTEBAddTranscodeFile:" + s);
     }
 
     @Override
@@ -170,10 +170,10 @@ public class MyBoardCallback implements TEduBoardController.TEduBoardCallback {
 
     }
 
-    @Override
-    public void onTEBH5PPTStatusChanged(int i, String s, String s1) {
-
-    }
+//    @Override
+//    public void onTEBH5PPTStatusChanged(int i, String s, String s1) {
+//
+//    }
     //    @Override
 //    public void onTEBTextElementStatusChange(String status, String id, String value, int left, int top) {
 //

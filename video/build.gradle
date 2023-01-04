@@ -7,7 +7,7 @@ static def releaseTime() {
 }
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+//    buildToolsVersion rootProject.ext.buildToolsVersion
     signingConfigs {
         config {
             keyAlias 'androiddebugkey'
@@ -21,7 +21,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.3.2.0"
+        versionName "1.3.3"
         multiDexEnabled true
         consumerProguardFiles 'proguard-rules.pro'
         defaultConfig {
@@ -116,7 +116,7 @@ dependencies {
 //    api 'com.tencent.imsdk:imsdk:4.6.56'
     //wechat share
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
-    api 'com.tencent.liteav:LiteAVSDK_TRTC:9.2.10639'
+    api 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
     //IMSDK
 //    implementation 'com.tencent.imsdk:imsdk:4.6.56'
 

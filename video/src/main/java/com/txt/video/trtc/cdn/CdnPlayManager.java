@@ -81,7 +81,7 @@ public class CdnPlayManager {
             return;
         }
         applyConfigToPlayer();
-        int res = mLivePlayer.startPlay(mPlayUrl, TXLivePlayer.PLAY_TYPE_LIVE_FLV);
+        int res = 0;
         if (res == 0) {
         } else {
 //            ToastUtils.showLong("播放失败：" + res);

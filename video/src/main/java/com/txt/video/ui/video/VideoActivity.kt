@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothHeadset
 import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
@@ -16,7 +17,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.text.TextUtils
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -35,6 +35,7 @@ import com.tencent.trtc.TRTCStatistics
 import com.txt.video.R
 import com.txt.video.TXSdk
 import com.txt.video.base.BaseActivity
+import com.txt.video.base.ScreenRecordService
 import com.txt.video.base.constants.IMkey
 import com.txt.video.base.constants.IntentKey
 import com.txt.video.base.constants.VideoCode
@@ -42,7 +43,7 @@ import com.txt.video.common.callback.*
 import com.txt.video.common.dialog.CommonDialog
 import com.txt.video.common.floatview.FloatingView
 import com.txt.video.common.utils.CheckDoubleClickListener
-import com.txt.video.common.utils.CheckHeadSetSUtils
+import com.txt.video.common.utils.CheckHeadSetUtils
 import com.txt.video.common.utils.DatetimeUtil
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
@@ -141,15 +142,15 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         if (pageLayoutManager is MeetingPageMultiChatLayoutManager) {
             pageLayoutManager.setPageListener(object : PageListener {
                 override fun onItemVisible(fromItem: Int, toItem: Int) {
-                    TxLogUtils.i("onItemVisible : fromItem--${fromItem}--toItem${toItem}")
+//                    TxLogUtils.i("onItemVisible : fromItem--${fromItem}--toItem${toItem}")
                     if (fromItem == 0) {
                         processSelfVideoPlay()
                         mPresenter?.processVideoPlay(1, toItem)
                         if (0 != toItem) {
-                            TxLogUtils.i(
-                                "MeetingVideoView",
-                                "onItemVisible : fromItem--${fromItem}--toItem${toItem}"
-                            )
+//                            TxLogUtils.i(
+//                                "MeetingVideoView",
+//                                "onItemVisible : fromItem--${fromItem}--toItem${toItem}"
+//                            )
                             //todo layoutmannger 没有绘制完成，导致width height 都是0
 
 
@@ -192,7 +193,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
             pageLayoutManager.setPageListener(object : PageListener {
                 override fun onItemVisible(fromItem: Int, toItem: Int) {
-                    TxLogUtils.i("onItemVisible : fromItem--${fromItem}--toItem${toItem}")
+//                    TxLogUtils.i("onItemVisible : fromItem--${fromItem}--toItem${toItem}")
                     if (fromItem == 0) {
                         processSelfVideoPlay()
                         mPresenter?.processVideoPlay(1, toItem)
@@ -908,6 +909,19 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             mPresenter?.setScreenStatus(false)
         }
 
+    }
+
+    override fun startForeService() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val intent: Intent = Intent(
+                this,
+                ScreenRecordService::class.java
+            )
+            intent.putExtra("resultCode", 123)
+            intent.putExtra("data", android.R.attr.data)
+            startForegroundService(intent)
+        }
     }
 
     override fun onRecvSEIMsg(userId: String?, data: ByteArray?) {
@@ -3259,20 +3273,32 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     }
 
                 }
-            } else if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
+            } else if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED==action) {
+//                TxLogUtils.i(action)
+//                try {
+//                    var adapter = BluetoothAdapter.getDefaultAdapter()
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+//                        var state = adapter.getProfileConnectionState(BluetoothProfile.HEADSET)
+//                        TxLogUtils.i("state"+state)
+//                        if (BluetoothProfile.STATE_CONNECTED == state) {
+//                            TxLogUtils.i("onReceive: 插入蓝牙耳机")
+//                            autoCheckAudioHand()
+//                        }
+//                        if (BluetoothProfile.STATE_DISCONNECTED == state) {
+//                            TxLogUtils.i("onReceive: 拔出蓝牙耳机")
+//                            autoCheckAudioHand()
+//                        }
+//                    }
+//                }catch (e :Exception){
+//
+//                }
+
+            }else if(BluetoothDevice.ACTION_ACL_CONNECTED==action){
                 TxLogUtils.i(action)
-                var adapter = BluetoothAdapter.getDefaultAdapter()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    var state = adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
-                    if (BluetoothProfile.STATE_CONNECTED == state) {
-                        TxLogUtils.i("onReceive: 插入蓝牙耳机")
-                        autoCheckAudioHand()
-                    }
-                    if (BluetoothProfile.STATE_DISCONNECTED == state) {
-                        TxLogUtils.i("onReceive: 拔出蓝牙耳机")
-                        autoCheckAudioHand()
-                    }
-                }
+                switchAudioHand(false)
+            }else if(BluetoothDevice.ACTION_ACL_DISCONNECTED==action){
+                TxLogUtils.i(action)
+                autoCheckAudioHand()
             }
 
         }
@@ -3286,10 +3312,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_HEADSET_PLUG)
         filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
         registerReceiver(mHeadSetReceiver, filter)
     }
 
-    var currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
+    var currentHeadsetType = CheckHeadSetUtils.HeadType.NONE
 
     override fun autoCheckAudioHand() {
 
@@ -3300,33 +3328,33 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         //有线耳机不能切换
         //蓝牙耳机可以切换
         //会议时，检测耳机的状态，逻辑跟上面一样
-//        val checkHeadSetSUtils = CheckHeadSetSUtils();
-//        val headSetStatus = checkHeadSetSUtils.getHeadSetStatus(this)
-//        when (headSetStatus) {
-//            CheckHeadSetSUtils.HeadType.Only_WiredHeadset -> {
-//                //有线耳机连接
-//                switchAudioHand(false)
-//                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_WiredHeadset
-//                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
-//            }
-//            CheckHeadSetSUtils.HeadType.Only_bluetooth -> {
-//                //蓝牙耳机连接
-//                switchAudioHand(false)
-//                currentHeadsetType = CheckHeadSetSUtils.HeadType.Only_bluetooth
-//                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
-//            }
-//            CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth -> {
-//                switchAudioHand(false)
-//                currentHeadsetType = CheckHeadSetSUtils.HeadType.WiredHeadsetAndBluetooth
-//                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
-//            }
-//
-//            else -> {
-//                switchAudioHand(true)
-//                currentHeadsetType = CheckHeadSetSUtils.HeadType.NONE
-//                TxLogUtils.i("autoCheckAudioHand---NONE")
-//            }
-//        }
+        val checkHeadSetSUtils = CheckHeadSetUtils();
+        val headSetStatus = checkHeadSetSUtils.getHeadSetStatus(this)
+        when (headSetStatus) {
+            CheckHeadSetUtils.HeadType.Only_WiredHeadset -> {
+                //有线耳机连接
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetUtils.HeadType.Only_WiredHeadset
+                TxLogUtils.i("autoCheckAudioHand---Only_WiredHeadset")
+            }
+            CheckHeadSetUtils.HeadType.Only_bluetooth -> {
+                //蓝牙耳机连接
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetUtils.HeadType.Only_bluetooth
+                TxLogUtils.i("autoCheckAudioHand---Only_bluetooth")
+            }
+            CheckHeadSetUtils.HeadType.WiredHeadsetAndBluetooth -> {
+                switchAudioHand(false)
+                currentHeadsetType = CheckHeadSetUtils.HeadType.WiredHeadsetAndBluetooth
+                TxLogUtils.i("autoCheckAudioHand---WiredHeadsetAndBluetooth")
+            }
+
+            else -> {
+                switchAudioHand(true)
+                currentHeadsetType = CheckHeadSetUtils.HeadType.NONE
+                TxLogUtils.i("autoCheckAudioHand---NONE")
+            }
+        }
 
     }
 

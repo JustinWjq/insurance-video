@@ -3,7 +3,7 @@ package com.txt.video.trtc.remoteuser;
 import android.graphics.Bitmap;
 import android.view.TextureView;
 
-import com.tencent.rtmp.TXLog;
+//import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
@@ -182,7 +182,7 @@ public class TRTCRemoteUserManager {
             TRTCVideoStream stream = streamIterator.next();
             if (stream.userId != null && stream.userId.equals(userId) && stream.streamType == streamType) {
                 streamIterator.remove();
-                TXLog.i(TAG, "removeVideoStream " + userId + ", stream " + streamType + ", size " + mTRTCVideoStreams.size());
+//                TXLog.i(TAG, "removeVideoStream " + userId + ", stream " + streamType + ", size " + mTRTCVideoStreams.size());
                 break;
             }
         }
@@ -228,9 +228,9 @@ public class TRTCRemoteUserManager {
         // 记录当前流的类型，以供设置混流参数时使用：
         if (!isContainVideoStream(userId, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG)) {
             mTRTCVideoStreams.add(stream);
-            TXLog.i(TAG, "remoteUserVideoAvailable " + stream.userId +
-                    ", stream " + TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG +
-                    ", size " + mTRTCVideoStreams.size());
+//            TXLog.i(TAG, "remoteUserVideoAvailable " + stream.userId +
+//                    ", stream " + TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG +
+//                    ", size " + mTRTCVideoStreams.size());
         }
     }
 
@@ -560,7 +560,7 @@ public class TRTCRemoteUserManager {
 
         // 设置混流后各个小画面的位置
         int index = 0;
-        TXLog.i(TAG, "updateCloudMixtureParams " + remoteList.size());
+//        TXLog.i(TAG, "updateCloudMixtureParams " + remoteList.size());
         for (TRTCVideoStream userStream : remoteList) {
             TRTCCloudDef.TRTCMixUser _mixUser = new TRTCCloudDef.TRTCMixUser();
             PkConfig pkConfig = ConfigHelper.getInstance().getPkConfig();
@@ -586,7 +586,7 @@ public class TRTCRemoteUserManager {
             } else {
                 // 最多只叠加六个小画面
             }
-            TXLog.i(TAG, "updateCloudMixtureParams userId " + _mixUser.userId);
+//            TXLog.i(TAG, "updateCloudMixtureParams userId " + _mixUser.userId);
             config.mixUsers.add(_mixUser);
             ++index;
         }

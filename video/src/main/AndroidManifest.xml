@@ -9,17 +9,28 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application>
 
         <activity
             android:name=".ui.boardpage.BoardViewActivity"
             android:screenOrientation="landscape"
+            android:exported="true"
             android:configChanges="orientation|screenSize"
             android:theme="@style/tx_NewActivityTheme" />
         <activity
             android:name=".ui.video.VideoActivity"
             android:launchMode="singleTask"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:taskAffinity="net.sourceforge.simcpuxdemo"
             android:theme="@style/tx_NewActivityTheme"
@@ -33,15 +44,26 @@
 
         <activity
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
+            android:exported="true"
             android:taskAffinity="net.sourceforge.simcpuxdemo"
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".common.utils.TxPermissionUtils$TransActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleInstance"
+            android:exported="true"
             android:multiprocess="true"
             android:theme="@style/tx_activityTranslucent"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
-    </application>
 
+        <service
+            android:name=".base.ScreenRecordService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="mediaProjection"
+            />
+    </application>
+    <queries>
+        <package android:name="com.tencent.mm" />
+    </queries>
 </manifest>

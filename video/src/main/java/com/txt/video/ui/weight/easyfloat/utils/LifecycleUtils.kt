@@ -21,19 +21,19 @@ internal object LifecycleUtils {
         application.registerActivityLifecycleCallbacks(object :
             Application.ActivityLifecycleCallbacks {
 
-            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
-            override fun onActivityStarted(activity: Activity?) {
+            override fun onActivityStarted(activity: Activity) {
                 // 计算启动的activity数目
                 if (activity != null) activityCount++
             }
 
             // 每次都要判断当前页面是否需要显示
-            override fun onActivityResumed(activity: Activity?) = checkShow(activity)
+            override fun onActivityResumed(activity: Activity) = checkShow(activity)
 
-            override fun onActivityPaused(activity: Activity?) {}
+            override fun onActivityPaused(activity: Activity) {}
 
-            override fun onActivityStopped(activity: Activity?) {
+            override fun onActivityStopped(activity: Activity) {
                 if (activity != null) {
                     // 计算关闭的activity数目，并判断当前App是否处于后台
                     activityCount--
@@ -41,9 +41,9 @@ internal object LifecycleUtils {
                 }
             }
 
-            override fun onActivityDestroyed(activity: Activity?) {}
+            override fun onActivityDestroyed(activity: Activity) {}
 
-            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
         })
     }

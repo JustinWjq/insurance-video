@@ -5,12 +5,14 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.txt.video.net.utils.TxLogUtils;
+
 /**
  * author ：Justin
  * time ：2022/10/28.
  * des ：
  */
-public class CheckHeadSetSUtils {
+public class CheckHeadSetUtils {
 
     public   enum HeadType {
         Only_WiredHeadset, //只有耳机
@@ -60,6 +62,9 @@ public class CheckHeadSetSUtils {
                 int health = bluetoothAdapter.getProfileConnectionState(BluetoothProfile.HEALTH); // 蓝牙穿戴式设备
 
                 // 查看是否蓝牙是否连接到三种设备的一种，以此来判断是否处于连接状态还是打开并没有连接的状态
+                TxLogUtils.debugLongInfo("a2dp"+a2dp);
+                TxLogUtils.debugLongInfo("headset"+headset);
+                TxLogUtils.debugLongInfo("health"+health);
                 int flag = -1;
                 if (a2dp == BluetoothProfile.STATE_CONNECTED) {
                     flag = a2dp;
@@ -70,6 +75,7 @@ public class CheckHeadSetSUtils {
                 }else if (health == BluetoothProfile.STATE_DISCONNECTING) {
                     flag = -1;
                 }
+                TxLogUtils.debugLongInfo(""+flag);
                 // 说明连接上了三种设备的一种
                 if (flag != -1) {
                     return HeadType.Only_bluetooth;
