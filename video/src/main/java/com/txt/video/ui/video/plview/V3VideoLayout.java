@@ -66,6 +66,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
     LinearLayout ll_videolayouttwo;
     RelativeLayout rl_left;
     RelativeLayout rl_video_view_layout;
+    RelativeLayout rl_width;
     ImageView iv_self;
     private void initFuncLayout() {
 
@@ -74,6 +75,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         rl_video_view_layout = mVgFuc.findViewById(R.id.rl_video_view_layout);
         ll_videolayouttwo = mVgFuc.findViewById(R.id.ll_videolayouttwo);
         rl_left = mVgFuc.findViewById(R.id.rl_left);
+        rl_width = mVgFuc.findViewById(R.id.rl);
 
         iv_self = (ImageView) mVgFuc.findViewById(R.id.iv_self);
         iv_self.setOnClickListener(new OnClickListener() {
@@ -131,7 +133,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
 
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        layoutParams.height = DisplayUtils.INSTANCE.getScreenHeight(getContext()) / 4;
+        layoutParams.height = 400;
         trtc_video_view_layout.setLayoutManager(meetingPageLayoutManager1);
 
     }
@@ -144,16 +146,17 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         ll_videolayouttwo.setOrientation(LinearLayout.HORIZONTAL);
         trtc_video_view_layout.setLayoutManager(verticalmeetingpagelayoutmanager1);
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
-        int screenSize = DisplayUtils.INSTANCE.getScreenWidth(getContext());
+//        int screenSize = DisplayUtils.INSTANCE.getScreenWidth(getContext());
         TxLogUtils.i("DisplayUtils.INSTANCE----" +  DisplayUtils.INSTANCE.hasNavigationBar(getContext()));
 
-        layoutParams.width =  screenSize / 10 * 3;
+        int rl_leftlayoutParamsWidth = screenSize - 400;
+        layoutParams.width =  400;
         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         trtc_video_view_layout.setLayoutParams(layoutParams);
 
 
         ViewGroup.LayoutParams rl_leftlayoutParams = rl_left.getLayoutParams();
-        rl_leftlayoutParams.width = screenSize / 10 * 7;
+        rl_leftlayoutParams.width = rl_leftlayoutParamsWidth;
         rl_leftlayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         rl_left.setLayoutParams(rl_leftlayoutParams);
         rl_left.setVisibility(VISIBLE);
@@ -234,7 +237,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
 
     private MeetingPageLayoutManager1 meetingPageLayoutManager1;
     private MeetingPageLayoutManager1 verticalmeetingpagelayoutmanager1;
-
+    private int screenSize ;
     public void initAdapter(ArrayList<MemberEntity> memberEntityList) {
         this.mMemberEntityList = memberEntityList;
         pageLayoutManager = new MeetingPageLayoutManager(2, 2, MeetingPageLayoutManager.VERTICAL);
@@ -322,6 +325,7 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
                 }
             }
         });
+        screenSize = rl_width.getWidth();
         changeHasVideoUi();
     }
 

@@ -53,7 +53,7 @@ public class SystemHttpRequest {
                 IP = "https://dev1.ikandy.cn:60312";
                 break;
             case RELEASE:
-                IP = "https://video-sells-uat.ikandy.cn";
+                IP = "https://sig.icloud-ins.cn";
                 break;
             case TEST:
                 IP = "https://video-sells-test.ikandy.cn";
