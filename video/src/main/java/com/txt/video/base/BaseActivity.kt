@@ -61,7 +61,7 @@ abstract class BaseActivity<V, P : BasePresenter<V>> : AppCompatActivity() {
         TximmersionBar {
                 reset()
                 navigationBarColor(R.color.tx_color_424548)
-                statusBarColor(R.color.tx_color_424548)
+                statusBarColor(R.color.tx_transparent)
                 statusBarDarkFont(false)
                 navigationBarDarkIcon(true)
                 keyboardEnable(false)

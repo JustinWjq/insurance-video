@@ -325,8 +325,15 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
                 }
             }
         });
-        screenSize = rl_width.getWidth();
-        changeHasVideoUi();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                screenSize = rl_width.getWidth();
+                TxLogUtils.i("screenSize"+screenSize);
+                changeHasVideoUi();
+            }
+        });
+
     }
 
 

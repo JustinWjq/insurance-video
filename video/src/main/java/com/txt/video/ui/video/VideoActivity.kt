@@ -1359,10 +1359,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
      */
     fun hideBar() {
         paintThickPopup?.dismissTip()
+        TxLogUtils.i("DisplayUtils.rejectedNavHeight(this)"+DisplayUtils.rejectedNavHeight(this))
         if (!isHide) {
             val y = ll_title.y.absoluteValue + ll_title.height
             var moveY = -(y)
-            var height = DisplayUtils.rejectedNavHeight(this)
+            var height = layout_root.height
             val ll_bottomY = if (ll_bottom.y <= height) {
                 height - ll_bottom.y
             } else {
@@ -1382,7 +1383,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
             val y = ll_title.y.absoluteValue
             var moveY = y
-            var height = DisplayUtils.rejectedNavHeight(this)
+            var height = layout_root.height
             var ll_bottomY = if (ll_bottom.y >= height) {
                 ll_bottom.y - height + ll_bottom.height
             } else {
