@@ -59,11 +59,11 @@ android {
         doNotStrip "*/arm64-v8a/libYTCommon.so"
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
     //自动提取编译生成的aar文件，重命名，最后自动复制到appmodule下的libs目录，方便调试验证。
