@@ -190,6 +190,7 @@ public class SystemHttpRequest {
             jsonObject.put("serviceId", serviceId);
             jsonObject.put("fromUserId", fromUserId);
             jsonObject.put("toUserId", toUserId);
+            jsonObject.put("control", "agent");
         } catch (Exception e) {
 
         }
