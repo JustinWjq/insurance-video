@@ -45,6 +45,7 @@ import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.*
+import com.txt.video.trtc.feature.VideoConfig
 import com.txt.video.trtc.remoteuser.RemoteUserConfigHelper
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserIView
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
@@ -128,6 +129,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
             iv_switchscreen.isSelected = true
+            ConfigHelper.getInstance().getVideoConfig().setVideoVertical(false)
         } else {
             TxLogUtils.i("Configuration.ORIENTATION_PORTRAIT")
             if (null != mTxBaseDialog) {
@@ -137,9 +139,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
             iv_switchscreen.isSelected = false
+            ConfigHelper.getInstance().getVideoConfig().setVideoVertical(true)
         }
         trtc_video_view_layout.switchScreen(false)
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+
+        TRTCCloudManager.sharedInstance().setBigSteam()
     }
 
     private fun changeDialogLandscape(isShow: Boolean) {
@@ -995,14 +1000,14 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
                 override fun onMuteAudioClick(memberEntity: MemberEntity) {
                     if (!memberEntity.isHost) {
-                        showChangeUserStateDialog(memberEntity)
                     }
+                    showChangeUserStateDialog(memberEntity)
                 }
 
                 override fun onMuteVideoClick(memberEntity: MemberEntity) {
                     if (!memberEntity.isHost) {
-                        showChangeUserStateDialog(memberEntity)
                     }
+                    showChangeUserStateDialog(memberEntity)
 
                 }
 
@@ -1692,7 +1697,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
     }
 
     private var mFileSdkBean: FileSdkBean? = null
-
+    private var mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     //展示文件共享逻辑
     override fun showSharePage(mFileSdkBean: FileSdkBean) {
         //传入共享文件需要的数据，前提是
@@ -1719,6 +1724,14 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     if (RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size == 1) {
                         showMessage("共享文件失败，会议内暂无其他人员")
                     } else {
+                        //判断当前页面状态，切换到竖屏
+                        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                            //记录当前的页面状态
+                             mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        }else{
+                             mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                        }
                         mPresenter?.addShareUrl(
                             TXSdk.getInstance().agent,
                             mFileSdkBean.h5Name,
@@ -1870,14 +1883,22 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 //            showMessage(IBaseView.MessageType.MESSAGETYPE_SUCCESS, "已将该成员摄像头打开")
         }
 
+        if(memberEntity.isHost){
+            val videoConfig = ConfigHelper.getInstance().videoConfig
+            mPresenter?.muteLocalVideo(videoConfig.isEnableVideo)
+            mPresenter?.isCloseVideo = !videoConfig.isEnableVideo
+        }else{
+            mPresenter?.sendGroupMessage(
+                mPresenter?.setIMTextData(IMkey.MUTEVIDEO)!!
+                    .put(
+                        IMkey.USERS,
+                        mPresenter?.setMuteVideoMemberToJSON(true, memberEntity.userId)
+                    ).toString()
+            )
+        }
 
-        mPresenter?.sendGroupMessage(
-            mPresenter?.setIMTextData(IMkey.MUTEVIDEO)!!
-                .put(
-                    IMkey.USERS,
-                    mPresenter?.setMuteVideoMemberToJSON(true, memberEntity.userId)
-                ).toString()
-        )
+
+
     }
 
     override fun onMuteAudio(memberEntity: MemberEntity) {
@@ -1886,14 +1907,20 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
 //            showMessage(IBaseView.MessageType.MESSAGETYPE_SUCCESS, "已将该成员解除静音")
         }
-        mPresenter?.sendGroupMessage(
-            mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
-                .put(
-                    IMkey.USERS,
-                    mPresenter?.setMuteVideoMemberToJSON(false, memberEntity.userId)
-                )
-                .toString()
-        )
+        if(memberEntity.isHost){
+            val audioConfig = ConfigHelper.getInstance().audioConfig
+            mPresenter?.muteLocalAudio(audioConfig.isEnableAudio)
+        }else{
+            mPresenter?.sendGroupMessage(
+                mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
+                    .put(
+                        IMkey.USERS,
+                        mPresenter?.setMuteVideoMemberToJSON(false, memberEntity.userId)
+                    )
+                    .toString()
+            )
+        }
+
     }
 
     override fun onMoveOutRomm(memberEntity: MemberEntity) {
@@ -2277,6 +2304,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun hideWebDialog() {
         webDialog?.dismiss()
+        //判断一下展示webview之前是横屏还是竖屏
+        if (mCurrentRO == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        }else{
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        }
     }
 
     override fun onShareWhiteBroadEnd() {

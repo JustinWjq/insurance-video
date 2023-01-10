@@ -69,26 +69,33 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window win = this.getWindow();
-
-        WindowManager.LayoutParams lp = win.getAttributes();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.gravity = Gravity.CENTER;
-        //兼容刘海屏
-        if (Build.VERSION.SDK_INT >= 28) {
-            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-        }
-        win.setAttributes(lp);
-
-        win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        int options = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-        win.getDecorView().setSystemUiVisibility(options);
+//        Window win = this.getWindow();
+//
+//        WindowManager.LayoutParams lp = win.getAttributes();
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.gravity = Gravity.CENTER;
+//        //兼容刘海屏
+//        if (Build.VERSION.SDK_INT >= 28) {
+//            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+//        }
+//        win.setAttributes(lp);
+//
+//        win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//        int options = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+//        win.getDecorView().setSystemUiVisibility(options);
+//        setContentView(R.layout.tx_dialog_web);
+//        Window window = getWindow();
+//        window.setGravity(Gravity.CENTER);
+//
+//        setCanceledOnTouchOutside(false);
+//        injectCookie();
+//        initView();
         setContentView(R.layout.tx_dialog_web);
         Window window = getWindow();
-        window.setGravity(Gravity.CENTER);
+        window.setGravity(Gravity.BOTTOM);
 
-        setCanceledOnTouchOutside(false);
+        setCanceledOnTouchOutside(true);
         injectCookie();
         initView();
     }

@@ -1,14 +1,18 @@
 package com.txt.video.ui.video.remoteuser;
 
 import android.content.Context;
+
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.txt.video.R;
+import com.txt.video.common.utils.CheckDoubleClickListener;
+import com.txt.video.common.utils.OnCheckDoubleClick;
 import com.txt.video.trtc.videolayout.list.MemberEntity;
 
 import java.util.List;
@@ -58,8 +62,8 @@ public class RemoteUserListAdapter extends
             //todo 高亮展示
 
             String userNameRemarks = model.getUserName();
-            if (userNameRemarks.length()>10) {
-                userNameRemarks = userNameRemarks.substring(0, 10)+"...";
+            if (userNameRemarks.length() > 10) {
+                userNameRemarks = userNameRemarks.substring(0, 10) + "...";
             }
             if (isSelf) {
                 tv_user_remarks.setText(userNameRemarks + " (主持人、我)");
@@ -67,38 +71,43 @@ public class RemoteUserListAdapter extends
                 tv_user_remarks.setText(userNameRemarks);
             }
             String userName = model.getUserName();
-            if (userName.length()>2) {
-                userName = userName.substring(userName.length()-2, userName.length());
+            if (userName.length() > 2) {
+                userName = userName.substring(userName.length() - 2, userName.length());
             }
             mUserNameTv.setText(userName);
             mAudioImg.setSelected(model.isMuteAudio());
             mVideoImg.setSelected(model.isMuteVideo());
             mAudioImg.setVisibility(View.VISIBLE);
             mVideoImg.setVisibility(View.VISIBLE);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onMuteAudioClick(model);
-                }
-            });
-            mAudioImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onMuteAudioClick(model);
-                }
-            });
-            mVideoImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onMuteVideoClick(model);
-                }
-            });
+            itemView.setOnClickListener(
+                    new CheckDoubleClickListener(new OnCheckDoubleClick() {
+                        @Override
+                        public void onCheckDoubleClick(View view) {
+                            listener.onMuteAudioClick(model);
+                        }
+                    })
+            );
+            mAudioImg.setOnClickListener(
+                    new CheckDoubleClickListener(new OnCheckDoubleClick() {
+                        @Override
+                        public void onCheckDoubleClick(View view) {
+                            listener.onMuteAudioClick(model);
+                        }
+                    })
+            );
+            mVideoImg.setOnClickListener(
+                    new CheckDoubleClickListener(new OnCheckDoubleClick() {
+                        @Override
+                        public void onCheckDoubleClick(View view) {
+                            listener.onMuteVideoClick(model);
+                        }
+                    }));
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context  = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(R.layout.tx_item_meeting_remote_user_list, parent, false);

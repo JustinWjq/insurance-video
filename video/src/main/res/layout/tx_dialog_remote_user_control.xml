@@ -98,6 +98,7 @@
             android:paddingTop="@dimen/tx_dp_16"
             android:paddingBottom="@dimen/tx_dp_16"
             android:textSize="@dimen/tx_sp_15"
+            android:visibility="gone"
             style="@style/tx_style_click"
             />
         <View
@@ -109,6 +110,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="移出会议室"
+            android:gravity="center"
+            android:textColor="@color/tx_color_333333"
+            android:paddingTop="@dimen/tx_dp_16"
+            android:paddingBottom="@dimen/tx_dp_16"
+            android:textSize="@dimen/tx_sp_15"
+            android:visibility="gone"
+            style="@style/tx_style_click_bottom_15"
+            />
+
+        <TextView
+            android:id="@+id/atv_mutevideo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="打开摄像头"
             android:gravity="center"
             android:textColor="@color/tx_color_333333"
             android:paddingTop="@dimen/tx_dp_16"

@@ -83,7 +83,7 @@ public final class TxRemoteUserControlDialog {
                 if (mListener == null) {
                     return;
                 }
-            } else if (viewId == R.id.atv_mutevideo) {
+            } else if (viewId == R.id.atv_mutevideo||viewId == R.id.atv_mutevideo1) {
                 dismiss();
                 if (mListener == null) {
                     return;
@@ -109,6 +109,9 @@ public final class TxRemoteUserControlDialog {
         TextView mIvTitle;
         TextView mAtvMuteAudio;
         TextView mAtvMuteVideo;
+        TextView tv_moveoutroom;
+        TextView atv_mutevideo1;
+        View xpopup_divider;
 
         private void initView() {
 
@@ -120,7 +123,9 @@ public final class TxRemoteUserControlDialog {
 
             mAtvMuteVideo = findViewById(R.id.atv_mutevideo);
             TextView tv_cancel = findViewById(R.id.tv_cancel);
-            TextView tv_moveoutroom = findViewById(R.id.tv_moveoutroom);
+            tv_moveoutroom = findViewById(R.id.tv_moveoutroom);
+            atv_mutevideo1 = findViewById(R.id.atv_mutevideo1);
+            xpopup_divider = findViewById(R.id.xpopup_divider);
 
             TextView iv_close = findViewById(R.id.iv_close);
 
@@ -129,6 +134,7 @@ public final class TxRemoteUserControlDialog {
             mAtvMuteVideo.setOnClickListener(this);
             tv_cancel.setOnClickListener(this);
             tv_moveoutroom.setOnClickListener(this);
+            atv_mutevideo1.setOnClickListener(this);
 
             iv_close.setOnClickListener(this);
         }
@@ -149,6 +155,18 @@ public final class TxRemoteUserControlDialog {
 
         public Builder changeLay(MemberEntity mMemberEntity) {
             this.mMemberEntity = mMemberEntity;
+            if (mMemberEntity.isHost()) {
+
+                atv_mutevideo1.setVisibility(View.VISIBLE);
+                tv_moveoutroom.setVisibility(View.GONE);
+                mAtvMuteVideo.setVisibility(View.GONE);
+                xpopup_divider.setVisibility(View.GONE);
+            }else{
+                atv_mutevideo1.setVisibility(View.GONE);
+                tv_moveoutroom.setVisibility(View.VISIBLE);
+                mAtvMuteVideo.setVisibility(View.VISIBLE);
+                xpopup_divider.setVisibility(View.VISIBLE);
+            }
             String userName = mMemberEntity.getUserName();
             boolean muteVideo = mMemberEntity.isMuteVideo();
             boolean muteAudio = mMemberEntity.isMuteAudio();
@@ -182,12 +200,17 @@ public final class TxRemoteUserControlDialog {
                 if (mAtvMuteVideo != null) {
                     mAtvMuteVideo.setText("打开摄像头");
                 }
+                if (atv_mutevideo1!=null){
+                    atv_mutevideo1.setText("打开摄像头");
+                }
 
             } else {
                 if (mAtvMuteVideo != null) {
                     mAtvMuteVideo.setText("关闭摄像头");
                 }
-
+                if (atv_mutevideo1!=null){
+                    atv_mutevideo1.setText("关闭摄像头");
+                }
             }
 
             return this;
