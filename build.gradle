@@ -36,8 +36,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    compileSdkVersion = 31
-    buildToolsVersion = "31.0.3"
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.0"
     minSdkVersion = 21
-    targetSdkVersion = 31
+    targetSdkVersion = 29
 }
