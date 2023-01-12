@@ -184,86 +184,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener  {
             override fun onSuccess(roomId : Int) {
              //点击文件按钮跳转
                 val mFileSdkBeanVideo =  FileSdkBean (FileType.h5,
-                    "http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089&isRay=true",
-                    "{\n" +
-                            "    \"agentInfo\":{\n" +
-                            "        \"agentkind\":\"NA\",\n" +
-                            "        \"agentlevelcode\":1,\n" +
-                            "        \"birthday\":\"788889600000\",\n" +
-                            "        \"branchtype\":\"1\",\n" +
-                            "        \"email\":\"qixuechao-lhq@sinosig.com\",\n" +
-                            "        \"fgsName\":\"重庆分公司\",\n" +
-                            "        \"fullname\":\"阳光人寿保险股份有限公司重庆分公司\",\n" +
-                            "        \"gradecode\":\"TA\",\n" +
-                            "        \"manageComName\":\"阳光人寿保险股份有限公司北京分公司\",\n" +
-                            "        \"managecom\":\"8601\",\n" +
-                            "        \"mobile\":\"18618128372\",\n" +
-                            "        \"orgType\":\"4\",\n" +
-                            "        \"remark\":0,\n" +
-                            "        \"sex\":false,\n" +
-                            "        \"usercode\":\"1030016957\",\n" +
-                            "        \"username\":\"汪健\",\n" +
-                            "        \"usertype\":\"S\"\n" +
-                            "    },\n" +
-                            "    \"faceAI\":true,\n" +
-                            "    \"firstLogin\":false,\n" +
-                            "    \"homeMainMenu\":[\n" +
-                            "        {\n" +
-                            "            \"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/1b.png\",\n" +
-                            "            \"jumpaddress\":\"\",\n" +
-                            "            \"menuname\":\"首页\",\n" +
-                            "            \"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/1a.png\"\n" +
-                            "        },\n" +
-                            "        {\n" +
-                            "            \"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/2b.png\",\n" +
-                            "            \"jumpaddress\":\"http://10.8.207.39:8001/#/home\",\n" +
-                            "            \"menuname\":\"学习平台\",\n" +
-                            "            \"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/2a.png\"\n" +
-                            "        },\n" +
-                            "        {\n" +
-                            "            \"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/4b.png\",\n" +
-                            "            \"jumpaddress\":\"\",\n" +
-                            "            \"menuname\":\"展业夹\",\n" +
-                            "            \"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/4a.png\"\n" +
-                            "        },\n" +
-                            "        {\n" +
-                            "            \"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/5b.png\",\n" +
-                            "            \"jumpaddress\":\"\",\n" +
-                            "            \"menuname\":\"我的\",\n" +
-                            "            \"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/5a.png\"\n" +
-                            "        }\n" +
-                            "    ],\n" +
-                            "    \"homegroup\":{\n" +
-                            "        \"url\":\"/homegroup/homegroup\"\n" +
-                            "    },\n" +
-                            "    \"id\":\"eb8fe50a26884f8298f7a1d7c724369a\",\n" +
-                            "    \"isTemp\":\"N\",\n" +
-                            "    \"isUpPass\":0,\n" +
-                            "    \"logmessage\":{\n" +
-                            "        \"count\":1,\n" +
-                            "        \"hotCount\":1,\n" +
-                            "        \"pendingCount\":1,\n" +
-                            "        \"performanceCount\":1,\n" +
-                            "        \"systemCount\":1\n" +
-                            "    },\n" +
-                            "    \"manaController\":0,\n" +
-                            "    \"mobile\":\"18618128372\",\n" +
-                            "    \"newsmsCheck\":false,\n" +
-                            "    \"oneMonthNotLogin\":false,\n" +
-                            "    \"phoneInfo\":{\n" +
-                            "        \"commonlyPhoneCount\":0,\n" +
-                            "        \"commonlyPhoneStatus\":true\n" +
-                            "    },\n" +
-                            "    \"servicePuk\":\"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9GoCVoPiztYNS+tTXFCRwot15vD+8LhC98OaEuN0rUknPi8FWCOuy6N6HBRsBgojyVdqdgWGgF+OjzzYvQhehQcYK2c54vqYJVFOEGdWmd2eKfm3MBuFPXfCioexs2pQ6X2JZKWWlzB53AekhPRsrkR1YLzsjnmx0ZxllcQLhrQIDAQAB\",\n" +
-                            "    \"smsCheck\":false,\n" +
-                            "    \"timeSpan\":\"100000000\",\n" +
-                            "    \"token\":\"TTBsaFVFVkhVVkpXTjB4Qk5rZEJRak14ZDJzeU4xbFlTRWczVG5oR1NXWkRZVGxVV0dRdmJ6aFVhblV3Ymt3M1pGTnZPRmhPTUhSVU4xSkNMMFZsVkc1amNVazVSV3hWTUdacWJISjBiVFI1TUZNeFlXYzlQUT09\",\n" +
-                            "    \"userRoles\":[\n" +
-                            "        \"NASHR1\",\n" +
-                            "        \"SHR\"\n" +
-                            "    ],\n" +
-                            "    \"warnCount\":0\n" +
-                            "}");
+                    "https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex",
+                    "{\"agentInfo\":{\"agentkind\":\"NA\",\"agentlevelcode\":1,\"birthday\":\"499622400000\",\"branchtype\":\"1\",\"email\":\"qixuechao-lhq@sinosig.com\",\"manageComName\":\"阳光人寿保险股份有限公司北京分公司\",\"managecom\":\"8601\",\"mobile\":\"18618128372\",\"orgType\":\"4\",\"remark\":0,\"sex\":true,\"usercode\":\"1050020635\",\"username\":\"刘二哈\",\"usertype\":\"S\"},\"faceAI\":true,\"firstLogin\":false,\"homeMainMenu\":[{\"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/1b.png\",\"jumpaddress\":\"\",\"menuname\":\"首页\",\"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/1a.png\"},{\"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/2b.png\",\"jumpaddress\":\"http://10.8.207.39:8001/#/home\",\"menuname\":\"学习平台\",\"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/2a.png\"},{\"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/4b.png\",\"jumpaddress\":\"\",\"menuname\":\"展业夹\",\"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/4a.png\"},{\"carryicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/5b.png\",\"jumpaddress\":\"\",\"menuname\":\"我的\",\"uncheckedicon\":\"https://l106.oss-cn-szfinance.aliyuncs.com/icon/homebottom/5a.png\"}],\"homegroup\":{\"url\":\"/homegroup/homegroup\"},\"id\":\"d817d5fdd8d24821a05103420744ea8e\",\"isTemp\":\"N\",\"isUpPass\":0,\"logmessage\":{\"count\":1,\"hotCount\":1,\"pendingCount\":1,\"performanceCount\":1,\"systemCount\":1},\"manaController\":0,\"mobile\":\"18618128372\",\"newsmsCheck\":false,\"oneMonthNotLogin\":false,\"phoneInfo\":{\"commonlyPhoneCount\":1,\"commonlyPhoneStatus\":true},\"servicePuk\":\"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9GoCVoPiztYNS+tTXFCRwot15vD+8LhC98OaEuN0rUknPi8FWCOuy6N6HBRsBgojyVdqdgWGgF+OjzzYvQhehQcYK2c54vqYJVFOEGdWmd2eKfm3MBuFPXfCioexs2pQ6X2JZKWWlzB53AekhPRsrkR1YLzsjnmx0ZxllcQLhrQIDAQAB\",\"smsCheck\":false,\"timeSpan\":\"100000000\",\"token\":\"T0dsS0wzcEJkVTFyVWpGSmRrdEpSMGxZYUhwMWRuSTJkRkpTWlVWa1luVjVVbE5oV0ZKMFJuUjBhWFFyWVdoWmVVRllhWGM0Y0dwUWFuTmxiVFZNYVdZeFkwcGhkblpqT0ZOM1dWcGxWWEV2VGpBM01uYzlQUT09\",\"userRoles\":[\"COMMON\",\"NASHR\",\"NASHR1\"],\"warnCount\":0}");
                 mFileSdkBeanVideo.h5Name ="长链测试地址"
 
 //                val mFileSdkBeanVideo =  FileSdkBean (FileType.video,

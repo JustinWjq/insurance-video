@@ -12,25 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-//import android.webkit.CookieManager;
-//import android.webkit.CookieSyncManager;
-//import android.webkit.WebChromeClient;
-//import android.webkit.WebResourceRequest;
-//import android.webkit.WebSettings;
-//import android.webkit.WebView;
-//import android.webkit.WebViewClient;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.google.gson.JsonObject;
-import com.tencent.smtt.sdk.CookieManager;
-import com.tencent.smtt.sdk.CookieSyncManager;
-import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+//
+//import com.google.gson.JsonObject;
+//import com.tencent.smtt.sdk.CookieManager;
+//import com.tencent.smtt.sdk.CookieSyncManager;
+//import com.tencent.smtt.sdk.QbSdk;
+//import com.tencent.smtt.sdk.ValueCallback;
+//import com.tencent.smtt.sdk.WebChromeClient;
+//import com.tencent.smtt.sdk.WebSettings;
+//import com.tencent.smtt.sdk.WebView;
+//import com.tencent.smtt.sdk.WebViewClient;
 import com.txt.video.R;
 import com.txt.video.common.callback.onShareWhiteBroadDialogListener;
 import com.txt.video.common.utils.MainThreadUtil;
@@ -63,7 +63,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private String mUrl;
+    private String mUrl  = "http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089&isRay=true";
     private String mCookie;
     public WebDialog(Context context,String url,String cookie) {
         super(context, R.style.tx_MyDialog);
@@ -139,52 +139,26 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     TextView tv_title;
     CookieManager mCookieManager;
     private void injectCookie(){
-//        try {
-//            if (null != mCookie &&!mCookie.isEmpty()) {
-//                TxLogUtils.i("mCookie"+mCookie);
-//            CookieManager mCookieManager = CookieManager.getInstance();
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                mCookieManager.removeSessionCookies(null);
-//                mCookieManager.flush();
-//            }else{
-//                mCookieManager.removeAllCookie();
-//                CookieSyncManager.getInstance().sync();
-//            }
-//            mCookieManager.setAcceptCookie(true);
-//            mCookieManager.setCookie(mUrl,mCookie);
-//            }
-//        }catch (Exception e){
-//
-//        }
-
-//        String StringCookie = mCookie;
-        CookieSyncManager.createInstance(mContext);
-
-//        if (mCookieManager == null) {
-//        }
+        webView = findViewById(R.id.webView);
+        CookieManager.setAcceptFileSchemeCookies(true);
         mCookieManager = CookieManager.getInstance();
-//        mCookieManager.setAcceptFileSchemeCookies(true);
-        mCookieManager.acceptCookie();
-        mCookieManager.setAcceptCookie(true);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {//这个代码是清楚webview里的所有cookie加不加完全看你自己。
-            mCookieManager.removeSessionCookies(null);
-            mCookieManager.flush();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//这个代码是清楚webview里的所有cookie加不加完全看你自己。
+            mCookieManager.removeAllCookies(null);
         } else {
+            CookieSyncManager.createInstance(mContext);
             mCookieManager.removeAllCookie();
-            CookieSyncManager.getInstance().sync();
         }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCookieManager.setAcceptThirdPartyCookies(webView, false);
+        }
+        mCookieManager.setAcceptCookie(true);
+        mCookieManager.acceptCookie();
         setCookie(mCookie);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            mCookieManager.flush();
-        } else {
-            CookieSyncManager.getInstance().sync();
-        }
-
     }
     private void initView(){
 
-        webView = findViewById(R.id.webView);
+
         tv_endshare = findViewById(R.id.tv_endshare);
         iv_close = findViewById(R.id.iv_close);
         tx_audio = findViewById(R.id.tx_audio);
@@ -226,6 +200,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
     public void request(String url,boolean isAgent,String title){
+//        setCookie(mCookie);
         if (!isAgent) {
             iv_close.setVisibility(View.VISIBLE);
             tv_endshare.setVisibility(View.GONE);
@@ -262,14 +237,15 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         try {
             JSONObject jsonObject = new JSONObject(cookie);
             TxLogUtils.i("setCookie------"+jsonObject.optString("token"));
+            JSONObject agentInfo = jsonObject.optJSONObject("agentInfo");
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
                     String.format("domain=%s", new URL(mUrl).getHost()));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
-                    "userinfo=" + jsonObject.optJSONObject("agentInfo"));
+                    "userinfo=" + agentInfo);
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
-                    "agentCodeoc=" + jsonObject.optString("token"));
+                    "token=" + jsonObject.optString("token"));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
-                    "agentCodeQNB=" + jsonObject.optString("usercode"));
+                    "agentCodeQNB=" + agentInfo.optString("usercode"));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
                     "JSESSIONID=" + jsonObject.optString("servicePuk"));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
@@ -290,7 +266,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
                 }
             }
             mCookieManager.setCookie("." + new URL(mUrl).getHost(), jsessionId);
-
+            TxLogUtils.i("cookieStr---"+cookieStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
