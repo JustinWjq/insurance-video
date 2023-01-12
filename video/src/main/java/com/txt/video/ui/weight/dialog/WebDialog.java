@@ -2,9 +2,12 @@ package  com.txt.video.ui.weight.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,19 +22,28 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.txt.video.R;
 import com.txt.video.common.callback.onShareWhiteBroadDialogListener;
+import com.txt.video.common.utils.MainThreadUtil;
+import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.ConfigHelper;
 import com.txt.video.trtc.feature.AudioConfig;
 import com.txt.video.trtc.videolayout.Utils;
 import com.txt.video.ui.weight.easyfloat.utils.DisplayUtils;
+
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -93,19 +105,31 @@ public class WebDialog extends Dialog implements View.OnClickListener {
 //        initView();
         setContentView(R.layout.tx_dialog_web);
         Window window = getWindow();
-        window.setGravity(Gravity.BOTTOM);
-
-        setCanceledOnTouchOutside(true);
+        window.setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.height = DisplayUtils.INSTANCE.getScreenHeight(mContext);
+        attributes.width = DisplayUtils.INSTANCE.getScreenWidth(mContext);
+        setCanceledOnTouchOutside(false);
         injectCookie();
         initView();
+        setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode== KeyEvent.KEYCODE_BACK&&event.getRepeatCount() == 0){
+                    TxLogUtils.i("onCancel");
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void changeUi(int width,int heigh){
-        Window window = getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
-        attributes.height = heigh;
-        attributes.width = width;
-        window.setAttributes(attributes);
+//        Window window = getWindow();
+//        WindowManager.LayoutParams attributes = window.getAttributes();
+//        attributes.height = heigh;
+//        attributes.width = width;
+//        window.setAttributes(attributes);
 
     }
     WebView webView;
@@ -113,23 +137,48 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     TextView iv_close;
     TextView tv_endshare;
     TextView tv_title;
+    CookieManager mCookieManager;
     private void injectCookie(){
-        try {
-            if (null != mCookie &&!mCookie.isEmpty()) {
-            CookieManager mCookieManager = CookieManager.getInstance();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mCookieManager.removeSessionCookies(null);
-                mCookieManager.flush();
-            }else{
-                mCookieManager.removeAllCookie();
-                CookieSyncManager.getInstance().sync();
-            }
-            mCookieManager.setAcceptCookie(true);
+//        try {
+//            if (null != mCookie &&!mCookie.isEmpty()) {
+//                TxLogUtils.i("mCookie"+mCookie);
+//            CookieManager mCookieManager = CookieManager.getInstance();
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                mCookieManager.removeSessionCookies(null);
+//                mCookieManager.flush();
+//            }else{
+//                mCookieManager.removeAllCookie();
+//                CookieSyncManager.getInstance().sync();
+//            }
+//            mCookieManager.setAcceptCookie(true);
+//            mCookieManager.setCookie(mUrl,mCookie);
+//            }
+//        }catch (Exception e){
+//
+//        }
 
-                mCookieManager.setCookie(mUrl,mCookie);
-            }
-        }catch (Exception e){
+//        String StringCookie = mCookie;
+        CookieSyncManager.createInstance(mContext);
 
+//        if (mCookieManager == null) {
+//        }
+        mCookieManager = CookieManager.getInstance();
+//        mCookieManager.setAcceptFileSchemeCookies(true);
+        mCookieManager.acceptCookie();
+        mCookieManager.setAcceptCookie(true);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {//这个代码是清楚webview里的所有cookie加不加完全看你自己。
+            mCookieManager.removeSessionCookies(null);
+            mCookieManager.flush();
+        } else {
+            mCookieManager.removeAllCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+
+        setCookie(mCookie);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mCookieManager.flush();
+        } else {
+            CookieSyncManager.getInstance().sync();
         }
 
     }
@@ -206,5 +255,44 @@ public class WebDialog extends Dialog implements View.OnClickListener {
             }
         }
 
+    }
+
+    void setCookie(String cookie){
+
+        try {
+            JSONObject jsonObject = new JSONObject(cookie);
+            TxLogUtils.i("setCookie------"+jsonObject.optString("token"));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    String.format("domain=%s", new URL(mUrl).getHost()));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    "userinfo=" + jsonObject.optJSONObject("agentInfo"));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    "agentCodeoc=" + jsonObject.optString("token"));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    "agentCodeQNB=" + jsonObject.optString("usercode"));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    "JSESSIONID=" + jsonObject.optString("servicePuk"));
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(),
+                    "platform=slup");
+            mCookieManager.setCookie(".sinosig.com", String.format("domain=%s", new URL(mUrl).getHost()));
+            mCookieManager.setCookie(".sinosig.com", "userinfo=" + jsonObject.optJSONObject("agentInfo"));
+            mCookieManager.setCookie(".sinosig.com", "agentCodeoc=" +  jsonObject.optString("token"));
+
+            String cookieStr = mCookieManager.getCookie(mUrl);
+            String jsessionId = "";
+            if (!TextUtils.isEmpty(cookieStr)) {
+                String[] cookieLists = cookieStr.split(";");
+                for (int i = 0; i < cookieLists.length; i++) {
+                    if (cookieLists[i].startsWith("JSESSIONID=")) {
+                        jsessionId = cookieLists[i];
+                        break;
+                    }
+                }
+            }
+            mCookieManager.setCookie("." + new URL(mUrl).getHost(), jsessionId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

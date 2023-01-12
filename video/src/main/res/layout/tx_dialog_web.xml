@@ -65,7 +65,7 @@
         android:layout_marginTop="@dimen/tx_dp_5"
         android:layout_marginEnd="@dimen/tx_dp_10"
         android:onClick="onTxClick"
-        app:layout_constraintTop_toBottomOf="@+id/xpopup_divider"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:visibility="visible"
         />

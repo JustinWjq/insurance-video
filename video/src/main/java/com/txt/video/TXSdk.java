@@ -43,7 +43,7 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isDemo = false;
 
-    private String SDKVersion = "v1.0.3";
+    private String SDKVersion = "v1.0.5";
 
     private String terminal = "android";
 
