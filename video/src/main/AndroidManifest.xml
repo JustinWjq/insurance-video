@@ -63,7 +63,7 @@
             android:foregroundServiceType="mediaProjection"
             />
     </application>
-    <queries>
-        <package android:name="com.tencent.mm" />
-    </queries>
+<!--    <queries>-->
+<!--        <package android:name="com.tencent.mm" />-->
+<!--    </queries>-->
 </manifest>
