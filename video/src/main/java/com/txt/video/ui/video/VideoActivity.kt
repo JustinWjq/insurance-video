@@ -2236,6 +2236,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     url,
                     cookie
                 )
+        }else{
+            webDialog?.injectCookie(cookie)
         }
         webDialog?.setOnShareWhiteBroadDialogListener(object : onShareWhiteBroadDialogListener {
             override fun onCheckFileWhiteBroad() {
@@ -2295,8 +2297,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             }
 
         })
+        webDialog?.changeUi(layout_root.width, layout_root.height)
         webDialog?.show()
-        webDialog?.changeUi(window.decorView.width, window.decorView.height)
         TxLogUtils.i("url-----" + url)
         webDialog?.request(url, fromAgent, fileName)
 

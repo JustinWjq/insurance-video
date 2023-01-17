@@ -14,6 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -63,7 +65,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private String mUrl  = "http://sfss-uat.sinosig.com:8080/proposal/index.html#/ProductListPage?channelCode=100&R=43117089&isRay=true";
+    private String mUrl  = "";
     private String mCookie;
     public WebDialog(Context context,String url,String cookie) {
         super(context, R.style.tx_MyDialog);
@@ -105,12 +107,12 @@ public class WebDialog extends Dialog implements View.OnClickListener {
 //        initView();
         setContentView(R.layout.tx_dialog_web);
         Window window = getWindow();
-        window.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams attributes = window.getAttributes();
-        attributes.height = DisplayUtils.INSTANCE.getScreenHeight(mContext);
+        attributes.height = ViewGroup.LayoutParams.MATCH_PARENT;;
         attributes.width = DisplayUtils.INSTANCE.getScreenWidth(mContext);
+        window.setGravity(Gravity.CENTER);
         setCanceledOnTouchOutside(false);
-        injectCookie();
+        injectCookie(mCookie);
         initView();
         setOnKeyListener(new OnKeyListener() {
             @Override
@@ -125,12 +127,15 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
     public void changeUi(int width,int heigh){
+        Window window = getWindow();
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        attributes.width = DisplayUtils.INSTANCE.getScreenWidth(mContext);
+        window.setAttributes(attributes);
 //        Window window = getWindow();
 //        WindowManager.LayoutParams attributes = window.getAttributes();
-//        attributes.height = heigh;
-//        attributes.width = width;
-//        window.setAttributes(attributes);
-
+//        attributes.height = DisplayUtils.INSTANCE.getScreenHeight(mContext);
+//        attributes.width = DisplayUtils.INSTANCE.getScreenWidth(mContext);
     }
     WebView webView;
     ImageButton tx_audio;
@@ -138,12 +143,14 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     TextView tv_endshare;
     TextView tv_title;
     CookieManager mCookieManager;
-    private void injectCookie(){
+    public void injectCookie(String cookie){
+        this.mCookie = cookie;
         webView = findViewById(R.id.webView);
         CookieManager.setAcceptFileSchemeCookies(true);
         mCookieManager = CookieManager.getInstance();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//这个代码是清楚webview里的所有cookie加不加完全看你自己。
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //这个代码是清除webview里的所有cookie
             mCookieManager.removeAllCookies(null);
         } else {
             CookieSyncManager.createInstance(mContext);
@@ -179,6 +186,11 @@ public class WebDialog extends Dialog implements View.OnClickListener {
         settings.setDefaultTextEncodingName("UTF-8");
         settings.setDomStorageEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -186,6 +198,20 @@ public class WebDialog extends Dialog implements View.OnClickListener {
                     //加载完毕
                     mListener.onEnd();
                 }
+
+            }
+            @Override
+            public void onPermissionRequest(PermissionRequest request) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    String[] resources = request.getResources();
+                    request.grant(resources);
+                }
+            }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, true);
+                super.onGeolocationPermissionsShowPrompt(origin, callback);
 
             }
         });
@@ -200,7 +226,6 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
     public void request(String url,boolean isAgent,String title){
-//        setCookie(mCookie);
         if (!isAgent) {
             iv_close.setVisibility(View.VISIBLE);
             tv_endshare.setVisibility(View.GONE);
@@ -209,7 +234,6 @@ public class WebDialog extends Dialog implements View.OnClickListener {
             tv_endshare.setVisibility(View.VISIBLE);
         }
         tv_title.setText(title);
-//        webView.loadUrl("https://sync-web-test.cloud-ins.cn/mirror.html?syncid=132-cvsstest1050020635123-3&synctoken=006880b027964924e6ca254b77531c2eaf3IAATJZVg7_uayN3siDhG1FCAnNGNyKufRj2ZShXkNESlzgGZEB8AAAAAEADJLSwHXoqiYwEA6ANeiqJj");
         webView.loadUrl(url);
     }
 
@@ -233,7 +257,10 @@ public class WebDialog extends Dialog implements View.OnClickListener {
     }
 
     void setCookie(String cookie){
-
+        if (mCookie.isEmpty()) {
+            TxLogUtils.i("cookie------isEmpty");
+            return;
+        }
         try {
             JSONObject jsonObject = new JSONObject(cookie);
             TxLogUtils.i("setCookie------"+jsonObject.optString("token"));
