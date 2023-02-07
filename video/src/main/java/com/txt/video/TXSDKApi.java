@@ -2,6 +2,7 @@ package com.txt.video;
 
 import android.app.Activity;
 import android.app.Application;
+import android.webkit.WebChromeClient;
 
 import com.txt.video.net.bean.FileSdkBean;
 import com.txt.video.net.bean.TxConfig;
@@ -215,5 +216,11 @@ public abstract class TXSDKApi {
      */
     public abstract String  getUserNickname();
 
+    /**
+     * 传入甲方的WebViewChromeClient
+     */
+    public abstract void setUIWebViewChromeClient(WebChromeClient mWebChromeClient);
+
+    public abstract WebChromeClient getUIWebViewChromeClient();
 
 }

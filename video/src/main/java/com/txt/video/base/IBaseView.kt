@@ -30,6 +30,6 @@ interface IBaseView {
 
     }
 
-    fun showMessage(type: MessageType,message:String){}
+    fun showMessage(type: MessageType,message:String,showLong :Boolean =false){}
 
 }

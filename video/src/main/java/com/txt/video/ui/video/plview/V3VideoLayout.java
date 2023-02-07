@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.txt.video.R;
 import com.txt.video.TXSdk;
 import com.txt.video.common.CircleImageView;
+import com.txt.video.common.adapter.decoration.CustomDividerItemDecoration;
+import com.txt.video.common.adapter.decoration.DividerItemDecoration;
 import com.txt.video.common.glide.TxGlide;
 import com.txt.video.net.utils.TxLogUtils;
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserManager;
@@ -54,11 +56,13 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
     public V3VideoLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         initFuncLayout();
+        this.mContext = context;
     }
-
+    private Context mContext;
     public V3VideoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initFuncLayout();
+        this.mContext = context;
     }
 
     ViewGroup mVgFuc;
@@ -68,6 +72,8 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
     RelativeLayout rl_video_view_layout;
     RelativeLayout rl_width;
     ImageView iv_self;
+    CustomDividerItemDecoration customDividerItemDecoration;
+    CustomDividerItemDecoration customDividerProItemDecoration;
     private void initFuncLayout() {
 
         mVgFuc = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.tx_layout_trtc_videolayoutvthree, this, true);
@@ -95,7 +101,8 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
                 }
             }
         });
-
+        customDividerItemDecoration = new CustomDividerItemDecoration(false, 10);
+        customDividerProItemDecoration =new CustomDividerItemDecoration(true,30);
     }
 
     private boolean isLand = true;
@@ -134,6 +141,12 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         ViewGroup.LayoutParams layoutParams = trtc_video_view_layout.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutParams.height = 400;
+        TxLogUtils.i("trtc_video_view_layout.getItemDecorationCount()------" +trtc_video_view_layout.getItemDecorationCount());
+        if (trtc_video_view_layout.getItemDecorationCount()==1) {
+            trtc_video_view_layout.removeItemDecoration(customDividerProItemDecoration);
+            trtc_video_view_layout.removeItemDecoration(customDividerItemDecoration);
+        }
+        trtc_video_view_layout.addItemDecoration(customDividerProItemDecoration);
         trtc_video_view_layout.setLayoutManager(meetingPageLayoutManager1);
 
     }
@@ -153,7 +166,13 @@ public class V3VideoLayout extends RelativeLayout implements  ITxPlDisplayView {
         layoutParams.width =  400;
         layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         trtc_video_view_layout.setLayoutParams(layoutParams);
+        TxLogUtils.i("trtc_video_view_layout.getItemDecorationCount()------" +trtc_video_view_layout.getItemDecorationCount());
 
+        if (trtc_video_view_layout.getItemDecorationCount()==1) {
+            trtc_video_view_layout.removeItemDecoration(customDividerProItemDecoration);
+            trtc_video_view_layout.removeItemDecoration(customDividerItemDecoration);
+        }
+        trtc_video_view_layout.addItemDecoration(customDividerItemDecoration);
 
         ViewGroup.LayoutParams rl_leftlayoutParams = rl_left.getLayoutParams();
         rl_leftlayoutParams.width = rl_leftlayoutParamsWidth;

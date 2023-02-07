@@ -2,9 +2,8 @@ package com.txt.video.ui.video
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothHeadset
-import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,8 +15,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.text.TextUtils
 import android.view.*
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -45,7 +47,6 @@ import com.txt.video.common.utils.ToastUtils
 import com.txt.video.net.bean.*
 import com.txt.video.net.utils.TxLogUtils
 import com.txt.video.trtc.*
-import com.txt.video.trtc.feature.VideoConfig
 import com.txt.video.trtc.remoteuser.RemoteUserConfigHelper
 import com.txt.video.trtc.remoteuser.TRTCRemoteUserIView
 import com.txt.video.trtc.ticimpl.utils.MyBoardCallback
@@ -976,6 +977,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                             mPresenter?.setSoundStatus(false)
                             //点击全体静音
                             selectAudioBtn(true)
+                            mPresenter?.muteLocalAudio(true)
                         }
                         .show()
                     //showTimerDialog("4", 1, 1, 1, 1)
@@ -983,6 +985,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
                 override fun onMuteAllAudioOffClick() {
                     showMessage(getString(R.string.tx_toast_muteallmember))
+                    mPresenter?.muteLocalAudio(false)
                     mPresenter?.sendGroupMessage(
                         mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
                             .put(
@@ -1155,37 +1158,53 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     }
 
-
+    public var mUploadMessage : ValueCallback<Uri> ?=null
+    public var uploadMessage : ValueCallback<Array<Uri?>> ?=null
+    public var photoUri : Uri?=null
+    public var imageUri : Uri?=null
+    public var isCapture : Boolean?=null
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         TxLogUtils.i("txsdk---requestCode--$requestCode -----resultCode--$resultCode")
         TxLogUtils.i("txsdk---photo_code---${data?.data}")
+        when (requestCode) {
+            VideoCode.FILECHOOSER_RESULTCODE -> {
+                if (null == mUploadMessage &&  uploadMessage == null) return;
+                if (uploadMessage != null) {
+                    if (data == null) {
+                        var ss = arrayOfNulls<Uri>(1)
+                        ss[0] = photoUri
+                        uploadMessage?.onReceiveValue(ss);
+                        uploadMessage = null
+                        return;
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        uploadMessage?.onReceiveValue(
+                            WebChromeClient.FileChooserParams.parseResult(resultCode, data)
+                        )
+                    }
+                    uploadMessage = null
+                } else if (mUploadMessage != null) {
+                    // Use MainActivity.RESULT_OK if you're implementing WebView inside Fragment
+                    // Use RESULT_OK only if you're implementing WebView inside an Activity
+                    if(data == null || resultCode != Activity.RESULT_OK){
+                        mUploadMessage?.onReceiveValue(null);
+                    }else{
+                        mUploadMessage?.onReceiveValue(data.getData());
+                    }
+
+                    mUploadMessage = null
+                }
+            }
+            else -> {
+            }
+        }
         when (resultCode) {
             VideoCode.FINISHPAGE_CODE -> {
                 if (requestCode == VideoCode.SKIPBOARDPAGE_CODE) {
                     mPresenter?.isSkipBoradPage = false
                     TUIBarragePresenter.sharedInstance().initDisplayView(displayView)
                 }
-            }
-            Activity.RESULT_OK -> {
-
-                if (data?.data != null) {
-                    val data1 = data?.data
-                    when (requestCode) {
-                        VideoCode.PHOTO_CODE, VideoCode.FILE_CODE -> {
-                            //获取本地图片
-                            TxLogUtils.i("txsdk---onActivityResult:data---code---$data1----")
-                            mPresenter?.uploadFile(data1)
-                        }
-
-                        100 -> {
-                            //录取权限开启
-                        }
-                        else -> {
-                        }
-                    }
-                }
-
             }
             else -> {
             }
@@ -1198,7 +1217,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         showMessage(IBaseView.MessageType.MESSAGETYPE_NOTIP, message)
     }
 
-    override fun showMessage(type: IBaseView.MessageType, message: String) {
+    override fun showMessage(type: IBaseView.MessageType, message: String, showLong: Boolean) {
         val view = layoutInflater.inflate(R.layout.tx_layout_toast, null)
         val tv_message1 = view.findViewById<TextView>(R.id.tv_message)
         val iv_status1 = view.findViewById<ImageView>(R.id.iv_status)
@@ -1220,7 +1239,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
 
         ToastUtils.setGravity(Gravity.CENTER, 0, 0)
-        ToastUtils.showCustomShort(view)
+        if (showLong) {
+            ToastUtils.showCustomLong(view)
+        }else{
+            ToastUtils.showCustomShort(view)
+        }
+
     }
 
 
@@ -1268,20 +1292,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                     }
 
                 }
-            } else if (BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
-                TxLogUtils.i(action)
-                var adapter = BluetoothAdapter.getDefaultAdapter()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    var state = adapter.getProfileConnectionState(BluetoothProfile.HEADSET);
-                    if (BluetoothProfile.STATE_CONNECTED == state) {
-                        TxLogUtils.i("onReceive: 插入蓝牙耳机")
-                        autoCheckAudioHand()
-                    }
-                    if (BluetoothProfile.STATE_DISCONNECTED == state) {
-                        TxLogUtils.i("onReceive: 拔出蓝牙耳机")
-                        autoCheckAudioHand()
-                    }
-                }
+            } else if (BluetoothDevice.ACTION_ACL_CONNECTED == action) {
+                TxLogUtils.i("onReceive: 插入蓝牙耳机")
+                switchAudioHand(false)
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED == action) {
+                TxLogUtils.i("onReceive: 拔出蓝牙耳机")
+                autoCheckAudioHand()
             }
 
         }
@@ -1295,6 +1311,8 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_HEADSET_PLUG)
         filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED)
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
         registerReceiver(mHeadSetReceiver, filter)
     }
 
@@ -1364,7 +1382,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
      */
     fun hideBar() {
         paintThickPopup?.dismissTip()
-        TxLogUtils.i("DisplayUtils.rejectedNavHeight(this)"+DisplayUtils.rejectedNavHeight(this))
+        TxLogUtils.i("DisplayUtils.rejectedNavHeight(this)" + DisplayUtils.rejectedNavHeight(this))
         if (!isHide) {
             val y = ll_title.y.absoluteValue + ll_title.height
             var moveY = -(y)
@@ -1698,6 +1716,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     private var mFileSdkBean: FileSdkBean? = null
     private var mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
     //展示文件共享逻辑
     override fun showSharePage(mFileSdkBean: FileSdkBean) {
         //传入共享文件需要的数据，前提是
@@ -1722,22 +1741,22 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
                 }
                 FileType.h5 -> {
                     if (RemoteUserConfigHelper.getInstance().getRemoteUserConfigList().size == 1) {
-                        showMessage("共享文件失败，会议内暂无其他人员")
+                        showMessage(IBaseView.MessageType.MESSAGETYPE_NOTIP,
+                            "共享文件失败，会议内暂无其他人员",
+                            true
+                        )
                     } else {
                         //判断当前页面状态，切换到竖屏
-                        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-                            //记录当前的页面状态
-                             mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                        }else{
-                             mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                        }
-                        mPresenter?.addShareUrl(
-                            TXSdk.getInstance().agent,
-                            mFileSdkBean.h5Name,
-                            mFileSdkBean.h5Url,
-                            mFileSdkBean.cookie
-                        )
+                        Handler().postDelayed({
+                            checkScreenOrientation()
+                            mPresenter?.addShareUrl(
+                                TXSdk.getInstance().agent,
+                                mFileSdkBean.h5Name,
+                                mFileSdkBean.h5Url,
+                                mFileSdkBean.cookie
+                            )
+                        },200)
+
                     }
 
                 }
@@ -1759,6 +1778,16 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
     override fun resetBoardLayout() {
         removeBoardView()
+    }
+
+    override fun checkScreenOrientation(){
+        if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            //记录当前的页面状态
+            mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        } else {
+            mCurrentRO = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
 
@@ -1883,11 +1912,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 //            showMessage(IBaseView.MessageType.MESSAGETYPE_SUCCESS, "已将该成员摄像头打开")
         }
 
-        if(memberEntity.isHost){
+        if (memberEntity.isHost) {
             val videoConfig = ConfigHelper.getInstance().videoConfig
             mPresenter?.muteLocalVideo(videoConfig.isEnableVideo)
             mPresenter?.isCloseVideo = !videoConfig.isEnableVideo
-        }else{
+        } else {
             mPresenter?.sendGroupMessage(
                 mPresenter?.setIMTextData(IMkey.MUTEVIDEO)!!
                     .put(
@@ -1898,7 +1927,6 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         }
 
 
-
     }
 
     override fun onMuteAudio(memberEntity: MemberEntity) {
@@ -1907,10 +1935,10 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
 //            showMessage(IBaseView.MessageType.MESSAGETYPE_SUCCESS, "已将该成员解除静音")
         }
-        if(memberEntity.isHost){
+        if (memberEntity.isHost) {
             val audioConfig = ConfigHelper.getInstance().audioConfig
             mPresenter?.muteLocalAudio(audioConfig.isEnableAudio)
-        }else{
+        } else {
             mPresenter?.sendGroupMessage(
                 mPresenter?.setIMTextData(IMkey.MUTEAUDIO)!!
                     .put(
@@ -2069,12 +2097,18 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         } else {
             if (selectPersonDialog == null) {
                 selectPersonDialog =
-                    SelectPersonDialog(this)
+                    SelectPersonDialog(this,
+                        layout_root.width,
+                        layout_root.height
+                    )
 
             } else {
 
             }
             selectPersonDialog?.setRequestID(TXSdk.getInstance().agent)
+            selectPersonDialog?.changeUi(
+                layout_root.width,
+                layout_root.height)
             selectPersonDialog?.setOnConfirmlickListener(object :
                 onDialogListenerCallBack {
                 override fun onItemLongClick(id: String?) {
@@ -2233,10 +2267,11 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
             webDialog =
                 WebDialog(
                     this,
+                    this,
                     url,
                     cookie
                 )
-        }else{
+        } else {
             webDialog?.injectCookie(cookie)
         }
         webDialog?.setOnShareWhiteBroadDialogListener(object : onShareWhiteBroadDialogListener {
@@ -2298,9 +2333,12 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
 
         })
         webDialog?.changeUi(layout_root.width, layout_root.height)
-        webDialog?.show()
-        TxLogUtils.i("url-----" + url)
-        webDialog?.request(url, fromAgent, fileName)
+        Handler().postDelayed({
+            webDialog?.show()
+            TxLogUtils.i("url-----" + url)
+            webDialog?.request(url, fromAgent, fileName)
+        },100)
+
 
     }
 
@@ -2309,7 +2347,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         //判断一下展示webview之前是横屏还是竖屏
         if (mCurrentRO == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        }else{
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         }
     }

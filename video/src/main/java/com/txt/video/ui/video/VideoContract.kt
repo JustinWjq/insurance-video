@@ -203,6 +203,8 @@ public class VideoContract {
         fun endRecordAudioSuccess()
 
         fun endRecordAudioFail()
+
+        fun checkScreenOrientation()
     }
 
 

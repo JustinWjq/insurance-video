@@ -2,6 +2,7 @@ package com.txt.video;
 
 import android.app.Activity;
 import android.app.Application;
+import android.webkit.WebChromeClient;
 
 
 import com.tencent.smtt.export.external.TbsCoreSettings;
@@ -18,6 +19,7 @@ import com.txt.video.common.utils.AppUtils;
 import com.txt.video.ui.TXManagerImpl;
 import com.txt.video.ui.video.FileClickObservable;
 import com.txt.video.ui.video.RoomControlConfig;
+import com.txt.video.ui.weight.dialog.TxWebChromeClient;
 
 import org.json.JSONObject;
 
@@ -43,7 +45,7 @@ public class TXSdk extends TXSDKApi {
 
     private boolean isDemo = false;
 
-    private String SDKVersion = "v1.0.5";
+    private String SDKVersion = BuildConfig.SdkversionName;
 
     private String terminal = "android";
 
@@ -183,6 +185,7 @@ public class TXSdk extends TXSDKApi {
         HashMap map = new HashMap();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+        QbSdk.setDownloadWithoutWifi(true);
         QbSdk.initTbsSettings(map);
         QbSdk.initX5Environment(application,  new QbSdk.PreInitCallback() {
             @Override
@@ -266,6 +269,24 @@ public class TXSdk extends TXSDKApi {
     @Override
     public String getUserNickname() {
         return mUserNickname;
+    }
+
+    private WebChromeClient webChromeClient;
+
+    @Override
+    public void setUIWebViewChromeClient(WebChromeClient mWebChromeClient) {
+        if (null != mWebChromeClient){
+            this.webChromeClient = mWebChromeClient;
+        }else{
+            //创建一个自己设置的webChromeClient
+            this.webChromeClient = new TxWebChromeClient();
+        }
+
+    }
+
+    @Override
+    public WebChromeClient getUIWebViewChromeClient() {
+        return webChromeClient;
     }
 
     public onFileClickListener getOnFriendBtListener() {

@@ -28,8 +28,8 @@ public class ChatAdapter(var data: ArrayList<MultiItemEntity>) :
         when (helper.itemViewType) {
             TYPE_LEVEL_0 -> {
                 val chatBean = item as TUIBarrageMsgEntity
-                helper.setText(R.id.iv_ro_name,getUserName(chatBean.userName))
-                helper.setText(R.id.iv_name,chatBean.userName)
+                helper.setText(R.id.iv_ro_name, getUserName(chatBean.userName))
+                helper.setText(R.id.iv_name, chatBean.userName)
                 val content = chatBean.content
 //                val contains: Boolean = content.contains("U+")
 //                var result = ""
@@ -44,13 +44,13 @@ public class ChatAdapter(var data: ArrayList<MultiItemEntity>) :
 //                    content
 //                }
 
-                helper.setText(R.id.tv_message,content)
+                helper.setText(R.id.tv_message, content)
 
             }
             else -> {
                 val chatBean = item as TUIBarrageMsgEntity
-                helper.setText(R.id.iv_ro_name,getUserName(chatBean.userName))
-                helper.setText(R.id.iv_name,chatBean.userName)
+                helper.setText(R.id.iv_ro_name, getUserName(chatBean.userName))
+                helper.setText(R.id.iv_name, chatBean.userName)
                 val content = chatBean.content
 //                val contains: Boolean = content.contains("U+")
 //                var result = ""
@@ -65,16 +65,17 @@ public class ChatAdapter(var data: ArrayList<MultiItemEntity>) :
 //                    content
 //                }
 
-                helper.setText(R.id.tv_message,content)
+                helper.setText(R.id.tv_message, content)
             }
 
         }
     }
 
-    private fun getUserName(userName:String) :String{
-       var userNameSub = ""
-        if (userName.length > 2) {
-            userNameSub = userName.substring(userName.length - 2, userName.length)
+    private fun getUserName(userName: String): String {
+        var userNameSub = if (userName.length > 2) {
+            userName.substring(userName.length - 2, userName.length)
+        } else {
+            userName
         }
         return userNameSub
     }

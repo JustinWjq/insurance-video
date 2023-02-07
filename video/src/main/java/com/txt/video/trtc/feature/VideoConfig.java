@@ -30,7 +30,7 @@ public class VideoConfig implements Serializable {
     // 画质偏好
     private              int     mQosPreference      = TRTCCloudDef.TRTC_VIDEO_QOS_PREFERENCE_CLEAR;
     // 竖屏模式，true为竖屏
-    private              boolean mVideoVertical      = true;
+    private              boolean mVideoVertical      = false;
     // 画面填充方向是否为充满， true为充满
     private              boolean mVideoFillMode      = false;
     // 画面预览镜像类型

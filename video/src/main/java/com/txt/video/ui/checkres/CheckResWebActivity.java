@@ -63,7 +63,10 @@ public class CheckResWebActivity extends BaseActivity<CheckResWebContract.IColle
         } else {
             if (selectPersonDialog == null) {
                 selectPersonDialog =
-                        new SelectPersonDialog(this);
+                        new SelectPersonDialog(this,
+                        0,
+                                0
+                        );
 
             } else {
 

@@ -30,12 +30,16 @@ import java.util.List;
 public class SelectPersonDialog extends Dialog {
     private onDialogListenerCallBack mListener;
     private Context mContext;
+    private int width;
+    private int height;
 
     private PersonNameAdapter baseQuickAdapter;
 
-    public SelectPersonDialog(Context context) {
+    public SelectPersonDialog(Context context,int width,int height) {
         super(context, R.style.tx_MyDialog);
         mContext = context;
+        this.width = width;
+        this.height = height;
         list = new ArrayList<>();
 
     }
@@ -50,17 +54,19 @@ public class SelectPersonDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tx_dialog_personlist);
-        Window window = getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
-        attributes.height = Utils.getWindowHeight(mContext) / 3;
-        attributes.width = Utils.getWindowWidth(mContext);
-        window.setGravity(Gravity.BOTTOM);
+        changeUi(width,height);
 
         setCanceledOnTouchOutside(true);
         initView();
     }
 
-
+    public void changeUi(int width,int height){
+        Window window = getWindow();
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.height = height/3;
+        attributes.width = width;
+        window.setGravity(Gravity.BOTTOM);
+    }
     public void invalidateAdapater(ArrayList<MemberEntity> mDatas) {
         list.clear();
         TxLogUtils.i("invalidateAdapater");

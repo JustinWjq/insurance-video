@@ -40,11 +40,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/tx_dp_10"
-            android:layout_toRightOf="@+id/tv_icon_name"
+            android:layout_toEndOf="@+id/tv_icon_name"
+            android:layout_toStartOf="@+id/iv_close"
             android:gravity="center"
             android:textColor="@color/tx_color_333333"
             android:textSize="@dimen/tx_sp_15"
-            tools:text="张思思" />
+            tools:text="张思思张思思张思思张思思张思思张思思张思思张思思张思思张思思" />
 
         <TextView
             android:id="@+id/iv_close"

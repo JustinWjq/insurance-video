@@ -71,7 +71,8 @@ class TXManagerImpl : TXManager {
             TxPermissionUtils.permission(
                 PermissionConstants.CAMERA,
                 PermissionConstants.MICROPHONE,
-                PermissionConstants.PHONE
+                PermissionConstants.PHONE,
+                PermissionConstants.STORAGE
             ).callback(object : TxPermissionUtils.FullCallback {
                 override fun onGranted(permissionsGranted: List<String>) {
                     i("txsdk---joinRoom---- ")

@@ -227,6 +227,20 @@ public class SystemHttpRequest {
 
     }
 
+    public void updateUserInfo(String serviceId,String userId,String appCookie,HttpRequestClient.RequestHttpCallBack callback) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("serviceId", serviceId);
+            jsonObject.put("userId", userId);
+            jsonObject.put("appCookie", appCookie);
+        } catch (Exception e) {
+
+        }
+        HttpRequestClient.getIntance().post(IP + "/api/serviceRoom/userInfo", jsonObject.toString(), "", callback);
+
+    }
+
     public void addShareWebUrl(String agent,String name,String url,HttpRequestClient.RequestHttpCallBack callback) {
 
         JSONObject jsonObject = new JSONObject();

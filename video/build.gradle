@@ -25,6 +25,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         // 仅支持 中文
         resConfigs "zh"
+        buildConfigField "String", "SdkversionName","\"${rootProject.ext.version}\""
         ndk {
             abiFilters "armeabi-v7a"//, "arm64-v8a"
         }
@@ -64,7 +65,7 @@ android {
     android.libraryVariants.all { variant ->
         variant.outputs.all {
             //输出apk名称为：渠道名_app_版本名_时间戳.apk
-            outputFileName = "ygzs_sdk_v${defaultConfig.versionName}_${releaseTime()}.aar"
+            outputFileName = "ygzs_sdk_${defaultConfig.versionName}_${releaseTime()}.aar"
         }
     }
 }

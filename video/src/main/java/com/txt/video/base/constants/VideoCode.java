@@ -17,6 +17,9 @@ public class VideoCode {
 
     public static int SKIPBOARDPAGE_CODE = 12200;
 
+    public static int FILECHOOSER_RESULTCODE = 13000;
+
+
 
 
 
