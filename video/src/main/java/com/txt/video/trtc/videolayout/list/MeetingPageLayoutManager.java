@@ -86,10 +86,10 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        TxLogUtils.i("Item onLayoutChildren");
-        TxLogUtils.i("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
-        TxLogUtils.i("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
-        TxLogUtils.i("Item onLayoutChildren state = " + state);
+//        TxLogUtils.i("Item onLayoutChildren");
+//        TxLogUtils.i("Item onLayoutChildren isPreLayout = " + state.isPreLayout());
+//        TxLogUtils.i("Item onLayoutChildren isMeasuring = " + state.isMeasuring());
+//        TxLogUtils.i("Item onLayoutChildren state = " + state);
 
         // 如果是 preLayout 则不重新布局
         if (state.isPreLayout() || getUsableWidth() == 0) {
@@ -170,7 +170,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
         // setPageCount(mPageCount);
         // setPageIndex(mCurrentPageIndex, false);
 
-        TxLogUtils.i("count = " + getItemCount());
+//        TxLogUtils.i("count = " + getItemCount());
 
         if (mItemWidth <= 0) {
             mItemWidth = getUsableWidth() / mColumns;
@@ -228,20 +228,20 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             return;
         }
 
-        TxLogUtils.i("mOffsetX = " + mOffsetX);
-        TxLogUtils.i("mOffsetY = " + mOffsetY);
+//        TxLogUtils.i("mOffsetX = " + mOffsetX);
+//        TxLogUtils.i("mOffsetY = " + mOffsetY);
 
         // 计算显示区域区前后多存储一列或则一行
         Rect displayRect = new Rect(mOffsetX - mItemWidth, mOffsetY - mItemHeight,
                 getUsableWidth() + mOffsetX + mItemWidth, getUsableHeight() + mOffsetY + mItemHeight);
         // 对显显示区域进行修正(计算当前显示区域和最大显示区域对交集)
         displayRect.intersect(0, 0, mMaxScrollX + getUsableWidth(), mMaxScrollY + getUsableHeight());
-        TxLogUtils.i("displayRect = " + displayRect.toString());
+//        TxLogUtils.i("displayRect = " + displayRect.toString());
 
         int startPos  = 0;                  // 获取第一个条目的Pos
         int pageIndex = getPageIndexByOffset();
         startPos = pageIndex * mOnePageSize;
-        TxLogUtils.i("startPos = " + startPos);
+//        TxLogUtils.i("startPos = " + startPos);
         startPos = startPos - mOnePageSize * 2;
         if (startPos < 0) {
             startPos = 0;
@@ -251,8 +251,8 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             stopPos = getItemCount();
         }
 
-        TxLogUtils.i("startPos = " + startPos);
-        TxLogUtils.i("stopPos = " + stopPos);
+//        TxLogUtils.i("startPos = " + startPos);
+//        TxLogUtils.i("stopPos = " + stopPos);
 
         detachAndScrapAttachedViews(recycler); // 移除所有View
 
@@ -265,13 +265,13 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
                 addOrRemove(recycler, displayRect, i);
             }
         }
-        TxLogUtils.i("child count = " + getChildCount());
+//        TxLogUtils.i("child count = " + getChildCount());
         startPos = pageIndex * mOnePageSize;
         stopPos = startPos + mOnePageSize - 1;
         if (stopPos >= getItemCount()) {
             stopPos = getItemCount() - 1;
         }
-        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
+//        TxLogUtils.i("visible from " + startPos + " to " + stopPos);
         if (mPageListener != null) {
             mPageListener.onItemVisible(startPos, stopPos);
         }
@@ -371,7 +371,7 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
      */
     @Override
     public void onScrollStateChanged(int state) {
-        TxLogUtils.i("onScrollStateChanged = " + state);
+//        TxLogUtils.i("onScrollStateChanged = " + state);
         mScrollState = state;
         super.onScrollStateChanged(state);
         if (state == SCROLL_STATE_IDLE) {
@@ -415,12 +415,12 @@ public class MeetingPageLayoutManager extends RecyclerView.LayoutManager impleme
             offsetY += row * mItemHeight;
 
             // 状态输出，用于调试
-            TxLogUtils.i("pagePos = " + pagePos);
-            TxLogUtils.i("行 = " + row);
-            TxLogUtils.i("列 = " + col);
-
-            TxLogUtils.i("offsetX = " + offsetX);
-            TxLogUtils.i("offsetY = " + offsetY);
+//            TxLogUtils.i("pagePos = " + pagePos);
+//            TxLogUtils.i("行 = " + row);
+//            TxLogUtils.i("列 = " + col);
+//
+//            TxLogUtils.i("offsetX = " + offsetX);
+//            TxLogUtils.i("offsetY = " + offsetY);
 
             rect.left = offsetX;
             rect.top = offsetY;

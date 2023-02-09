@@ -136,7 +136,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
     }
 
     public void closeVideo(boolean isClose) {
-        TxLogUtils.d("closeVideo1234"+"isClose"+isClose);
+        TxLogUtils.d("closeVideo------isClose"+isClose);
         if (isClose) {
             iv_video_srccen.setVisibility(VISIBLE);
             iv_video_close.setVisibility(GONE);
@@ -164,7 +164,7 @@ public class BigScreenView extends RelativeLayout implements View.OnClickListene
 
 
     public void closeVideo(boolean isClose,String url) {
-        TxLogUtils.i("closeVideo1234"+url+"isClose"+isClose);
+        TxLogUtils.i("closeVideo------isClose"+isClose);
         if (isClose) {
             mCloseVideo.setVisibility(VISIBLE);
             iv_video_close.setVisibility(VISIBLE);

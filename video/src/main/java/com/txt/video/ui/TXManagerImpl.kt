@@ -305,7 +305,7 @@ class TXManagerImpl : TXManager {
                 }
 
                 override fun onFail(err: String, code: Int) {
-                    mHandler.post { listener.onResultFail(0, "") }
+                    mHandler.post { listener.onResultFail(0, err) }
                 }
             })
     }

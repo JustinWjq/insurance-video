@@ -1,6 +1,7 @@
 package com.txt.video.common.utils;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -11,12 +12,19 @@ import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.txt.video.TXSdk;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * <pre>
@@ -68,10 +76,60 @@ public final class UriUtils {
      */
     public static File uri2File(final Uri uri) {
         if (uri == null) return null;
-        File file = uri2FileReal(uri);
+        File file;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            file = uriToFileApiQ(TXSdk.getInstance().application, uri);
+        } else {
+            file = uri2FileReal(uri);
+        }
+
         if (file != null) return file;
         return null;
     }
+
+
+//    public static File uriToFileApi(Context context, Uri uri) {
+//        File file = null; //android10以上转换
+//        if (uri.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+//            file = new File(uri.getPath());
+//        } else if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) { //把文件复制到沙盒目录
+//            ContentResolver contentResolver = context.getContentResolver();
+//            Cursor cursor = contentResolver.query(uri, null, null, null, null);
+//            if (cursor.moveToFirst()) {
+//                @SuppressLint("Range")
+//                String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//                try {
+//                    InputStream is = contentResolver.openInputStream(uri);
+//                    //先判断当前文件夹是否有该文件
+//                    String dir = context.getExternalCacheDir().getAbsolutePath() + "/kyl_file_cache";
+//                    FileUtils.createOrExistsDir(dir);
+//                    File cache = new File(dir, displayName);
+//                    if (FileUtils.isFileExists(cache)) {
+//                        //如果存在,说明已经写入过了,那么判断hash值是不是一样
+//                        int oldHash = Arrays.hashCode(FileUtils.getFileMD5(context, uri));
+//                        int newHash = Arrays.hashCode(FileUtils.getFileMD5(cache));
+//                        if (newHash == oldHash) {
+//                            return cache;
+//                        } else {
+//                            // 时间原因,简单拓展,重复覆盖的几率较小,后续如果有必要,可以数字递增
+//                            cache = new File(context.getExternalCacheDir().getAbsolutePath(), Math.round((Math.random() + 1) * 1000) + displayName);
+//                        }
+//                    }
+//
+//                    FileOutputStream fos = new FileOutputStream(cache);
+////                    android.os.FileUtils.copy(is, fos);
+//                    UtilsBridge.writeFileFromIS(cache.getAbsolutePath(), is);
+//                    file = cache;
+//                    fos.close();
+//                    is.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    file = null;
+//                }
+//            }
+//        }
+//        return file;
+//    }
 
     /**
      * Uri to file.
@@ -349,5 +407,38 @@ public final class UriUtils {
 //            }
 //        }
 //    }
+
+    /***
+     *
+     * 兼容11以上获取文件
+     * @param context
+     * @param uri
+     * @return File
+     */
+    public static File uriToFileApiQ(Context context, Uri uri) {
+        File file = null;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+            file = new File(uri.getPath());
+        } else if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+//            把文件复制到沙盒目录
+            ContentResolver contentResolver = context.getContentResolver();
+            Cursor cursor = contentResolver.query(uri, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                @SuppressLint("Range") String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                try {
+                    InputStream is = contentResolver.openInputStream(uri);
+                    File cache = new File(context.getExternalCacheDir().getAbsolutePath(), Math.round((Math.random() + 1) * 1000) + displayName);
+                    FileOutputStream fos = new FileOutputStream(cache);
+                    android.os.FileUtils.copy(is, fos);
+                    file = cache;
+                    fos.close();
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return file;
+    }
 }
 
