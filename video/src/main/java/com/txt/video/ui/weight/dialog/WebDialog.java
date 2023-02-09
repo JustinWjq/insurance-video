@@ -252,6 +252,7 @@ public class WebDialog extends Dialog implements View.OnClickListener {
             JSONObject jsonObject = new JSONObject(cookie);
             TxLogUtils.i("setCookie------" + jsonObject.optString("token"));
             JSONObject agentInfo = jsonObject.optJSONObject("agentInfo");
+            agentInfo.put("token", jsonObject.optString("token"));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
                     String.format("domain=%s", new URL(mUrl).getHost()));
             mCookieManager.setCookie("." + new URL(mUrl).getHost(),
