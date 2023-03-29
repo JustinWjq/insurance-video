@@ -2219,7 +2219,7 @@ class VideoActivity : BaseActivity<VideoContract.ICollectView, VideoPresenter>()
         startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")).apply {
             putExtra(
                 "sms_body",
-                "请打开微信-搜索【云助理智慧展业】小程序，输入邀请码 ${mPresenter?.getInviteNumber()} 进入会议"
+                "请打开微信-搜索【云助理服务助手】小程序，输入邀请码 ${mPresenter?.getInviteNumber()} 进入会议"
             )
         })
     }
