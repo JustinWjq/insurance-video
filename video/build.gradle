@@ -117,7 +117,7 @@ dependencies {
 //    api 'com.tencent.imsdk:imsdk:4.6.56'
     //wechat share
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.3.1'
-    api 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    api 'com.tencent.liteav:LiteAVSDK_TRTC:9.5.11201'
     //IMSDK
 //    implementation 'com.tencent.imsdk:imsdk:4.6.56'
 
